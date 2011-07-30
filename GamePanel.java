@@ -36,7 +36,7 @@ public class GamePanel extends JPanel {
         JComponent panel = new GamePanel();
         panel.setOpaque(true); //content panes must be opaque
         frame.setContentPane(panel);
-        frame.setPreferredSize(new Dimension(WIDTH,HEIGHT));
+        frame.setPreferredSize(new Dimension(WIDTH + 30,HEIGHT + 80));
 
         //Display the window.
         frame.pack();

@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -24,13 +23,17 @@ public class GameBoardView extends JPanel {
     private Graphics2D g;
     
     public GameBoardView() {
-    	super(DOUBLE_BUFFERED);   	
+    	super(DOUBLE_BUFFERED);
 
 		Cell c = new Cell(0, 0, Color.red); // dummy cell
 
-		int x = c.getDistToCorner() + 0;
-		int y = c.getDistToEdge() - 1;
+		int x = c.getDistToCorner() + 30;
+		int y = c.getDistToEdge() + 250;
 		c = new Cell(x, y, new Color(0f, .3f, 1f, .5f));
+		addCell(c, 15, 20);
+		System.out.println(cells.size() + " cells generated");
+		
+		/*
 		cells.add(c);
 		
 		for (int i=0; i<21; i++) {
@@ -60,7 +63,7 @@ public class GameBoardView extends JPanel {
 				cells.add(newCell);
 			}
 		}
-    	
+    	*/
     	
     	this.addMouseListener(new MouseListener() {
 			@Override
@@ -100,6 +103,48 @@ public class GameBoardView extends JPanel {
 		
     }
     
+    private void addCell(Cell c, int row, int col) {
+    	cells.add(c);
+		if (row > 0) {
+			if (c.south == null) {
+				Cell newCell = c.generateSouth(); //south
+				addCell(newCell, row-1, col);
+			}
+		}
+    	if (col > 0) {
+    		if (c.southEast == null) {
+    			/*
+    			if (c.south == null || c.south.northEast == null) {
+    				Cell cellSE = c.generateSouthEast();//southEast
+    				addCell(cellSE, 0, col-1);
+    			} else {
+    				Cell cellSE = c.south.northEast;
+    				c.southEast = cellSE;
+    				cellSE.northWest = c;
+    			}*/
+    			if (c.south != null && c.south.northEast !=null) {
+    				Cell cellSE = c.south.northEast;
+    				c.southEast = cellSE;
+    				cellSE.northWest = c;
+    			}
+    		}
+    		if (c.northEast == null) {
+    			/*
+	    		Cell cellNE = c.generateNorthEast();//northEast
+	    		cellNE.south = c.southEast;
+	    		c.southEast.north = cellNE;
+	    		addCell(cellNE, 0, col-1);
+	    		*/
+    			Cell cellNE = c.generateNorthEast();//northEast
+    			if (c.southEast != null) {
+    				cellNE.south = c.southEast;
+    	    		c.southEast.north = cellNE;    	    		
+    			}
+    			addCell(cellNE, 0, col-1);
+    		}
+    	}
+    }
+    
     @Override
 	public void paint(Graphics graphics) {
 		g = (Graphics2D)graphics;
@@ -109,30 +154,6 @@ public class GameBoardView extends JPanel {
 		
 		for (Cell c : cells)
 			c.paint(graphics);
-				
-		//System.out.println("Painting WHOLE GameBoard!");
-		
-		/*
-		g.setColor(Color.LIGHT_GRAY);
-		for (int r=1; r<ROWS; r++) {  // Horizontal lines
-            g.drawLine(0, r*CELL_SIZE, WIDTH, r*CELL_SIZE);
-        }
-        for (int c=1; c<COLS; c++) {
-            g.drawLine(c*CELL_SIZE, 0, c*CELL_SIZE, HEIGHT);
-        }
-        
-        for (int r = 0; r < ROWS; r++) {
-            for (int c = 0; c < COLS; c++) {
-                int x = c * CELL_SIZE;
-                int y = r * CELL_SIZE;
-                Unit unit = model.getUnitAt(new Point(c, r));
-                if (unit != null) { //check which player
-                    g.setColor(Color.GREEN); //then pick correct image
-                    g.fillOval(x+2, y+2, CELL_SIZE-4, CELL_SIZE-4);
-                }
-            }
-        }
-        */
 		
 	}
     

@@ -21,7 +21,7 @@ public class Cell extends JComponent {
 	private final Color COLOR_FILL_HOVER;
 	private Color color; //current color fill
 	private final double ANGLE = 2*Math.PI/6;
-	private final int DIST_TO_CORNER = 50;
+	private final int DIST_TO_CORNER = 15;
 	private final int DIST_TO_EDGE = (int)(DIST_TO_CORNER * Math.cos(ANGLE/2));
 	
 	/**
@@ -68,10 +68,35 @@ public class Cell extends JComponent {
 		color = COLOR_FILL;
 	}
 	
-	//public boolean isSurrounded() {
-		//return north != null && south != null && northEast != null
-			//	&& southEast != null && northWest != null && southWest != null;
-	//}
+	public Cell generateSouth() {
+		Cell c = null;
+		if (south == null) {
+			c = new Cell(x, y + 2*DIST_TO_EDGE, COLOR_FILL);
+			south = c;
+			c.north = this;
+		}
+		return c;
+	}
+	
+	public Cell generateSouthEast() {
+		Cell c = null;
+		if (southEast == null) {
+			c = new Cell(x + (int)(1.5*DIST_TO_CORNER), y + DIST_TO_EDGE, COLOR_FILL);
+			southEast = c;
+			c.northWest = this;
+		}
+		return c;
+	}
+	
+	public Cell generateNorthEast() {
+		Cell c = null;
+		if (northEast == null) {
+			c = new Cell(x + (int)(1.5*DIST_TO_CORNER), y - DIST_TO_EDGE, COLOR_FILL);
+			northEast = c;
+			c.southWest = this;
+		}
+		return c;
+	}
 	
 	public Cell generateAdjacentCell() { //TODO determine color
 		Cell c = null;
