@@ -1,11 +1,11 @@
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.Polygon;
+import java.awt.RenderingHints;
 
-import javax.swing.JComponent;
-
-public class Cell extends JComponent {
-	private static final long serialVersionUID = 610376406049573992L;
+public class Cell {
 	private Polygon hexagon = new Polygon();
 	private int x;
 	private int y;
@@ -16,13 +16,13 @@ public class Cell extends JComponent {
 	public Cell southEast;
 	public Cell northWest;
 	public Cell southWest;	
-	private final Color COLOR_BORDER = Color.LIGHT_GRAY;
+	private static final Color COLOR_BORDER = Color.LIGHT_GRAY;
 	private final Color COLOR_FILL;
 	private final Color COLOR_FILL_HOVER;
 	private Color color; //current color fill
-	private final double ANGLE = 2*Math.PI/6;
-	private final int DIST_TO_CORNER = 15;
-	private final int DIST_TO_EDGE = (int)(DIST_TO_CORNER * Math.cos(ANGLE/2));
+	private static final double ANGLE = (2*Math.PI)/6;
+	public static final int DIST_TO_CORNER = 15;
+	public static final int DIST_TO_EDGE = (int)(DIST_TO_CORNER * Math.cos(ANGLE/2));
 	
 	/**
 	 * Hexagon shaped cell on the board
@@ -40,20 +40,33 @@ public class Cell extends JComponent {
 			int x2 = (int)(x + DIST_TO_CORNER * Math.cos(i * ANGLE));
 			int y2 = (int)(y + DIST_TO_CORNER * Math.sin(i * ANGLE));
 			hexagon.addPoint(x2, y2);
-			//g.drawLine(x, y, x2, y2);
 		}
 	}
 	
-	public int getDistToCorner() { return DIST_TO_CORNER; }
-	public int getDistToEdge() {return DIST_TO_EDGE; }
-	
-	@Override
-	public void paint(Graphics g) {
+	/**
+	 * Add a unit to this cell. Only one unit per cell.
+	 * @param u Unit that resides in this cell
+	 */
+	public void setUnit(Unit u) {
+		unit = u;
+	}
+
+	public void paintCell(Graphics g) {
 		g.setColor(color);
 		g.fillPolygon(hexagon);
-		//g.drawOval(x, y, 1, 1);
+		//g.drawOval(x, y, 1, 1); //center point
 		g.setColor(COLOR_BORDER);
 		g.drawPolygon(hexagon);
+		if (unit != null) { // Ideal image is 33x28 so resize doesn't look terrible
+			Image image = unit.getImage();
+			Graphics2D g2 = (Graphics2D)g;
+	        int newW = (int)(DIST_TO_CORNER * 2);
+	        int newH = (int)(DIST_TO_EDGE * 2);
+	        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+	        g2.drawImage(image, x-DIST_TO_CORNER, y-DIST_TO_EDGE, newW, newH, null);
+			//Image image = unit.getImage();//.getScaledInstance(2*DIST_TO_CORNER, 2*DIST_TO_EDGE, Image.SCALE_SMOOTH);
+			//g.drawImage(image,x-DIST_TO_CORNER+2,y-DIST_TO_EDGE+1,null);
+		}
 	}
 	
 	public boolean contains(int x, int y) {
@@ -98,7 +111,7 @@ public class Cell extends JComponent {
 		return c;
 	}
 	
-	public Cell generateAdjacentCell() { //TODO determine color
+	public Cell generateAdjacentCell() {
 		Cell c = null;
 		if (south == null) {
 			System.out.println("South");
