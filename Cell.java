@@ -20,6 +20,7 @@ public class Cell {
 	private final Color COLOR_FILL;
 	private final Color COLOR_FILL_HOVER;
 	private Color color; //current color fill
+	public static enum Type {EARTH, WATER, LAVA, TREE};
 	private static final double ANGLE = (2*Math.PI)/6;
 	public static final int DIST_TO_CORNER = 15;
 	public static final int DIST_TO_EDGE = (int)(DIST_TO_CORNER * Math.cos(ANGLE/2));
@@ -30,10 +31,18 @@ public class Cell {
 	 * @param yPos The y position
 	 * @param c The color of the cell
 	 */
-	public Cell(int xPos, int yPos, Color c) {
+	public Cell(int xPos, int yPos, Type cellType) {
 		x = xPos;
 		y = yPos;
-		color = COLOR_FILL = c;
+		switch (cellType) {
+			case EARTH: color = new Color(139, 69, 19, 175); break;
+			case WATER: color = new Color(0, 0, 255, 175); break;
+			case LAVA: color = new Color(255, 0, 0, 175); break;
+			case TREE: color = new Color(0, 255, 0, 175); break;
+			default:
+				System.err.println("Unknown cell type!");
+		}
+		COLOR_FILL = color;
 		COLOR_FILL_HOVER = bleach(COLOR_FILL, 0.25f);
 		
 		for (int i = 0; i < 6; i++) {
@@ -44,7 +53,7 @@ public class Cell {
 	}
 	
 	/**
-	 * Add a unit to this cell. Only one unit per cell.
+	 * Place a unit to this cell. Only one unit per cell.
 	 * @param u Unit that resides in this cell
 	 */
 	public void setUnit(Unit u) {
@@ -84,7 +93,7 @@ public class Cell {
 	public Cell generateSouth() {
 		Cell c = null;
 		if (south == null) {
-			c = new Cell(x, y + 2*DIST_TO_EDGE, COLOR_FILL);
+			c = new Cell(x, y + 2*DIST_TO_EDGE, Type.EARTH);
 			south = c;
 			c.north = this;
 		}
@@ -94,7 +103,7 @@ public class Cell {
 	public Cell generateSouthEast() {
 		Cell c = null;
 		if (southEast == null) {
-			c = new Cell(x + (int)(1.5*DIST_TO_CORNER), y + DIST_TO_EDGE, COLOR_FILL);
+			c = new Cell(x + (int)(1.5*DIST_TO_CORNER), y + DIST_TO_EDGE, Type.EARTH);
 			southEast = c;
 			c.northWest = this;
 		}
@@ -104,7 +113,7 @@ public class Cell {
 	public Cell generateNorthEast() {
 		Cell c = null;
 		if (northEast == null) {
-			c = new Cell(x + (int)(1.5*DIST_TO_CORNER), y - DIST_TO_EDGE, COLOR_FILL);
+			c = new Cell(x + (int)(1.5*DIST_TO_CORNER), y - DIST_TO_EDGE, Type.EARTH);
 			northEast = c;
 			c.southWest = this;
 		}
@@ -115,27 +124,27 @@ public class Cell {
 		Cell c = null;
 		if (south == null) {
 			System.out.println("South");
-			c = new Cell(x, y + 2*DIST_TO_EDGE, COLOR_FILL);
+			c = new Cell(x, y + 2*DIST_TO_EDGE, Type.EARTH);
 			south = c;
 			c.north = this;			
 		} else if (southEast == null) {
-			c = new Cell(x + (int)(1.5*DIST_TO_CORNER), y + DIST_TO_EDGE, COLOR_FILL);
+			c = new Cell(x + (int)(1.5*DIST_TO_CORNER), y + DIST_TO_EDGE, Type.EARTH);
 			southEast = c;
 			c.northWest = this;
 		} else if (northEast == null) {
-			c = new Cell(x + (int)(1.5*DIST_TO_CORNER), y - DIST_TO_EDGE, COLOR_FILL);
+			c = new Cell(x + (int)(1.5*DIST_TO_CORNER), y - DIST_TO_EDGE, Type.EARTH);
 			northEast = c;
 			c.southWest = this;
 		} else if (southWest == null) {
-			c = new Cell(x - (int)(1.5*DIST_TO_CORNER), y + DIST_TO_EDGE, COLOR_FILL);
+			c = new Cell(x - (int)(1.5*DIST_TO_CORNER), y + DIST_TO_EDGE, Type.EARTH);
 			southWest = c;
 			c.northEast = this;
 		} else if (northWest == null) {
-			c = new Cell(x - (int)(1.5*DIST_TO_CORNER), y - DIST_TO_EDGE, COLOR_FILL);
+			c = new Cell(x - (int)(1.5*DIST_TO_CORNER), y - DIST_TO_EDGE, Type.EARTH);
 			northWest = c;
 			c.southEast = this;
 		} else if (north == null) {
-			c = new Cell(x, y - 2*DIST_TO_EDGE, COLOR_FILL);
+			c = new Cell(x, y - 2*DIST_TO_EDGE, Type.EARTH);
 			north = c;
 			c.south = this;
 		}

@@ -24,49 +24,16 @@ public class GameBoardView extends JPanel {
     public GameBoardView() {
     	super(DOUBLE_BUFFERED);
 
-		Cell c = new Cell(0, 0, Color.red); // dummy cell
+		Cell c = new Cell(0, 0, Cell.Type.EARTH); // dummy cell
 
 		int x = Cell.DIST_TO_CORNER + 30;
 		int y = Cell.DIST_TO_EDGE + 255;
-		c = new Cell(x, y, new Color(0f, .3f, 1f, .5f));
+		c = new Cell(x, y, Cell.Type.EARTH);//new Color(0f, .3f, 1f, .5f));
 		
 		addCell(c, 15, 20); //recursively build map
 		
 		System.out.println(cells.size() + " cells generated for map.");
 		
-		
-		/*
-		cells.add(c);
-		
-		for (int i=0; i<21; i++) {
-			Cell newCell = c.generateAdjacentCell();
-			
-			if (newCell == null) {				
-				c.south.northEast = c.southEast;
-				c.south.northWest = c.southWest;
-				c.southEast.southWest = c.south;
-				c.southEast.north = c.northEast;
-				c.southWest.southEast = c.south;
-				c.southWest.north = c.northWest;
-				
-				c.northEast.south = c.southEast;
-				c.northEast.northWest = c.north;
-				c.northWest.south = c.southWest;
-				c.northWest.northEast = c.north;
-				c.north.southWest = c.northWest;
-				c.north.southEast = c.northEast;
-				
-				c = c.south;
-				i--;
-				continue;
-			}
-			
-			if (!cells.contains(newCell)) {
-				cells.add(newCell);
-			}
-		}
-    	*/
-    	
     	this.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -109,21 +76,12 @@ public class GameBoardView extends JPanel {
     	cells.add(c);
 		if (row > 0) {
 			if (c.south == null) {
-				Cell newCell = c.generateSouth(); //south
+				Cell newCell = c.generateSouth();
 				addCell(newCell, row-1, col);
 			}
 		}
     	if (col > 0) {
     		if (c.southEast == null) {
-    			/*
-    			if (c.south == null || c.south.northEast == null) {
-    				Cell cellSE = c.generateSouthEast();//southEast
-    				addCell(cellSE, 0, col-1);
-    			} else {
-    				Cell cellSE = c.south.northEast;
-    				c.southEast = cellSE;
-    				cellSE.northWest = c;
-    			}*/
     			if (c.south != null && c.south.northEast !=null) {
     				Cell cellSE = c.south.northEast;
     				c.southEast = cellSE;
@@ -131,13 +89,7 @@ public class GameBoardView extends JPanel {
     			}
     		}
     		if (c.northEast == null) {
-    			/*
-	    		Cell cellNE = c.generateNorthEast();//northEast
-	    		cellNE.south = c.southEast;
-	    		c.southEast.north = cellNE;
-	    		addCell(cellNE, 0, col-1);
-	    		*/
-    			Cell cellNE = c.generateNorthEast();//northEast
+    			Cell cellNE = c.generateNorthEast();
     			if (c.southEast != null) {
     				cellNE.south = c.southEast;
     	    		c.southEast.north = cellNE;    	    		
