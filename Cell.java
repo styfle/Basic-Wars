@@ -22,7 +22,7 @@ public class Cell {
 	private Color color; //current color fill
 	public static enum Type {EARTH, WATER, LAVA, TREE};
 	private static final double ANGLE = (2*Math.PI)/6;
-	public static final int DIST_TO_CORNER = 15;
+	public static final int DIST_TO_CORNER = 17;
 	public static final int DIST_TO_EDGE = (int)(DIST_TO_CORNER * Math.cos(ANGLE/2));
 	
 	/**
@@ -82,6 +82,18 @@ public class Cell {
 		return hexagon.contains(x, y);
 	}
 	
+	public static Type parseType(char ch) {
+		Cell.Type type;
+		switch (ch) {
+			case 'E': type = Cell.Type.EARTH; break;
+			case 'W': type = Cell.Type.WATER; break;
+			case 'L': type = Cell.Type.LAVA; break;
+			case 'T': type = Cell.Type.TREE; break;
+			default: type = Cell.Type.LAVA;
+		}
+		return type;
+	}
+	
 	public void mouseEntered() {
 		color = COLOR_FILL_HOVER;
 	}
@@ -90,32 +102,47 @@ public class Cell {
 		color = COLOR_FILL;
 	}
 	
-	public Cell generateSouth() {
-		Cell c = null;
-		if (south == null) {
-			c = new Cell(x, y + 2*DIST_TO_EDGE, Type.EARTH);
-			south = c;
-			c.north = this;
+	public Cell generateSouth(Type type) {
+		Cell c = new Cell(x, y + 2*DIST_TO_EDGE, type);
+		south = c;
+		c.north = this;
+		if (southWest != null) {
+			southWest.southEast = south;
+			south.northWest = southWest;
+		}
+		if (southEast != null) {
+			southEast.southWest = south;
+			south.northEast = southEast;
 		}
 		return c;
 	}
 	
-	public Cell generateSouthEast() {
-		Cell c = null;
-		if (southEast == null) {
-			c = new Cell(x + (int)(1.5*DIST_TO_CORNER), y + DIST_TO_EDGE, Type.EARTH);
-			southEast = c;
-			c.northWest = this;
+	public Cell generateSouthEast(Type type) {
+		Cell c = new Cell(x + (int)(1.5*DIST_TO_CORNER), y + DIST_TO_EDGE, type);
+		southEast = c;
+		c.northWest = this;
+		if (south != null) {
+			south.northEast = southEast;
+			southEast.southWest = south;
+		}
+		if (northEast != null) {
+			northEast.south = southEast;
+			southEast.north = northEast;
 		}
 		return c;
 	}
 	
-	public Cell generateNorthEast() {
-		Cell c = null;
-		if (northEast == null) {
-			c = new Cell(x + (int)(1.5*DIST_TO_CORNER), y - DIST_TO_EDGE, Type.EARTH);
-			northEast = c;
-			c.southWest = this;
+	public Cell generateNorthEast(Type type) {
+		Cell c = new Cell(x + (int)(1.5*DIST_TO_CORNER), y - DIST_TO_EDGE, type);
+		northEast = c;
+		c.southWest = this;
+		if (north != null) {
+			north.southEast = northEast;
+			northEast.northWest = north;
+		}
+		if (southEast != null) {
+			southEast.north = northEast;
+			northEast.south = southEast;
 		}
 		return c;
 	}

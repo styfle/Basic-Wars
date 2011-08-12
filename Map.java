@@ -1,7 +1,3 @@
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -12,8 +8,8 @@ import java.util.ArrayList;
  */
 public class Map {
 	private ArrayList<Cell> cells = new ArrayList<Cell>(500);
-	private final static int CELL_COLS = 25; // width
-	private final static int CELL_ROWS = 20; // height
+	public final static int CELL_COLS = 25; // width
+	public final static int CELL_ROWS = 20; // height
 	private final static String map0 = "EEEEEEEEEEEEEEEEEEEEEEEEE\n" +
 								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
 								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
@@ -37,13 +33,13 @@ public class Map {
 	
 	private final static String map1 = "EEEEEEEEEEEEEEEEEEEEEEEEE\n" +
 								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEWWEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEWWWEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEWWWWWEEEEEEEEEE\n" + 
+								"EEEEEEEEEEETEEEEEEEEEEEEE\n" + 
+								"EEEEEEEEETTWWWEEEEEEEEEEE\n" + 
+								"EEEEEEEEEWWWWWWEEEEEEEEEE\n" + 
+								"EEEEEEEEEWWWWWWEEEEEEEEEE\n" + 
 								"EEEEEEEEEWWWWWWEEEEEEEEEE\n" + 
 								"EEEEEEEEEEWWWWWEEEEEEEEEE\n" + 
-								"EEEEEEEEEEWWWWEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEWWEEEEEEEEEEEE\n" + 
+								"EEEEEEEEEEEEWTTEEEEEEEEEE\n" + 
 								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
 								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
 								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
@@ -57,18 +53,12 @@ public class Map {
 								"EEEEEEEEEEEEEEEEEEEEEEEEE\n";
 	
 	public Map(String mapData) {
-		Cell c = new Cell(50, 50, Cell.Type.EARTH);
+		Cell c = new Cell(Cell.DIST_TO_CORNER, 0, Cell.Type.TREE);
 		String[] lines = mapData.split("\n");
-		Cell north = null;
+		Cell left = c;
 		for (String line : lines) {
-			Cell prev = null;			
-			for (int i=0; i<line.length(); i++) {
-				char ch = line.charAt(i); //TODO switch char to get cell type
-				if (i % 2 == 0)
-					c.generateSouthEast();
-				else
-					c.generateNorthEast();
-			}
+			buildRow(line, left);
+			left = left.south;
 		}
 		/*
 		try {
@@ -84,7 +74,30 @@ public class Map {
 		}*/
 	}
 	
-	public Map() {
-		this(map0);
+	private void buildRow(String line, Cell next) {
+		char ch = line.charAt(0);
+		Cell.Type type = Cell.parseType(ch);
+		Cell c = next.generateSouth(type);
+		cells.add(c);
+		for (int i=1; i<line.length(); i++) {
+			type = Cell.parseType(line.charAt(i));
+			if (i % 2 == 0) {
+				next = c.generateNorthEast(type);
+			} else {
+				next = c.generateSouthEast(type);
+			}
+			c = next;
+			cells.add(c);
+		}
 	}
+	
+	public Map() {
+		this(map1);
+	}
+	
+	public ArrayList<Cell> getCells() {
+		return cells;
+	}
+	
+	
 }

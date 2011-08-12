@@ -5,38 +5,36 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 
 public class GameBoardView extends JPanel {
 	private static final long serialVersionUID = -8221311233615840987L;
-	private static final boolean DOUBLE_BUFFERED = true;
-	public static final int WIDTH  = 600;
-    public static final int HEIGHT = 650;
-    private ArrayList<Cell> cells = new ArrayList<Cell>(50);
+	public static final int WIDTH = Cell.DIST_TO_CORNER*2 * (Map.CELL_COLS-6);	
+    public static final int HEIGHT = Cell.DIST_TO_EDGE*2 * (Map.CELL_ROWS+2);
+    private Map map;
     
-    public GameBoardView() {
-    	super(DOUBLE_BUFFERED);
-
+    public GameBoardView(Map m) {
+    	super(true); // double buffered
+    	map = m;
+    	
+    	
+    	/*
 		Cell c = new Cell(0, 0, Cell.Type.EARTH); // dummy cell
-
 		int x = Cell.DIST_TO_CORNER + 30;
 		int y = Cell.DIST_TO_EDGE + 255;
-		c = new Cell(x, y, Cell.Type.EARTH);//new Color(0f, .3f, 1f, .5f));
+		c = new Cell(x, y, Cell.Type.EARTH);	
+		addCell(c, 15, 20); // recursively build map
+		*/
 		
-		addCell(c, 15, 20); //recursively build map
-		
-		System.out.println(cells.size() + " cells generated for map.");
+		System.out.println(map.getCells().size() + " cells generated for map.");
 		
     	this.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				ArrayList<Cell> cells = map.getCells();
 				for (Cell c : cells) {
 					if (c.contains(e.getX(), e.getY()))
 						System.out.println("Cell " + cells.indexOf(c) + " clicked!");
@@ -59,7 +57,7 @@ public class GameBoardView extends JPanel {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				for (Cell c : cells) {
+				for (Cell c : map.getCells()) {
 					if (c.contains(e.getX(), e.getY()))
 						c.mouseEntered();
 					else
@@ -72,11 +70,12 @@ public class GameBoardView extends JPanel {
 		
     }
     
+    /*
     private void addCell(Cell c, int row, int col) {
-    	cells.add(c);
+    	map.getCells().add(c);
 		if (row > 0) {
 			if (c.south == null) {
-				Cell newCell = c.generateSouth();
+				Cell newCell = c.generateSouth(Cell.Type.EARTH);
 				addCell(newCell, row-1, col);
 			}
 		}
@@ -89,7 +88,7 @@ public class GameBoardView extends JPanel {
     			}
     		}
     		if (c.northEast == null) {
-    			Cell cellNE = c.generateNorthEast();
+    			Cell cellNE = c.generateNorthEast(Cell.Type.EARTH);
     			if (c.southEast != null) {
     				cellNE.south = c.southEast;
     	    		c.southEast.north = cellNE;    	    		
@@ -98,7 +97,7 @@ public class GameBoardView extends JPanel {
     		}
     	}
     }
-    
+    */
     @Override
 	public void paintComponent(Graphics graphics) {
 		Graphics2D g = (Graphics2D)graphics;
@@ -109,7 +108,7 @@ public class GameBoardView extends JPanel {
     
     @Override
     public void paintChildren(Graphics g) {
-		for (Cell c : cells)
+		for (Cell c : map.getCells())
 			c.paintCell(g);
     }
     

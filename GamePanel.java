@@ -11,7 +11,7 @@ public class GamePanel extends JPanel {
 		JLabel north = new JLabel("Menubar could go here");
 		northPanel.add(north);
 		
-		GameBoardView board = new GameBoardView();
+		GameBoardView board = new GameBoardView(new Map());
 		
 		this.add(northPanel, BorderLayout.NORTH);
 		this.add(board, BorderLayout.CENTER);
@@ -26,7 +26,7 @@ public class GamePanel extends JPanel {
         panel.setOpaque(true); //content panes must be opaque
         frame.setContentPane(panel);
         int h = (int)northPanel.getPreferredSize().getHeight();
-        frame.setPreferredSize(new Dimension(GameBoardView.WIDTH, GameBoardView.HEIGHT + h*2));
+        frame.setPreferredSize(new Dimension(GameBoardView.WIDTH, GameBoardView.HEIGHT + h*2 - 5));
 
         //Display the window.
         frame.pack();
