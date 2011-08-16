@@ -1,3 +1,7 @@
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.font.TextLayout;
 import java.util.ArrayList;
 
 
@@ -7,56 +11,32 @@ import java.util.ArrayList;
  *
  */
 public class Map {
+	private String name;
 	private ArrayList<Cell> cells = new ArrayList<Cell>(500);
 	public final static int CELL_COLS = 25; // width
 	public final static int CELL_ROWS = 20; // height
-	private final static String map0 = "EEEEEEEEEEEEEEEEEEEEEEEEE\n" +
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n";
+	private TextLayout layout;
+	private int x;
+	private int y;
+	private Graphics2D g;
+	private final Color COLOR_NORMAL = new Color(0,150,0);
+	private final Color COLOR_HOVER = Main.bleach(COLOR_NORMAL, 0.75f);
+	private Color color = COLOR_NORMAL; //current color;
 	
-	private final static String map1 = "EEEEEEEEEEEEEEEEEEEEEEEEE\n" +
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEETEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEETTWWWEEEEEEEEEEE\n" + 
-								"EEEEEEEEEWWWWWWEEEEEEEEEE\n" + 
-								"EEEEEEEEEWWWWWWEEEEEEEEEE\n" + 
-								"EEEEEEEEEWWWWWWEEEEEEEEEE\n" + 
-								"EEEEEEEEEEWWWWWEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEWTTEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
-								"EEEEEEEEEEEEEEEEEEEEEEEEE\n";
 	
-	public Map(String mapData) {
+	public Map(String name, String mapData) {
+		this.name = name;
+		if (mapData == null)
+			return;
 		Cell c = new Cell(Cell.DIST_TO_CORNER, 0, Cell.Type.TREE);
 		String[] lines = mapData.split("\n");
+		if (lines.length != CELL_ROWS)
+			throw new IllegalArgumentException("Maps must hat " + CELL_ROWS + " rows!");
+		
 		Cell left = c;
 		for (String line : lines) {
+			if (line.length() != CELL_COLS)
+				throw new IllegalArgumentException("Maps must have " + CELL_COLS + " columns!");
 			buildRow(line, left);
 			left = left.south;
 		}
@@ -91,13 +71,32 @@ public class Map {
 		}
 	}
 	
-	public Map() {
-		this(map1);
-	}
-	
 	public ArrayList<Cell> getCells() {
 		return cells;
 	}
 	
+	public String getName() { return name; }
+	
+	public Color getColor() { return color; }
+	
+	public void initTitle(TextLayout tl, int x, int y, Graphics2D g) {
+		this.layout = tl;
+		this.x = x;
+		this.y = y;
+		this.g = g;		
+		layout.draw(g, x, y);
+	}
+	
+	public void updateTitle(Point p) {
+		if (nameClicked(p)) {
+			color = COLOR_HOVER;
+		} else {
+			color = COLOR_NORMAL;
+		}
+	}
+	
+	public boolean nameClicked(Point p) {
+		return layout.getPixelBounds(g.getFontRenderContext(), x, y).contains(p);
+	}
 	
 }

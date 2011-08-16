@@ -5,16 +5,60 @@ import javax.swing.*;
 public class GamePanel extends JPanel {
 	private static final long serialVersionUID = -5944312753990108995L;
 	private static JPanel northPanel = new JPanel();
+	private MainMenuView mainMenu;
+	private final static String map0 = "EEEEEEEEEEEEEEEEEEEEEEEEE\n" +
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+										"EEEEEEEEEEEEEEEEEEEEEEEEE\n";
+
+	private final static String map1 = "EEEEEEEEEEEEEEEEEEEEEEEEE\n" +
+									"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+									"EEEEEEEEEEETEEEEEEEEEEEEE\n" + 
+									"EEEEEEEEETTWWWEEEEEEEEEEE\n" + 
+									"EEEEEEEEEWWWWWWEEEEEEEEEE\n" + 
+									"EEEEEEEEEWWWWWWEEEEEEEEEE\n" + 
+									"EEEEEEEEEWWWWWWEEEEEEEEEE\n" + 
+									"EEEEEEEEEEWWWWWEEEEEEEEEE\n" + 
+									"EEEEEEEEEEEEWTTEEEEEEEEEE\n" + 
+									"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+									"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+									"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+									"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+									"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+									"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+									"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+									"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+									"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+									"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
+									"EEEEEEEEEEEEEEEEEEEEEEEEE\n";
 	
 	public GamePanel() {
 		super(new BorderLayout());
 		JLabel north = new JLabel("Menubar could go here");
 		northPanel.add(north);
 		
-		GameBoardView board = new GameBoardView(new Map());
+		Map[] maps = {new Map("Plain Field",map0), new Map("Oasis",map1), new Map("Load Custom Map",null)};
+		mainMenu = new MainMenuView(maps);
+		//GameBoardView board = new GameBoardView(maps[1]);
 		
 		this.add(northPanel, BorderLayout.NORTH);
-		this.add(board, BorderLayout.CENTER);
+		this.add(mainMenu, BorderLayout.CENTER);
 	}
 	
 	public static void createAndShowGUI() {

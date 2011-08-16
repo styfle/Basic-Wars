@@ -43,7 +43,7 @@ public class Cell {
 				System.err.println("Unknown cell type!");
 		}
 		COLOR_FILL = color;
-		COLOR_FILL_HOVER = bleach(COLOR_FILL, 0.25f);
+		COLOR_FILL_HOVER = Main.bleach(COLOR_FILL, 0.25f);
 		
 		for (int i = 0; i < 6; i++) {
 			int x2 = (int)(x + DIST_TO_CORNER * Math.cos(i * ANGLE));
@@ -178,20 +178,7 @@ public class Cell {
 		return c;
 	}
 	
-	/**
-	  * Lightens a color by a given amount
-	  * 
-	  * @param color The color to lighten
-	  * @param amount The amount to lighten the color. 0 is unchanged; 1 is completely white
-	  * @return The bleached color
-	  */
-	  public Color bleach(Color color, float amount)
-	  {
-	    int red = (int) ((color.getRed() * (1 - amount) / 255 + amount) * 255);
-	    int green = (int) ((color.getGreen() * (1 - amount) / 255 + amount) * 255);
-	    int blue = (int) ((color.getBlue() * (1 - amount) / 255 + amount) * 255);
-	    return new Color(red, green, blue);
-	  }
+	
 
 	
 }
