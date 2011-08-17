@@ -18,11 +18,11 @@ public class GameBoardView extends JPanel {
 	public static final int WIDTH = Cell.DIST_TO_CORNER*2 * (Map.CELL_COLS-6);	
     public static final int HEIGHT = Cell.DIST_TO_EDGE*2 * (Map.CELL_ROWS+2);
     private Map map;
+    private int index = 0;
     
     public GameBoardView(Map m) {
     	super(true); // double buffered
     	map = m;
-    	
     	
     	/*
 		Cell c = new Cell(0, 0, Cell.Type.EARTH); // dummy cell
@@ -33,6 +33,15 @@ public class GameBoardView extends JPanel {
 		*/
 		
 		System.out.println("Loaded " + map.getName() + " (" + map.getCells().size() + " cells)");
+		
+		Timer t = new Timer(3, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				repaint();
+			}			
+		});
+		
+		t.start();
 		
     	this.addMouseListener(new MouseListener() {
 			@Override
@@ -66,7 +75,7 @@ public class GameBoardView extends JPanel {
 					else
 						c.mouseExited();
 				}
-				repaint(); //TODO make a more efficient check
+				//repaint(); //TODO make a more efficient check
 			}
     		
     	});
@@ -103,6 +112,9 @@ public class GameBoardView extends JPanel {
     */
     @Override
 	public void paintComponent(Graphics graphics) {
+    	if (index < map.getCells().size()) {
+    		return;
+    	}
 		Graphics2D g = (Graphics2D)graphics;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setColor(Color.BLACK);
@@ -110,21 +122,34 @@ public class GameBoardView extends JPanel {
 	}
     
     @Override
-    public void paintChildren(final Graphics g) {
-		for (final Cell c : map.getCells()) {
-			Timer t = new Timer(10, new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					c.paintCell(g);
-				}
-			});
-			if (c.firstPaint()) {				
-			    t.start();
-			} else {
-				t.stop();
-				c.paintCell(g);
+    public void paintChildren(Graphics g) {
+    	ArrayList<Cell> cells = map.getCells();
+    	if (index+1 > cells.size()) {
+    		for (Cell c : cells)
+    			c.paintCell(g);
+    		return;
+    	}
+    	for (int i=0; i<index; i++) {
+    		cells.get(i).paintCell(g);
+    	}
+    	index++;
+    }
+    
+    public Timer createTimer(final ArrayList<Cell> cells, final Graphics g) {
+    	Timer t = new Timer(10, new ActionListener() {
+    		int i = 0;
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (i > cells.size()-1)
+					return;
+				cells.get(i).paintCell(g);
+				System.out.println("Cell painted");
+				i++;
+				
 			}
-		}
+		});
+		//t.setRepeats(false);
+		return t;
     }
     
 }
