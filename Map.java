@@ -24,7 +24,7 @@ public class Map {
 	private int y;
 	private Graphics2D g;
 	private final Color COLOR_NORMAL = new Color(0,150,0);
-	private final Color COLOR_HOVER = Main.bleach(COLOR_NORMAL, 0.75f);
+	private final Color COLOR_HOVER = BasicWars.bleach(COLOR_NORMAL, 0.75f);
 	private Color color = COLOR_NORMAL; //current color;
 	private BufferedImage image;
 	
@@ -112,6 +112,8 @@ public class Map {
 	}
 	
 	public boolean nameClicked(Point p) {
+		if (layout == null)
+			return false;
 		return layout.getPixelBounds(g.getFontRenderContext(), x, y).contains(p);
 	}
 	

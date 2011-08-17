@@ -21,7 +21,11 @@ public class MainMenuView extends JPanel {
 	private Font bodyFont = new Font("Dialog", Font.PLAIN, 25);
 	private BufferedImage mapImage = new BufferedImage(200,200, BufferedImage.TYPE_INT_ARGB);
 	
-	public MainMenuView(final GamePanel gp, Map[] mapSelection) {
+	/**
+	 * This JPanel is a map selector
+	 * @param mapSelection array of maps to select from
+	 */
+	public MainMenuView(Map[] mapSelection) {
 		this.setBackground(Color.BLACK);
 		this.maps = mapSelection;
 		this.addMouseListener(new MouseListener() {
@@ -29,7 +33,8 @@ public class MainMenuView extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				for (Map map : maps) {
 					if (map.nameClicked(e.getPoint())) {
-						gp.load(map);
+						//gp.load(map);
+						((BasicWars)getParent()).load(map);
 					}
 				}
 			}
@@ -73,7 +78,7 @@ public class MainMenuView extends JPanel {
 		g.fillRect(0, 0, GameBoardView.WIDTH, GameBoardView.HEIGHT);
 		g.setColor(Color.RED);
 		g.setFont(headFont);
-		g.drawString(Main.GAME_NAME, 55, 60);
+		g.drawString(BasicWars.GAME_NAME, 55, 60);
 		
 	}
     
@@ -84,11 +89,10 @@ public class MainMenuView extends JPanel {
 		g.setFont(bodyFont);
 		int x = 300;
 		int y = 100;
-		for (int i=0; i<maps.length; i++) {
-			Map map = maps[i];
+		for (Map map : maps) {
 			y += bodyFont.getSize()*2;
 			g.setColor(map.getColor());
-			TextLayout tl = new TextLayout(maps[i].getName(),bodyFont, g.getFontRenderContext());
+			TextLayout tl = new TextLayout(map.getName(),bodyFont, g.getFontRenderContext());
 			map.initTitle(tl, x, y, g);
 			//Rectangle2D rect = tl.getBounds(); 
 			//rect.setRect(rect.getX() + x, rect.getY() + y,  rect.getWidth(), rect.getHeight());
@@ -99,7 +103,7 @@ public class MainMenuView extends JPanel {
 		int newHeight = GameBoardView.HEIGHT/3;
 		if (mapImage != null) {
 			image = mapImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-		} else {			
+		} else {
 			image = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
 			Graphics imgGraphics = image.getGraphics();
 			imgGraphics.setColor(new Color(62,64,66));

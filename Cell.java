@@ -44,7 +44,7 @@ public class Cell {
 				System.err.println("Unknown cell type!");
 		}
 		COLOR_FILL = color;
-		COLOR_FILL_HOVER = Main.bleach(COLOR_FILL, 0.25f);
+		COLOR_FILL_HOVER = BasicWars.bleach(COLOR_FILL, 0.25f);
 		
 		for (int i = 0; i < 6; i++) {
 			int x2 = (int)(x + DIST_TO_CORNER * Math.cos(i * ANGLE));

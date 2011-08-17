@@ -18,29 +18,21 @@ public class GameBoardView extends JPanel {
 	public static final int WIDTH = Cell.DIST_TO_CORNER*2 * (Map.CELL_COLS-6);	
     public static final int HEIGHT = Cell.DIST_TO_EDGE*2 * (Map.CELL_ROWS+2);
     private Map map;
-    private int index = 0;
+    private int index = 0; // used for animation
     
     public GameBoardView(Map m) {
     	super(true); // double buffered
     	map = m;
-    	
-    	/*
-		Cell c = new Cell(0, 0, Cell.Type.EARTH); // dummy cell
-		int x = Cell.DIST_TO_CORNER + 30;
-		int y = Cell.DIST_TO_EDGE + 255;
-		c = new Cell(x, y, Cell.Type.EARTH);	
-		addCell(c, 15, 20); // recursively build map
-		*/
 		
 		System.out.println("Loaded " + map.getName() + " (" + map.getCells().size() + " cells)");
 		
-		Timer t = new Timer(3, new ActionListener() {
+		Timer t = new Timer(20, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				repaint();
 			}			
 		});
-		
+		t.setInitialDelay(0);
 		t.start();
 		
     	this.addMouseListener(new MouseListener() {
@@ -75,41 +67,13 @@ public class GameBoardView extends JPanel {
 					else
 						c.mouseExited();
 				}
-				//repaint(); //TODO make a more efficient check
+				//repaint();
 			}
     		
     	});
 		
     }
     
-    /*
-    private void addCell(Cell c, int row, int col) {
-    	map.getCells().add(c);
-		if (row > 0) {
-			if (c.south == null) {
-				Cell newCell = c.generateSouth(Cell.Type.EARTH);
-				addCell(newCell, row-1, col);
-			}
-		}
-    	if (col > 0) {
-    		if (c.southEast == null) {
-    			if (c.south != null && c.south.northEast !=null) {
-    				Cell cellSE = c.south.northEast;
-    				c.southEast = cellSE;
-    				cellSE.northWest = c;
-    			}
-    		}
-    		if (c.northEast == null) {
-    			Cell cellNE = c.generateNorthEast(Cell.Type.EARTH);
-    			if (c.southEast != null) {
-    				cellNE.south = c.southEast;
-    	    		c.southEast.north = cellNE;    	    		
-    			}
-    			addCell(cellNE, 0, col-1);
-    		}
-    	}
-    }
-    */
     @Override
 	public void paintComponent(Graphics graphics) {
     	if (index < map.getCells().size()) {
@@ -129,27 +93,13 @@ public class GameBoardView extends JPanel {
     			c.paintCell(g);
     		return;
     	}
-    	for (int i=0; i<index; i++) {
-    		cells.get(i).paintCell(g);
-    	}
-    	index++;
-    }
-    
-    public Timer createTimer(final ArrayList<Cell> cells, final Graphics g) {
-    	Timer t = new Timer(10, new ActionListener() {
-    		int i = 0;
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (i > cells.size()-1)
-					return;
-				cells.get(i).paintCell(g);
-				System.out.println("Cell painted");
-				i++;
-				
-			}
-		});
-		//t.setRepeats(false);
-		return t;
+    	//for (int i=0; i<index; i++) {
+    		cells.get(index).paintCell(g);
+    		cells.get(index+1).paintCell(g);
+    		cells.get(index+2).paintCell(g);
+    		cells.get(index+3).paintCell(g);
+    	//}
+    	index += 4;
     }
     
 }
