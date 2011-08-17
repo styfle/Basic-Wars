@@ -2,6 +2,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
 
@@ -79,8 +80,8 @@ public class Cell {
 		}
 	}
 	
-	public boolean contains(int x, int y) {
-		return hexagon.contains(x, y);
+	public boolean contains(Point p) {
+		return hexagon.contains(p);
 	}
 	
 	public static Type parseType(char ch) {

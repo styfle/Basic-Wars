@@ -33,8 +33,7 @@ public class MainMenuView extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				for (GameMap map : maps) {
 					if (map.nameClicked(e.getPoint())) {
-						//gp.load(map);
-						((BasicWars)getParent()).load(map);
+						((BasicWars)getParent()).loadMap(map);
 					}
 				}
 			}

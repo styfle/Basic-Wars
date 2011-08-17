@@ -40,7 +40,7 @@ public class GameMapView extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				ArrayList<Cell> cells = map.getCells();
 				for (Cell c : cells) {
-					if (c.contains(e.getX(), e.getY()))
+					if (c.contains(e.getPoint()))
 						System.out.println("Cell " + cells.indexOf(c) + " clicked!");
 				}
 			}
@@ -62,7 +62,7 @@ public class GameMapView extends JPanel {
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				for (Cell c : map.getCells()) {
-					if (c.contains(e.getX(), e.getY()))
+					if (c.contains(e.getPoint()))
 						c.mouseEntered();
 					else
 						c.mouseExited();
@@ -76,7 +76,7 @@ public class GameMapView extends JPanel {
     
     @Override
 	public void paintComponent(Graphics graphics) {
-    	if (index < map.getCells().size()) {
+    	if (!isMapLoaded()) {
     		return;
     	}
 		Graphics2D g = (Graphics2D)graphics;
@@ -88,18 +88,21 @@ public class GameMapView extends JPanel {
     @Override
     public void paintChildren(Graphics g) {
     	ArrayList<Cell> cells = map.getCells();
-    	if (index+1 > cells.size()) {
+    	if (isMapLoaded()) {
     		for (Cell c : cells)
     			c.paintCell(g);
     		return;
     	}
-    	//for (int i=0; i<index; i++) {
-    		cells.get(index).paintCell(g);
-    		cells.get(index+1).paintCell(g);
-    		cells.get(index+2).paintCell(g);
-    		cells.get(index+3).paintCell(g);
-    	//}
+    	
+		cells.get(index).paintCell(g);
+		cells.get(index+1).paintCell(g);
+		cells.get(index+2).paintCell(g);
+		cells.get(index+3).paintCell(g);
     	index += 4;
+    }
+    
+    public boolean isMapLoaded() {
+    	return index+1 > map.getCells().size();
     }
     
 }

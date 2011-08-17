@@ -1,15 +1,23 @@
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-
+/**
+ * Basic Wars is a turn-based strategy game written in Java.
+ * It is loosely based on Advance Wars.
+ * For use in the ICS Summer Of Code competition.
+ * @author Steven Salat
+ */
 public class BasicWars extends JPanel {
 	private static final long serialVersionUID = -5944312753990108995L;
 	public static final String GAME_NAME = "Basic Wars";
 	public static final String GAME_VERSION = "0.2";
 	private static JFrame frame;
-	private StatusPanel statusPanel = new StatusPanel("Select a map to begin playing");
+	private StatusPanel statusPanel = new StatusPanel("Select a map to begin playing.");
 	private MainMenuView mainMenu;
+	private Timer timer;
 	private final static String map0 = "EEEEEEEEEEEEEEEEEEEEEEEEE\n" +
 										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
 										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
@@ -85,27 +93,53 @@ public class BasicWars extends JPanel {
 		
 		mainMenu = new MainMenuView(maps);
 		
-		this.add(statusPanel, BorderLayout.NORTH);
-		this.add(mainMenu, BorderLayout.CENTER);
+		add(statusPanel, BorderLayout.NORTH);
+		add(mainMenu, BorderLayout.CENTER);
 	}
 	
 	/**
 	 * Loads a map to the display
 	 * @param m Map to load
 	 */
-	public void load(GameMap m) {
+	public void loadMap(GameMap m) {
 		removeAll();
-		statusPanel.setStatus("Loading map...(fancy ain't it?)");
+		
+		final GameMapView board = new GameMapView(m);
 		add(statusPanel, BorderLayout.NORTH);
-		add(new GameMapView(m), BorderLayout.CENTER);		
+		add(board, BorderLayout.CENTER);
 		frame.pack();
-		//northPanel.setStatus("Select your units.");
+		timer = new Timer(100, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {				
+				if (board.isMapLoaded()) {
+					statusPanel.setStatus("Select your units.");
+					timer.stop();
+				}
+			}			
+		});
+		timer.start();
+		statusPanel.setStatus("Loading map...(fancy ain't it?)");
+	}
+	
+	/**
+	 * Loads the main menu. Any games in progress will be discarded.
+	 */
+	public void loadMainMenu() {
+		removeAll();
+		statusPanel.setStatus("Select a map to begin playing.");
+		add(statusPanel, BorderLayout.NORTH);
+		add(mainMenu, BorderLayout.CENTER);
+		frame.pack();
+		repaint();
 	}
 	
 	public void setStatus(String s) {
 		statusPanel.setStatus(s);
 	}
 	
+	/**
+	 * Helper method for launching GUI from main
+	 */
 	public static void createAndShowGUI() {
         frame = new JFrame(GAME_NAME + " v" + GAME_VERSION);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -121,18 +155,6 @@ public class BasicWars extends JPanel {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-	
-	
-	
-	public static void main(String[] args) {
-		
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                BasicWars.createAndShowGUI();
-            }
-        });		
-		
-	}
 	
 	/**
 	 * Lightens a color by a given amount
@@ -159,4 +181,13 @@ public class BasicWars extends JPanel {
 		return "images/"+unit+owner.getNumber()+"_"+owner.getSide().toString();
 	}
 	
+	public static void main(String[] args) {
+		
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				BasicWars.createAndShowGUI();
+			}
+        });		
+		
+	}
 }
