@@ -16,7 +16,7 @@ import javax.swing.JPanel;
 
 public class MainMenuView extends JPanel {
 	private static final long serialVersionUID = 3310239310608462441L;
-	private Map[] maps;
+	private GameMap[] maps;
 	private Font headFont = new Font("DialogInput", Font.PLAIN, 65);
 	private Font bodyFont = new Font("Dialog", Font.PLAIN, 25);
 	private BufferedImage mapImage = new BufferedImage(200,200, BufferedImage.TYPE_INT_ARGB);
@@ -25,13 +25,13 @@ public class MainMenuView extends JPanel {
 	 * This JPanel is a map selector
 	 * @param mapSelection array of maps to select from
 	 */
-	public MainMenuView(Map[] mapSelection) {
+	public MainMenuView(GameMap[] mapSelection) {
 		this.setBackground(Color.BLACK);
 		this.maps = mapSelection;
 		this.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				for (Map map : maps) {
+				for (GameMap map : maps) {
 					if (map.nameClicked(e.getPoint())) {
 						//gp.load(map);
 						((BasicWars)getParent()).load(map);
@@ -55,7 +55,7 @@ public class MainMenuView extends JPanel {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				for (Map map : maps) {
+				for (GameMap map : maps) {
 					map.updateTitle(e.getPoint());
 					if (map.nameClicked(e.getPoint())) {
 						setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -75,7 +75,7 @@ public class MainMenuView extends JPanel {
 		Graphics2D g = (Graphics2D)graphics;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, GameBoardView.WIDTH, GameBoardView.HEIGHT);
+		g.fillRect(0, 0, GameMapView.WIDTH, GameMapView.HEIGHT);
 		g.setColor(Color.RED);
 		g.setFont(headFont);
 		g.drawString(BasicWars.GAME_NAME, 55, 60);
@@ -89,7 +89,7 @@ public class MainMenuView extends JPanel {
 		g.setFont(bodyFont);
 		int x = 300;
 		int y = 100;
-		for (Map map : maps) {
+		for (GameMap map : maps) {
 			y += bodyFont.getSize()*2;
 			g.setColor(map.getColor());
 			TextLayout tl = new TextLayout(map.getName(),bodyFont, g.getFontRenderContext());
@@ -99,8 +99,8 @@ public class MainMenuView extends JPanel {
 			//g.draw(rect);
 		}
 		Image image;
-		int newWidth = GameBoardView.WIDTH/3;
-		int newHeight = GameBoardView.HEIGHT/3;
+		int newWidth = GameMapView.WIDTH/3;
+		int newHeight = GameMapView.HEIGHT/3;
 		if (mapImage != null) {
 			image = mapImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
 		} else {
