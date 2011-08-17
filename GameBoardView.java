@@ -2,12 +2,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 
 public class GameBoardView extends JPanel {
@@ -29,7 +32,7 @@ public class GameBoardView extends JPanel {
 		addCell(c, 15, 20); // recursively build map
 		*/
 		
-		System.out.println(map.getCells().size() + " cells generated for map.");
+		System.out.println("Loaded " + map.getName() + " (" + map.getCells().size() + " cells)");
 		
     	this.addMouseListener(new MouseListener() {
 			@Override
@@ -107,9 +110,21 @@ public class GameBoardView extends JPanel {
 	}
     
     @Override
-    public void paintChildren(Graphics g) {
-		for (Cell c : map.getCells())
-			c.paintCell(g);
+    public void paintChildren(final Graphics g) {
+		for (final Cell c : map.getCells()) {
+			Timer t = new Timer(10, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					c.paintCell(g);
+				}
+			});
+			if (c.firstPaint()) {				
+			    t.start();
+			} else {
+				t.stop();
+				c.paintCell(g);
+			}
+		}
     }
     
 }

@@ -4,6 +4,10 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
 
 public class Cell {
 	private Polygon hexagon = new Polygon();
@@ -24,6 +28,7 @@ public class Cell {
 	private static final double ANGLE = (2*Math.PI)/6;
 	public static final int DIST_TO_CORNER = 17;
 	public static final int DIST_TO_EDGE = (int)(DIST_TO_CORNER * Math.cos(ANGLE/2));
+	private boolean firstPaint = true;
 	
 	/**
 	 * Hexagon shaped cell on the board
@@ -178,7 +183,13 @@ public class Cell {
 		return c;
 	}
 	
-	
+	public boolean firstPaint() {
+		if (firstPaint) {
+			firstPaint = false;
+			return true;
+		}
+		return false;
+	}
 
 	
 }

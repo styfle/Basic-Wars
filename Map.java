@@ -2,6 +2,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.font.TextLayout;
+import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -22,9 +26,24 @@ public class Map {
 	private final Color COLOR_NORMAL = new Color(0,150,0);
 	private final Color COLOR_HOVER = Main.bleach(COLOR_NORMAL, 0.75f);
 	private Color color = COLOR_NORMAL; //current color;
+	private BufferedImage image;
 	
 	
 	public Map(String name, String mapData) {
+		buildMap(name, mapData);
+	}
+	
+	public Map(String pathToMap) throws IOException {		
+		BufferedReader r = new BufferedReader(new FileReader(pathToMap));		
+		StringBuilder mapData = new StringBuilder(500);
+		String line;
+		while ((line = r.readLine()) != null) {
+			mapData.append(line).append("\n");
+		}
+		buildMap("Custom Map", mapData.toString());
+	}
+	
+	private void buildMap(String name, String mapData) {
 		this.name = name;
 		if (mapData == null)
 			return;
@@ -40,18 +59,13 @@ public class Map {
 			buildRow(line, left);
 			left = left.south;
 		}
-		/*
-		try {
-			BufferedReader r = new BufferedReader(new FileReader(mapSource));
-			String line;
-			while ((line = r.readLine()) != null) {
-				System.out.print(line);
-			}
-		} catch (FileNotFoundException e) {
-			System.err.println("Cannot read file: " + e.getMessage());
-		} catch (IOException e) {
-			System.err.println("Cannot read file: " + e.getMessage());
-		}*/
+		
+		// generate image of cells
+		image = new BufferedImage(GameBoardView.WIDTH, GameBoardView.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = image.createGraphics();
+		for (Cell cell : cells) {
+			cell.paintCell(g);
+		}
 	}
 	
 	private void buildRow(String line, Cell next) {
@@ -78,6 +92,8 @@ public class Map {
 	public String getName() { return name; }
 	
 	public Color getColor() { return color; }
+	
+	public BufferedImage getImage() { return image; }
 	
 	public void initTitle(TextLayout tl, int x, int y, Graphics2D g) {
 		this.layout = tl;

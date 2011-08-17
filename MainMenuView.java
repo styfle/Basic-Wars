@@ -1,12 +1,15 @@
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.font.TextLayout;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
@@ -16,28 +19,27 @@ public class MainMenuView extends JPanel {
 	private Map[] maps;
 	private Font headFont = new Font("DialogInput", Font.PLAIN, 65);
 	private Font bodyFont = new Font("Dialog", Font.PLAIN, 25);
-	public MainMenuView(Map[] mapSelection) {
+	private BufferedImage mapImage = new BufferedImage(200,200, BufferedImage.TYPE_INT_ARGB);
+	
+	public MainMenuView(final GamePanel gp, Map[] mapSelection) {
+		this.setBackground(Color.BLACK);
 		this.maps = mapSelection;
 		this.addMouseListener(new MouseListener() {
-
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				for (Map map : maps) {
 					if (map.nameClicked(e.getPoint())) {
-						System.out.println(map.getName() + " clicked");
+						gp.load(map);
 					}
 				}
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e) { }
-
 			@Override
 			public void mouseExited(MouseEvent e) { }
-
 			@Override
 			public void mousePressed(MouseEvent e) { }
-
 			@Override
 			public void mouseReleased(MouseEvent e) { }
 			
@@ -50,6 +52,12 @@ public class MainMenuView extends JPanel {
 			public void mouseMoved(MouseEvent e) {
 				for (Map map : maps) {
 					map.updateTitle(e.getPoint());
+					if (map.nameClicked(e.getPoint())) {
+						setCursor(new Cursor(Cursor.HAND_CURSOR));
+						mapImage = map.getImage();
+						break;
+					}
+					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				}
 				repaint();
 			}
@@ -78,14 +86,31 @@ public class MainMenuView extends JPanel {
 		int y = 100;
 		for (int i=0; i<maps.length; i++) {
 			Map map = maps[i];
-			y += 60;
+			y += bodyFont.getSize()*2;
 			g.setColor(map.getColor());
 			TextLayout tl = new TextLayout(maps[i].getName(),bodyFont, g.getFontRenderContext());
 			map.initTitle(tl, x, y, g);
-			//tl.draw(g, x, y);
 			//Rectangle2D rect = tl.getBounds(); 
 			//rect.setRect(rect.getX() + x, rect.getY() + y,  rect.getWidth(), rect.getHeight());
 			//g.draw(rect);
 		}
+		Image image;
+		int newWidth = GameBoardView.WIDTH/3;
+		int newHeight = GameBoardView.HEIGHT/3;
+		if (mapImage != null) {
+			image = mapImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
+		} else {			
+			image = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+			Graphics imgGraphics = image.getGraphics();
+			imgGraphics.setColor(new Color(62,64,66));
+			int startPos = 30;
+			Cell c = new Cell(0,0,Cell.Type.EARTH);
+			for (int i=0; i<7; i++) {
+				c = new Cell(startPos + i*(20),newHeight/2,Cell.Type.EARTH);
+				c.paintCell(imgGraphics);
+			}
+		}
+		g.drawImage(image, 50, 100, null);
     }
+    
 }

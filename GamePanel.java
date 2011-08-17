@@ -4,6 +4,7 @@ import javax.swing.*;
 
 public class GamePanel extends JPanel {
 	private static final long serialVersionUID = -5944312753990108995L;
+	private static JFrame frame;
 	private static JPanel northPanel = new JPanel();
 	private MainMenuView mainMenu;
 	private final static String map0 = "EEEEEEEEEEEEEEEEEEEEEEEEE\n" +
@@ -54,15 +55,22 @@ public class GamePanel extends JPanel {
 		northPanel.add(north);
 		
 		Map[] maps = {new Map("Plain Field",map0), new Map("Oasis",map1), new Map("Load Custom Map",null)};
-		mainMenu = new MainMenuView(maps);
+		mainMenu = new MainMenuView(this, maps);
 		//GameBoardView board = new GameBoardView(maps[1]);
 		
 		this.add(northPanel, BorderLayout.NORTH);
 		this.add(mainMenu, BorderLayout.CENTER);
 	}
 	
+	public void load(final Map m) {
+		removeAll();
+		add(northPanel, BorderLayout.NORTH);
+		add(new GameBoardView(m), BorderLayout.CENTER);
+		frame.pack();
+	}
+	
 	public static void createAndShowGUI() {
-        JFrame frame = new JFrame(Main.GAME_NAME);
+        frame = new JFrame(Main.GAME_NAME);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Create and set up the content pane.
