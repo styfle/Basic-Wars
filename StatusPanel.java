@@ -53,6 +53,7 @@ public class StatusPanel extends JPanel {
 		b.setFont(new Font("Arial", Font.BOLD, 12));
 		b.setPreferredSize(new Dimension(75, HEIGHT));
 		b.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		b.setFocusable(false);
 		b.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

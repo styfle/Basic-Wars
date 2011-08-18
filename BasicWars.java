@@ -84,8 +84,7 @@ public class BasicWars extends JPanel {
 	public GameMap[] maps = {	
 			new GameMap("Plain Field", map0),
 			new GameMap("Oasis", map1),
-			new GameMap("Water World", map2),
-			new GameMap("Load Custom Map", null)
+			new GameMap("Water World", map2)
 		};
 	
 	public BasicWars() {
@@ -112,7 +111,7 @@ public class BasicWars extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {				
 				if (board.isMapLoaded()) {
-					statusPanel.setStatus("Select your units.");
+					statusPanel.setStatus("Select your units.");					
 					timer.stop();
 				}
 			}			
@@ -178,11 +177,27 @@ public class BasicWars extends JPanel {
 	public static String getFileName(String unit, Player owner) {
 		if (owner == null)
 				throw new IllegalArgumentException("NULL Player. Can't create a soldier without a Player!");
-		return "images/"+unit+owner.getNumber()+"_"+owner.getSide().toString();
+		return "images/"+unit+owner.getNumber()+"_"+owner.getSide().toString()+".png";
+	}
+	
+	/**
+	 * Show an error dialog box when something bad occurs
+	 * @param errorNum An arbitrary number to reference the error
+	 * @param message The message to show the user
+	 */
+	public void showError(int errorNum, String message) {
+		JOptionPane.showMessageDialog(this, message, "Error " + errorNum, JOptionPane.ERROR_MESSAGE);
 	}
 	
 	public static void main(String[] args) {
-		
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} 
+		catch (UnsupportedLookAndFeelException e) { }
+		catch (ClassNotFoundException e) { }
+		catch (InstantiationException e) { }
+		catch (IllegalAccessException e) { }
+
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				BasicWars.createAndShowGUI();

@@ -10,16 +10,19 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
 
 public class MainMenuView extends JPanel {
 	private static final long serialVersionUID = 3310239310608462441L;
-	private GameMap[] maps;
+	private ArrayList<Clickable> clickables = new ArrayList<Clickable>();
+	//private GameMap[] maps;
 	private Font headFont = new Font("DialogInput", Font.PLAIN, 65);
 	private Font bodyFont = new Font("Dialog", Font.PLAIN, 25);
-	private BufferedImage mapImage = new BufferedImage(200,200, BufferedImage.TYPE_INT_ARGB);
+	private BufferedImage mapImage;
 	
 	/**
 	 * This JPanel is a map selector
@@ -27,13 +30,50 @@ public class MainMenuView extends JPanel {
 	 */
 	public MainMenuView(GameMap[] mapSelection) {
 		this.setBackground(Color.BLACK);
-		this.maps = mapSelection;
+		for (Clickable c : mapSelection) {
+			clickables.add(c);
+		}
+		Clickable c = new Clickable(){
+			BufferedImage image = createImage();
+			private BufferedImage createImage() {
+				BufferedImage image = new BufferedImage(200, 200, BufferedImage.TYPE_INT_ARGB);
+				Graphics imgGraphics = image.getGraphics();
+				imgGraphics.setColor(new Color(62,64,66));
+				int startPos = 30;
+				Cell c = new Cell(0,0,Cell.Type.EARTH);
+				for (int i=0; i<7; i++) {
+					c = new Cell(startPos + i*(20),100,Cell.Type.EARTH);
+					c.paintCell(imgGraphics);
+				}
+				setImage(image);
+				return image;
+			}
+			
+			@Override
+			public String getName() { return "Load Custom Map"; }
+			@Override
+			public void onClick(BasicWars o) {
+				JFileChooser fc = new JFileChooser();
+				int a = fc.showOpenDialog(o);
+				if (a == JFileChooser.APPROVE_OPTION) {
+					try {
+						GameMap map = new GameMap(fc.getSelectedFile());
+						System.out.println(map.getName());
+						setName(map.getName());
+						o.loadMap(map);
+					} catch (Exception e) {
+						o.showError(1, "The file you selected could not be loaded:\n" + e.getMessage());
+					}
+				}
+			}
+		};
+		clickables.add(c);
 		this.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				for (GameMap map : maps) {
-					if (map.nameClicked(e.getPoint())) {
-						((BasicWars)getParent()).loadMap(map);
+				for (Clickable c : clickables) {
+					if (c.contains(e.getPoint())) {
+						c.onClick((BasicWars)getParent());
 					}
 				}
 			}
@@ -54,11 +94,11 @@ public class MainMenuView extends JPanel {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				for (GameMap map : maps) {
-					map.updateTitle(e.getPoint());
-					if (map.nameClicked(e.getPoint())) {
+				for (Clickable c : clickables) {
+					c.mouseMoved(e.getPoint());
+					if (c.contains(e.getPoint())) {
 						setCursor(new Cursor(Cursor.HAND_CURSOR));
-						mapImage = map.getImage();
+						mapImage = c.getImage();
 						break;
 					}
 					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -86,23 +126,26 @@ public class MainMenuView extends JPanel {
     	Graphics2D g = (Graphics2D)graphics;
     	//g.setColor(new Color(0,150,0));
 		g.setFont(bodyFont);
-		int x = 300;
+		final int x = 300;
 		int y = 100;
-		for (GameMap map : maps) {
+		for (Clickable c : clickables) {
 			y += bodyFont.getSize()*2;
-			g.setColor(map.getColor());
-			TextLayout tl = new TextLayout(map.getName(),bodyFont, g.getFontRenderContext());
-			map.initTitle(tl, x, y, g);
+			g.setColor(c.getColor());
+			TextLayout tl = new TextLayout(c.getName(), bodyFont, g.getFontRenderContext());
+			c.initClickable(tl, x, y, g);
 			//Rectangle2D rect = tl.getBounds(); 
 			//rect.setRect(rect.getX() + x, rect.getY() + y,  rect.getWidth(), rect.getHeight());
 			//g.draw(rect);
 		}
-		Image image;
+		
+		Image image = new BufferedImage(100, 100, BufferedImage.TYPE_BYTE_GRAY);
 		int newWidth = GameMapView.WIDTH/3;
 		int newHeight = GameMapView.HEIGHT/3;
 		if (mapImage != null) {
 			image = mapImage.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-		} else {
+		} 
+		/* No image available
+		else { 
 			image = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
 			Graphics imgGraphics = image.getGraphics();
 			imgGraphics.setColor(new Color(62,64,66));
@@ -112,7 +155,7 @@ public class MainMenuView extends JPanel {
 				c = new Cell(startPos + i*(20),newHeight/2,Cell.Type.EARTH);
 				c.paintCell(imgGraphics);
 			}
-		}
+		} */
 		g.drawImage(image, 50, 100, null);
     }
     

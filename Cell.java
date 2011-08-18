@@ -51,7 +51,7 @@ public class Cell {
 			int x2 = (int)(x + DIST_TO_CORNER * Math.cos(i * ANGLE));
 			int y2 = (int)(y + DIST_TO_CORNER * Math.sin(i * ANGLE));
 			hexagon.addPoint(x2, y2);
-		}
+		}		
 	}
 	
 	/**
@@ -75,7 +75,7 @@ public class Cell {
 	        int newH = (int)(DIST_TO_EDGE * 2);
 	        g2.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 	        g2.drawImage(image, x-DIST_TO_CORNER, y-DIST_TO_EDGE, newW, newH, null);
-			//Image image = unit.getImage();//.getScaledInstance(2*DIST_TO_CORNER, 2*DIST_TO_EDGE, Image.SCALE_SMOOTH);
+			//image = image.getScaledInstance(2*DIST_TO_CORNER, 2*DIST_TO_EDGE, Image.SCALE_SMOOTH);
 			//g.drawImage(image,x-DIST_TO_CORNER+2,y-DIST_TO_EDGE+1,null);
 		}
 	}
