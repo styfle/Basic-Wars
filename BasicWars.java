@@ -15,8 +15,8 @@ public class BasicWars extends JPanel {
 	public static final String GAME_NAME = "Basic Wars";
 	public static final String GAME_VERSION = "0.2";
 	private static JFrame frame;
-	private StatusPanel statusPanel = new StatusPanel("Select a map to begin playing.");
-	private MainMenuView mainMenu;
+	private ControlPanel controlPanel = new ControlPanel("Select a map to begin playing.");
+	private MapSelectionView mainMenu;
 	private Timer timer;
 	private final static String map0 = "EEEEEEEEEEEEEEEEEEEEEEEEE\n" +
 										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
@@ -90,9 +90,9 @@ public class BasicWars extends JPanel {
 	public BasicWars() {
 		super(new BorderLayout());
 		
-		mainMenu = new MainMenuView(maps);
+		mainMenu = new MapSelectionView(maps);
 		
-		add(statusPanel, BorderLayout.NORTH);
+		add(controlPanel, BorderLayout.NORTH);
 		add(mainMenu, BorderLayout.CENTER);
 	}
 	
@@ -104,20 +104,20 @@ public class BasicWars extends JPanel {
 		removeAll();
 		
 		final GameMapView board = new GameMapView(m);
-		add(statusPanel, BorderLayout.NORTH);
+		add(controlPanel, BorderLayout.NORTH);
 		add(board, BorderLayout.CENTER);
 		frame.pack();
 		timer = new Timer(100, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {				
 				if (board.isMapLoaded()) {
-					statusPanel.setStatus("Select your units.");					
+					controlPanel.setStatus("Select your units.");					
 					timer.stop();
 				}
 			}			
 		});
 		timer.start();
-		statusPanel.setStatus("Loading map...(fancy ain't it?)");
+		controlPanel.setStatus("Loading map...(fancy ain't it?)");
 	}
 	
 	/**
@@ -125,15 +125,15 @@ public class BasicWars extends JPanel {
 	 */
 	public void loadMainMenu() {
 		removeAll();
-		statusPanel.setStatus("Select a map to begin playing.");
-		add(statusPanel, BorderLayout.NORTH);
+		controlPanel.setStatus("Select a map to begin playing.");
+		add(controlPanel, BorderLayout.NORTH);
 		add(mainMenu, BorderLayout.CENTER);
 		frame.pack();
 		repaint();
 	}
 	
 	public void setStatus(String s) {
-		statusPanel.setStatus(s);
+		controlPanel.setStatus(s);
 	}
 	
 	/**
@@ -147,7 +147,7 @@ public class BasicWars extends JPanel {
         JComponent panel = new BasicWars();
         panel.setOpaque(true); //content panes must be opaque
         frame.setContentPane(panel);
-        frame.setPreferredSize(new Dimension(GameMapView.WIDTH, GameMapView.HEIGHT + StatusPanel.HEIGHT*2));
+        frame.setPreferredSize(new Dimension(GameMapView.WIDTH, GameMapView.HEIGHT + ControlPanel.HEIGHT*2));
 
         //Display the window.
         frame.pack();

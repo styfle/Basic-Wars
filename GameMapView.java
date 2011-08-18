@@ -13,6 +13,10 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 
+/**
+ * This is the view where the game is actually playable.
+ * Note that the first paint will be animated.
+ */
 public class GameMapView extends JPanel {
 	private static final long serialVersionUID = -8221311233615840987L;
 	public static final int WIDTH = Cell.DIST_TO_CORNER*2 * (GameMap.CELL_COLS-6);	

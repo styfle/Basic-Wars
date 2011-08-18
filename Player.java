@@ -1,4 +1,7 @@
 
+/**
+ * This class represents either a human or computer player
+ */
 public class Player {
 	public static enum Side {LEFT, RIGHT, TOP, BOTTOM};
 	private final int num;

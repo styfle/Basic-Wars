@@ -13,10 +13,15 @@ import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
 
-public class StatusPanel extends JPanel {
+/**
+ * This panel contains the controls/components for the current main panel
+ * Buttons for the main menu, etc should go here
+ */
+public class ControlPanel extends JPanel {
 	private static final long serialVersionUID = -8353479383875379010L;
 	public final static int WIDTH = GameMapView.WIDTH;
 	public final static int HEIGHT = 22;
+	private final static int SEPARATION = 5;
 	private JButton mainMenuButton = createButton("Main Menu");
 	private JButton tempButton = createButton("Temp");
 	private JLabel statusLabel = new JLabel();
@@ -25,13 +30,13 @@ public class StatusPanel extends JPanel {
 	 * Panel that contains buttons for user navigation and status output
 	 * @param status Display status on this panel
 	 */
-	public StatusPanel(String status) {
+	public ControlPanel(String status) {
 		super(new BorderLayout());
 		this.setBackground(Color.WHITE);
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		
 		JToolBar toolBar = new JToolBar("Toolbar");
-		toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 0));
+		toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, SEPARATION, 0));
 		toolBar.setBackground(Color.BLACK);
 		
 		statusLabel.setFont(new Font("Courier", Font.PLAIN, 12));
@@ -40,6 +45,7 @@ public class StatusPanel extends JPanel {
 		
 		toolBar.add(mainMenuButton);
 		toolBar.add(tempButton);
+		toolBar.addSeparator(new Dimension(SEPARATION,HEIGHT));
 		toolBar.add(statusLabel);		
 		this.add(toolBar, BorderLayout.NORTH);
 	}

@@ -5,6 +5,10 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 
+/**
+ * This class is a unit (or game piece) that the
+ * player moves around on the {@link GameMap} (or board).
+ */
 public class Unit {
 	private final int MAX_HEALTH;
 	private int healthRemaining;

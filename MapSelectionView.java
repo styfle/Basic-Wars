@@ -17,7 +17,10 @@ import javax.swing.JPanel;
 import javax.swing.filechooser.*;
 
 
-public class MainMenuView extends JPanel {
+/**
+ * This view allows the {@link Player} to select a {@link GameMap} to play on
+ */
+public class MapSelectionView extends JPanel {
 	private static final long serialVersionUID = 3310239310608462441L;
 	private ArrayList<Clickable> clickables = new ArrayList<Clickable>();
 	private Font headFont = new Font("DialogInput", Font.PLAIN, 65);
@@ -29,7 +32,7 @@ public class MainMenuView extends JPanel {
 	 * This JPanel is a map selector
 	 * @param mapSelection array of maps to select from
 	 */
-	public MainMenuView(GameMap[] mapSelection) {
+	public MapSelectionView(GameMap[] mapSelection) {
 		this.setBackground(Color.BLACK);
 		
 		clickables.add (new Clickable() {

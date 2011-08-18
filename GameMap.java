@@ -8,9 +8,8 @@ import java.util.ArrayList;
 
 
 /**
- * This class reads a custom map from the user
- * or loads a predefined map when it is selected.
- *
+ * This class represents the 'playable map' by reading
+ * a custom map from the user or loading a predefined map.
  */
 public class GameMap extends Clickable {
 	private ArrayList<Cell> cells = new ArrayList<Cell>(500);
