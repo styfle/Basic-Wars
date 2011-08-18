@@ -23,6 +23,7 @@ public class MainMenuView extends JPanel {
 	private Font headFont = new Font("DialogInput", Font.PLAIN, 65);
 	private Font bodyFont = new Font("Dialog", Font.PLAIN, 25);
 	private BufferedImage mapImage;
+	private boolean firstPaint = true;
 	
 	/**
 	 * This JPanel is a map selector
@@ -142,8 +143,11 @@ public class MainMenuView extends JPanel {
 		for (Clickable c : clickables) {
 			y += bodyFont.getSize()*2;
 			g.setColor(c.getColor());
-			TextLayout tl = new TextLayout("[" + c.getName() + "]", bodyFont, g.getFontRenderContext());
-			c.initClickable(tl, x, y, g);
+			if (this.firstPaint) {
+				TextLayout tl = new TextLayout("[" + c.getName() + "]", bodyFont, g.getFontRenderContext());
+				c.initClickable(tl, x, y, g);
+			}
+			c.draw();
 			//Rectangle2D rect = tl.getBounds(); 
 			//rect.setRect(rect.getX() + x, rect.getY() + y,  rect.getWidth(), rect.getHeight());
 			//g.draw(rect);

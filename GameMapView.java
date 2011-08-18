@@ -26,7 +26,7 @@ public class GameMapView extends JPanel {
 		
 		System.out.println("Loaded " + map.getName() + " (" + map.getCells().size() + " cells)");
 		
-		Timer t = new Timer(20, new ActionListener() {
+		Timer t = new Timer(25, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				repaint();
@@ -98,7 +98,13 @@ public class GameMapView extends JPanel {
 		cells.get(index+1).paintCell(g);
 		cells.get(index+2).paintCell(g);
 		cells.get(index+3).paintCell(g);
-    	index += 4;
+		cells.get(index+4).paintCell(g);
+		cells.get(index+5).paintCell(g);
+		cells.get(index+6).paintCell(g);
+		cells.get(index+7).paintCell(g);
+		cells.get(index+8).paintCell(g);
+		cells.get(index+9).paintCell(g);
+    	index += 10; // load 10 at a time
     }
     
     public boolean isMapLoaded() {

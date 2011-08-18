@@ -20,7 +20,8 @@ public abstract class Clickable {
 	private Color color = COLOR_NORMAL;
 	
 	/**
-	 * @param n Set the printable name of this clickable
+	 * Set the printable name of this clickable
+	 * @param n Text name
 	 */
 	protected void setName(String n) {
 		name = n;
@@ -38,7 +39,8 @@ public abstract class Clickable {
 	
 	
 	/**
-	 * @param Set the image for this clickable
+	 * Set the image for this clickable
+	 * @param i Image for clickable
 	 */
 	protected void setImage(BufferedImage i) {
 		image = i;
@@ -50,7 +52,7 @@ public abstract class Clickable {
 	public BufferedImage getImage() { return image; }
 	
 	/**
-	 * Constructor like method
+	 * Constructor like method that initializes the clickable object
 	 * @param tl - TextLayout with info about painting
 	 * @param x - The x coordinate
 	 * @param y - The y coordinate
@@ -60,7 +62,13 @@ public abstract class Clickable {
 		this.layout = tl;
 		this.x = x;
 		this.y = y;
-		this.g = g;		
+		this.g = g;
+	}
+	
+	/**
+	 * Draws the clickable object using parameters from initClickable()
+	 */
+	public void draw() {
 		layout.draw(g, x, y);
 	}
 	
