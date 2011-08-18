@@ -9,20 +9,20 @@ import java.awt.image.BufferedImage;
  * Clickable string to draw on the screen
  */
 public abstract class Clickable {
-	private String name;
-	private TextLayout layout;
-	private BufferedImage image;
+	protected String name;
+	protected BufferedImage image;
 	private int x;
 	private int y;
-	private Graphics2D g;	
-	private final Color COLOR_NORMAL = new Color(0,150,0);
-	private final Color COLOR_HOVER = BasicWars.bleach(COLOR_NORMAL, 0.75f);
+	private Graphics2D g;
+	private TextLayout layout;
+	protected Color COLOR_NORMAL = new Color(0,150,0);
+	protected Color COLOR_HOVER = BasicWars.bleach(COLOR_NORMAL, 0.75f);
 	private Color color = COLOR_NORMAL;
 	
 	/**
 	 * @param n Set the printable name of this clickable
 	 */
-	public void setName(String n) {
+	protected void setName(String n) {
 		name = n;
 	}
 	
@@ -40,7 +40,7 @@ public abstract class Clickable {
 	/**
 	 * @param Set the image for this clickable
 	 */
-	public void setImage(BufferedImage i) {
+	protected void setImage(BufferedImage i) {
 		image = i;
 	}
 	

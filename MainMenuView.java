@@ -14,12 +14,12 @@ import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
+import javax.swing.filechooser.*;
 
 
 public class MainMenuView extends JPanel {
 	private static final long serialVersionUID = 3310239310608462441L;
 	private ArrayList<Clickable> clickables = new ArrayList<Clickable>();
-	//private GameMap[] maps;
 	private Font headFont = new Font("DialogInput", Font.PLAIN, 65);
 	private Font bodyFont = new Font("Dialog", Font.PLAIN, 25);
 	private BufferedImage mapImage;
@@ -30,12 +30,10 @@ public class MainMenuView extends JPanel {
 	 */
 	public MainMenuView(GameMap[] mapSelection) {
 		this.setBackground(Color.BLACK);
-		for (Clickable c : mapSelection) {
-			clickables.add(c);
-		}
-		Clickable c = new Clickable(){
-			BufferedImage image = createImage();
-			private BufferedImage createImage() {
+		
+		clickables.add (new Clickable() {
+			private BufferedImage image = createImage(); 
+			private BufferedImage createImage() {// hack to call super.setImage()
 				BufferedImage image = new BufferedImage(200, 200, BufferedImage.TYPE_INT_ARGB);
 				Graphics imgGraphics = image.getGraphics();
 				imgGraphics.setColor(new Color(62,64,66));
@@ -45,7 +43,8 @@ public class MainMenuView extends JPanel {
 					c = new Cell(startPos + i*(20),100,Cell.Type.EARTH);
 					c.paintCell(imgGraphics);
 				}
-				setImage(image);
+				this.image = image;
+				setImage(this.image); // hack to remove warning
 				return image;
 			}
 			
@@ -54,26 +53,38 @@ public class MainMenuView extends JPanel {
 			@Override
 			public void onClick(BasicWars o) {
 				JFileChooser fc = new JFileChooser();
+				fc.setFileFilter(new FileNameExtensionFilter("Basic Wars Maps (*.bw)","bw"));
 				int a = fc.showOpenDialog(o);
 				if (a == JFileChooser.APPROVE_OPTION) {
 					try {
 						GameMap map = new GameMap(fc.getSelectedFile());
-						System.out.println(map.getName());
 						setName(map.getName());
-						o.loadMap(map);
+						for (Clickable c : clickables) {
+							if (c.getName().equals(map.getName())) {
+								System.out.println("Overwriting " + map.getName());
+								clickables.remove(c);
+								break;
+							}							
+						}
+						clickables.add(map);
+						//o.loadMap(map);
 					} catch (Exception e) {
 						o.showError(1, "The file you selected could not be loaded:\n" + e.getMessage());
 					}
 				}
 			}
-		};
-		clickables.add(c);
+		});
+		for (Clickable c : mapSelection) {
+			clickables.add(c);
+		}
+
 		this.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				for (Clickable c : clickables) {
 					if (c.contains(e.getPoint())) {
 						c.onClick((BasicWars)getParent());
+						break;
 					}
 				}
 			}
@@ -131,7 +142,7 @@ public class MainMenuView extends JPanel {
 		for (Clickable c : clickables) {
 			y += bodyFont.getSize()*2;
 			g.setColor(c.getColor());
-			TextLayout tl = new TextLayout(c.getName(), bodyFont, g.getFontRenderContext());
+			TextLayout tl = new TextLayout("[" + c.getName() + "]", bodyFont, g.getFontRenderContext());
 			c.initClickable(tl, x, y, g);
 			//Rectangle2D rect = tl.getBounds(); 
 			//rect.setRect(rect.getX() + x, rect.getY() + y,  rect.getWidth(), rect.getHeight());

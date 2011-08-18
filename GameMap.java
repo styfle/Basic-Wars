@@ -28,7 +28,9 @@ public class GameMap extends Clickable {
 		while ((line = r.readLine()) != null) {
 			mapData.append(line).append("\n");
 		}
-		buildMap("Custom Map", mapData.toString());
+		String name = file.getName();
+		name = name.substring(0, name.lastIndexOf('.'));
+		buildMap(name, mapData.toString());
 	}
 	
 	private void buildMap(String name, String mapData) {
