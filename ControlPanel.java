@@ -19,12 +19,14 @@ import javax.swing.JToolBar;
  */
 public class ControlPanel extends JPanel {
 	private static final long serialVersionUID = -8353479383875379010L;
-	public final static int WIDTH = GameMapView.WIDTH;
-	public final static int HEIGHT = 22;
-	private final static int SEPARATION = 5;
-	private JButton mainMenuButton = createButton("Main Menu");
-	private JButton tempButton = createButton("Temp");
+	public static final int WIDTH = GameMapView.WIDTH;
+	public static final int HEIGHT = 22;
+	private static final int SEPARATION = 5;
+	private JButton mainMenuButton = new JButton();
+	private JButton playerSelectButton = new JButton();
+	private JButton mapSelectButton = new JButton();
 	private JLabel statusLabel = new JLabel();
+	private ActionListener al;
 	
 	/**
 	 * Panel that contains buttons for user navigation and status output
@@ -35,17 +37,37 @@ public class ControlPanel extends JPanel {
 		this.setBackground(Color.WHITE);
 		this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 		
+		al = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				BasicWars main = (BasicWars)getParent();
+				if (e.getSource().equals(mainMenuButton)) {
+					main.loadMainMenu();
+				} else if (e.getSource().equals(playerSelectButton)) {
+					main.loadPlayerMenu();
+				} else if (e.getSource().equals(mapSelectButton)) {
+					main.loadMapMenu();
+				}
+				System.out.println(((JButton)e.getSource()).getText() + " clicked.");
+			}			
+		};
+		
+		mainMenuButton = createButton("Main Menu");
+		playerSelectButton = createButton("Player Select");
+		mapSelectButton = createButton("Map Select");
+		
 		JToolBar toolBar = new JToolBar("Toolbar");
 		toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, SEPARATION, 0));
-		toolBar.setBackground(Color.BLACK);
+		toolBar.setBackground(BasicWars.BG_COLOR);
 		
 		statusLabel.setFont(new Font("Courier", Font.PLAIN, 12));
 		statusLabel.setForeground(new Color(150,180,150));
 		statusLabel.setText(status);
 		
 		toolBar.add(mainMenuButton);
-		toolBar.add(tempButton);
-		toolBar.addSeparator(new Dimension(SEPARATION,HEIGHT));
+		toolBar.add(playerSelectButton);
+		toolBar.add(mapSelectButton);
+		toolBar.addSeparator(new Dimension(SEPARATION, HEIGHT));
 		toolBar.add(statusLabel);		
 		this.add(toolBar, BorderLayout.NORTH);
 	}
@@ -55,23 +77,12 @@ public class ControlPanel extends JPanel {
 		b.setBorderPainted(false);
 		b.setBounds(0, 0, 100, HEIGHT);
 		b.setBackground(new Color(50,50,50));
-		b.setForeground(new Color(150,160,180));
+		b.setForeground(new Color(150,180,150));
 		b.setFont(new Font("Arial", Font.BOLD, 12));
-		b.setPreferredSize(new Dimension(75, HEIGHT));
+		b.setPreferredSize(new Dimension(b.getWidth(), HEIGHT));
 		b.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		b.setFocusable(false);
-		b.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (e.getSource().equals(mainMenuButton)) {
-					System.out.println("Main menu button clicked");
-					BasicWars main = (BasicWars)getParent();
-					main.loadMainMenu();
-				} else if (e.getSource().equals(tempButton)) {
-					System.out.println("Temp button clicked");
-				}
-			}			
-		});
+		b.setFocusable(false);		
+		b.addActionListener(al);
 		return b;
 	}
 	

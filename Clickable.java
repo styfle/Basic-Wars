@@ -1,4 +1,6 @@
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.font.TextLayout;
@@ -15,9 +17,58 @@ public abstract class Clickable {
 	private int y;
 	private Graphics2D g;
 	private TextLayout layout;
-	protected Color COLOR_NORMAL = new Color(0,150,0);
-	protected Color COLOR_HOVER = BasicWars.bleach(COLOR_NORMAL, 0.75f);
-	private Color color = COLOR_NORMAL;
+	private final Color COLOR_NORMAL;
+	private final Color COLOR_HOVER;
+	private Color color;
+	
+	/**
+	 * @param name Visible text for this clickable
+	 * @param enabled False if not clickable
+	 * @param image Optional image to show when hovering
+	 * @param c Optional color for clickable
+	 */
+	public Clickable(String name, boolean enabled, BufferedImage image, Color c) {
+		if (name == null)
+			throw new IllegalArgumentException("Clickable's name cannot be null!");
+		
+		this.name = name;
+		if (!enabled) {
+			this.image = new BufferedImage(Menu.IMAGE_WIDTH, Menu.IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
+			Graphics g = this.image.getGraphics();
+			Color grayedOut = new Color(45,60,45);
+			g.setColor(grayedOut);
+			g.setFont(new Font("Courier", Font.BOLD, 30));
+			g.drawString("Disabled", 60, 120);
+			COLOR_NORMAL = grayedOut;
+			COLOR_HOVER = grayedOut;
+			color = COLOR_NORMAL;
+		} else {
+			if (image == null)
+				image = new BufferedImage(Menu.IMAGE_WIDTH, Menu.IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
+			if (c == null)
+				c = new Color(0,150,0);
+			
+			this.image = image;
+			COLOR_NORMAL = c;
+			COLOR_HOVER = BasicWars.bleach(COLOR_NORMAL, 0.60f);
+			color = COLOR_NORMAL;
+		}
+			
+		
+	}
+	
+	/**
+	 * Uses default colors with no image
+	 * @param name Visible text for this clickable object
+	 */
+	public Clickable(String name) {
+		if (name == null)
+			throw new IllegalArgumentException("Clickable's name cannot be null!");
+		this.name = name;
+		COLOR_NORMAL = new Color(0,150,0);
+		COLOR_HOVER = BasicWars.bleach(COLOR_NORMAL, 0.60f);
+		color = COLOR_NORMAL;
+	}
 	
 	/**
 	 * Set the printable name of this clickable
@@ -73,14 +124,17 @@ public abstract class Clickable {
 	}
 	
 	/**
-	 * @param p Point of click
+	 * Call when hovering over element
 	 */
-	public void mouseMoved(Point p) {
-		if (contains(p)) {
-			color = COLOR_HOVER;
-		} else {
-			color = COLOR_NORMAL;
-		}
+	public void startHover() {
+		color = COLOR_HOVER;
+	}
+	
+	/**
+	 * Call when hovering stops
+	 */
+	public void stopHover() {
+		color = COLOR_NORMAL;
 	}
 	
 	/**

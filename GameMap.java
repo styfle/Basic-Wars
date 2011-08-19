@@ -17,10 +17,12 @@ public class GameMap extends Clickable {
 	public final static int CELL_ROWS = 20; // height
 	
 	public GameMap(String name, String mapData) {
+		super(name);
 		buildMap(name, mapData);
 	}
 	
-	public GameMap(File file) throws IOException {		
+	public GameMap(File file) throws IOException {
+		super(file.getName());
 		BufferedReader r = new BufferedReader(new FileReader(file));		
 		StringBuilder mapData = new StringBuilder(500);
 		String line;
@@ -33,7 +35,7 @@ public class GameMap extends Clickable {
 	}
 	
 	private void buildMap(String name, String mapData) {
-		setName(name);
+		//setName(name);
 		if (mapData == null)
 			return;
 		Cell c = new Cell(Cell.DIST_TO_CORNER, 0, Cell.Type.TREE);

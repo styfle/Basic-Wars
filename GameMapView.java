@@ -1,4 +1,3 @@
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -85,7 +84,7 @@ public class GameMapView extends JPanel {
     	}
 		Graphics2D g = (Graphics2D)graphics;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setColor(Color.BLACK);
+		g.setColor(BasicWars.BG_COLOR);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 	}
     

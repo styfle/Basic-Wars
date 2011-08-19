@@ -19,6 +19,7 @@ Completed
 ----------
 * Differentiate cells by the type of land/water it represents
 * Provide a way to load arbitrary maps
+* Add multiple menus to select players/map/etc.
 
 
 Beta Testing

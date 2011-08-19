@@ -13,10 +13,16 @@ import javax.swing.*;
 public class BasicWars extends JPanel {
 	private static final long serialVersionUID = -5944312753990108995L;
 	public static final String GAME_NAME = "Basic Wars";
-	public static final String GAME_VERSION = "0.2";
+	public static final String GAME_VERSION = "0.3";
+	public static final Font HEAD_FONT = new Font("DialogInput", Font.PLAIN, 75);
+	public static final Font BODY_FONT = new Font("Dialog", Font.PLAIN, 25);
+	public static final Color BG_COLOR = Color.BLACK;
+	public static final Color HEAD_COLOR = Color.RED;
 	private static JFrame frame;
-	private ControlPanel controlPanel = new ControlPanel("Select a map to begin playing.");
-	private MapSelectionView mainMenu;
+	private ControlPanel controlPanel = new ControlPanel("Basic Wars. Basically awesome.");
+	private MainMenuView mainMenu;
+	private PlayerSelectView playerMenu;
+	private MapSelectView mapMenu;
 	private Timer timer;
 	private final static String map0 = "EEEEEEEEEEEEEEEEEEEEEEEEE\n" +
 										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
@@ -90,7 +96,9 @@ public class BasicWars extends JPanel {
 	public BasicWars() {
 		super(new BorderLayout());
 		
-		mainMenu = new MapSelectionView(maps);
+		mainMenu = new MainMenuView();
+		playerMenu = new PlayerSelectView();
+		mapMenu = new MapSelectView(maps);
 		
 		add(controlPanel, BorderLayout.NORTH);
 		add(mainMenu, BorderLayout.CENTER);
@@ -125,9 +133,27 @@ public class BasicWars extends JPanel {
 	 */
 	public void loadMainMenu() {
 		removeAll();
-		controlPanel.setStatus("Select a map to begin playing.");
+		controlPanel.setStatus("Basic Wars. Basically awesome.");
 		add(controlPanel, BorderLayout.NORTH);
 		add(mainMenu, BorderLayout.CENTER);
+		frame.pack();
+		repaint();
+	}
+	
+	public void loadPlayerMenu() {
+		removeAll();
+		controlPanel.setStatus("Select how many players.");
+		add(controlPanel, BorderLayout.NORTH);
+		add(playerMenu, BorderLayout.CENTER);
+		frame.pack();
+		repaint();
+	}
+	
+	public void loadMapMenu() {
+		removeAll();
+		controlPanel.setStatus("Select a predefined map or load your own!");
+		add(controlPanel, BorderLayout.NORTH);
+		add(mapMenu, BorderLayout.CENTER);
 		frame.pack();
 		repaint();
 	}
@@ -202,7 +228,7 @@ public class BasicWars extends JPanel {
 			public void run() {
 				BasicWars.createAndShowGUI();
 			}
-        });		
+        });
 		
 	}
 }
