@@ -18,9 +18,11 @@ public class BasicWars extends JPanel {
 	public static final Font BODY_FONT = new Font("Dialog", Font.PLAIN, 25);
 	public static final Color BG_COLOR = Color.BLACK;
 	public static final Color HEAD_COLOR = Color.RED;
+	public static final Color TEXT_COLOR = new Color(150,180,150);
 	private static JFrame frame;
 	private ControlPanel controlPanel = new ControlPanel("Basic Wars. Basically awesome.");
 	private MainMenuView mainMenu;
+	private AboutView aboutView;
 	private PlayerSelectView playerMenu;
 	private MapSelectView mapMenu;
 	private Timer timer;
@@ -97,6 +99,7 @@ public class BasicWars extends JPanel {
 		super(new BorderLayout());
 		
 		mainMenu = new MainMenuView();
+		aboutView = new AboutView();
 		playerMenu = new PlayerSelectView();
 		mapMenu = new MapSelectView(maps);
 		
@@ -119,7 +122,7 @@ public class BasicWars extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {				
 				if (board.isMapLoaded()) {
-					controlPanel.setStatus("Select your units.");					
+					controlPanel.setStatus("Map loaded.");					
 					timer.stop();
 				}
 			}			
@@ -128,34 +131,34 @@ public class BasicWars extends JPanel {
 		controlPanel.setStatus("Loading map...(fancy ain't it?)");
 	}
 	
+	private void loadMenu(Menu menu, String status) {
+		//removeAll();
+		remove(1);
+		controlPanel.setStatus(status);
+		//add(controlPanel, BorderLayout.NORTH);
+		add(menu, BorderLayout.CENTER);
+		//frame.pack();
+		validate();
+		repaint();
+	}
+	
 	/**
 	 * Loads the main menu. Any games in progress will be discarded.
 	 */
 	public void loadMainMenu() {
-		removeAll();
-		controlPanel.setStatus("Basic Wars. Basically awesome.");
-		add(controlPanel, BorderLayout.NORTH);
-		add(mainMenu, BorderLayout.CENTER);
-		frame.pack();
-		repaint();
+		loadMenu(mainMenu, "Basic Wars. Basically awesome.");
+	}
+	
+	public void loadAbout() {
+		loadMenu(aboutView, "Who cares? Just play the game already...");
 	}
 	
 	public void loadPlayerMenu() {
-		removeAll();
-		controlPanel.setStatus("Select how many players.");
-		add(controlPanel, BorderLayout.NORTH);
-		add(playerMenu, BorderLayout.CENTER);
-		frame.pack();
-		repaint();
+		loadMenu(playerMenu, "Select how many players.");
 	}
 	
 	public void loadMapMenu() {
-		removeAll();
-		controlPanel.setStatus("Select a predefined map or load your own!");
-		add(controlPanel, BorderLayout.NORTH);
-		add(mapMenu, BorderLayout.CENTER);
-		frame.pack();
-		repaint();
+		loadMenu(mapMenu, "Select a predefined map or load your own!");
 	}
 	
 	public void setStatus(String s) {

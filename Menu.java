@@ -94,6 +94,7 @@ public abstract class Menu extends JPanel {
 	@Override
 	public void paintChildren(Graphics graphics) {
 		Graphics2D g = (Graphics2D)graphics;
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		yPosChild = Y_TOP;
 		for (Clickable c : clickables) {
 			yPosChild += BasicWars.BODY_FONT.getSize()*2;

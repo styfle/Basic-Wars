@@ -8,11 +8,11 @@ public class PlayerSelectView extends Menu {
 
 	public PlayerSelectView() {
 		super("Player Select", 25);
-		
+		//TODO add images to each clickable
 		Clickable onePlayer = new Clickable("Single Player", false, null, null) {
 			@Override
 			public void onClick(BasicWars o) {
-				o.showError(1, "I regret to inform you that Single Player is not implemented yet.");
+				o.showError(1, "I regret to inform you that Single Player is not implemented...yet.");
 			}
 		};
 		//onePlayer.COLOR_HOVER = onePlayer.COLOR_NORMAL;

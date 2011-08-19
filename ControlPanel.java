@@ -61,7 +61,7 @@ public class ControlPanel extends JPanel {
 		toolBar.setBackground(BasicWars.BG_COLOR);
 		
 		statusLabel.setFont(new Font("Courier", Font.PLAIN, 12));
-		statusLabel.setForeground(new Color(150,180,150));
+		statusLabel.setForeground(BasicWars.TEXT_COLOR);
 		statusLabel.setText(status);
 		
 		toolBar.add(mainMenuButton);
@@ -77,7 +77,7 @@ public class ControlPanel extends JPanel {
 		b.setBorderPainted(false);
 		b.setBounds(0, 0, 100, HEIGHT);
 		b.setBackground(new Color(50,50,50));
-		b.setForeground(new Color(150,180,150));
+		b.setForeground(BasicWars.TEXT_COLOR);
 		b.setFont(new Font("Arial", Font.BOLD, 12));
 		b.setPreferredSize(new Dimension(b.getWidth(), HEIGHT));
 		b.setCursor(new Cursor(Cursor.HAND_CURSOR));

@@ -45,11 +45,11 @@ public class MainMenuView extends Menu {
 			}
 		});
 		
-		clickables.add(new Clickable("About", false, null, null) {
+		clickables.add(new Clickable("About", true, i, null) {
 			@Override
 			public void onClick(BasicWars o) {
 				System.out.println("About clicked.");
-				o.showError(101, "Unimplemented: About");
+				o.loadAbout();
 			}
 		 });
 		 

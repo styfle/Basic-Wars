@@ -10,6 +10,9 @@ I don't have much more to say right now because I really don't know what the fin
 Todo List
 ---------
 * Definitely need some royalty-free sprites soon (soldier, tank, planes)
+* Add a buy view so players can buy their units
+* Implement unit placement and movement
+* Add a view with the instructions on how to play
 * Resize cells/sprites on the fly when the window/frame changes sizes
 * Optimize the way cells light up on hover over
 * Maybe make the map bigger than the screen and provide "panning" the view
