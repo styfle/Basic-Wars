@@ -33,7 +33,6 @@ public class MapSelectView extends Menu {
 		}
 		
 		clickables.add (new Clickable("Load Custom Map", true, image, new Color(190, 170, 100)) {
-			
 			@Override
 			public void onClick(BasicWars o) {
 				JFileChooser fc = new JFileChooser();
@@ -50,7 +49,6 @@ public class MapSelectView extends Menu {
 							}							
 						}
 						clickables.add(map);
-						//o.loadMap(map);
 					} catch (Exception e) {
 						o.showError(7, "The file you selected could not be loaded:\n" + e.getMessage());
 					}

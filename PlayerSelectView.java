@@ -21,6 +21,8 @@ public class PlayerSelectView extends Menu {
 			@Override
 			public void onClick(BasicWars o) {
 				System.out.println("Two players");
+				o.players.add(new Player(1, Player.Side.LEFT));
+				o.players.add(new Player(2, Player.Side.RIGHT));
 				o.loadMapMenu();
 			}
 		};

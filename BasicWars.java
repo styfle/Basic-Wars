@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.*;
 
@@ -13,18 +14,22 @@ import javax.swing.*;
 public class BasicWars extends JPanel {
 	private static final long serialVersionUID = -5944312753990108995L;
 	public static final String GAME_NAME = "Basic Wars";
-	public static final String GAME_VERSION = "0.3";
+	public static final String GAME_VERSION = "0.35";
 	public static final Font HEAD_FONT = new Font("DialogInput", Font.PLAIN, 75);
 	public static final Font BODY_FONT = new Font("Dialog", Font.PLAIN, 25);
 	public static final Color BG_COLOR = Color.BLACK;
 	public static final Color HEAD_COLOR = Color.RED;
 	public static final Color TEXT_COLOR = new Color(150,180,150);
+	public int currentPlayer = 0;
+	public ArrayList<Player> players = new ArrayList<Player>();
+	public GameMap map;
 	private static JFrame frame;
 	private ControlPanel controlPanel = new ControlPanel("Basic Wars. Basically awesome.");
 	private MainMenuView mainMenu;
 	private AboutView aboutView;
 	private PlayerSelectView playerMenu;
 	private MapSelectView mapMenu;
+	private UnitSelectView unitMenu;
 	private Timer timer;
 	private final static String map0 = "EEEEEEEEEEEEEEEEEEEEEEEEE\n" +
 										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
@@ -112,12 +117,9 @@ public class BasicWars extends JPanel {
 	 * @param m Map to load
 	 */
 	public void loadMap(GameMap m) {
-		removeAll();
-		
+		remove(1);
 		final GameMapView board = new GameMapView(m);
-		add(controlPanel, BorderLayout.NORTH);
-		add(board, BorderLayout.CENTER);
-		frame.pack();
+		
 		timer = new Timer(100, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {				
@@ -129,15 +131,14 @@ public class BasicWars extends JPanel {
 		});
 		timer.start();
 		controlPanel.setStatus("Loading map...(fancy ain't it?)");
+		add(board, BorderLayout.CENTER);
+		//validate();
 	}
 	
 	private void loadMenu(Menu menu, String status) {
-		//removeAll();
 		remove(1);
 		controlPanel.setStatus(status);
-		//add(controlPanel, BorderLayout.NORTH);
 		add(menu, BorderLayout.CENTER);
-		//frame.pack();
 		validate();
 		repaint();
 	}
@@ -161,6 +162,16 @@ public class BasicWars extends JPanel {
 		loadMenu(mapMenu, "Select a predefined map or load your own!");
 	}
 	
+	public void loadUnitMenu() {
+		if (currentPlayer < players.size()) {
+			unitMenu = new UnitSelectView(players.get(currentPlayer));
+			loadMenu(unitMenu, "Select your units");
+			currentPlayer++;
+		} else {
+			loadMap(map);
+		}
+	}
+	
 	public void setStatus(String s) {
 		controlPanel.setStatus(s);
 	}
@@ -169,20 +180,20 @@ public class BasicWars extends JPanel {
 	 * Helper method for launching GUI from main
 	 */
 	public static void createAndShowGUI() {
-        frame = new JFrame(GAME_NAME + " v" + GAME_VERSION);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame = new JFrame(GAME_NAME + " v" + GAME_VERSION);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //Create and set up the content pane.
-        JComponent panel = new BasicWars();
-        panel.setOpaque(true); //content panes must be opaque
-        frame.setContentPane(panel);
-        frame.setPreferredSize(new Dimension(GameMapView.WIDTH, GameMapView.HEIGHT + ControlPanel.HEIGHT*2));
+		//Create and set up the content pane.
+		JComponent panel = new BasicWars();
+		panel.setOpaque(true); //content panes must be opaque
+		frame.setContentPane(panel);
+		frame.setPreferredSize(new Dimension(GameMapView.WIDTH, GameMapView.HEIGHT + ControlPanel.HEIGHT*2));
 
-        //Display the window.
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-    }
+		//Display the window.
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+	}
 	
 	/**
 	 * Lightens a color by a given amount
@@ -196,17 +207,6 @@ public class BasicWars extends JPanel {
 		int green = (int) ((color.getGreen() * (1 - amount) / 255 + amount) * 255);
 		int blue = (int) ((color.getBlue() * (1 - amount) / 255 + amount) * 255);
 		return new Color(red, green, blue);
-	}
-	
-	/**
-	 * @param unit String representation of the unit
-	 * @param owner The player that will be using the unit
-	 * @return Path to the image for this unit
-	 */
-	public static String getFileName(String unit, Player owner) {
-		if (owner == null)
-				throw new IllegalArgumentException("NULL Player. Can't create a soldier without a Player!");
-		return "images/"+unit+owner.getNumber()+"_"+owner.getSide().toString()+".png";
 	}
 	
 	/**
@@ -231,7 +231,7 @@ public class BasicWars extends JPanel {
 			public void run() {
 				BasicWars.createAndShowGUI();
 			}
-        });
+		});
 		
 	}
 }

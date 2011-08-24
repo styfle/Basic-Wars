@@ -9,17 +9,19 @@ import javax.imageio.ImageIO;
  * This class is a unit (or game piece) that the
  * player moves around on the {@link GameMap} (or board).
  */
-public class Unit {
+public abstract class Unit {
 	private final int MAX_HEALTH;
 	private int healthRemaining;
 	private Player player;
 	private BufferedImage image;
 	
-	public Unit(Player owner, int maxHealth, String imagePath) {
+	public Unit(Player owner, int maxHealth, String unit) {
 		if (owner == null) {
 			throw new IllegalArgumentException("Units must have an owner!");
 		}
 		
+		//String imagePath = "images/"+unit+owner.getNumber()+"_"+owner.getSide().toString()+".png";
+		String imagePath = "images/"+unit+owner.getNumber()+".png";
 		player = owner;
 		MAX_HEALTH = maxHealth;
 		healthRemaining = maxHealth;
@@ -59,7 +61,27 @@ public class Unit {
 		return image;
 	}
 	
-	public void setImage(BufferedImage i) {
-		image = i;
+	public void attackedBy(Unit u) {
+		if (u instanceof Soldier) {
+			attackedBySoldier();
+		} else if (u instanceof Tank) {
+			attackedByTank();
+		} else if (u instanceof Plane) {
+			attackedByPlane();
+		} else {
+			throw new IllegalArgumentException("Attacking unit is not recognized: " + u);
+		}
+	}
+	
+	private void attackedBySoldier() { //these eventually could be overriden
+		healthRemaining = healthRemaining - 50;
+	}
+	
+	private void attackedByTank() {
+		healthRemaining = healthRemaining - 100;
+	}
+	
+	private void attackedByPlane() {
+		healthRemaining = healthRemaining - 75;
 	}
 }

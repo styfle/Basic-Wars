@@ -10,18 +10,20 @@ public class Cell {
 	private Polygon hexagon = new Polygon();
 	private int x;
 	private int y;
-	public Unit unit;
 	public Cell north;
 	public Cell south;
 	public Cell northEast;
 	public Cell southEast;
 	public Cell northWest;
 	public Cell southWest;	
+	public static enum Type {EARTH, WATER, LAVA, TREE};
+	private Unit unit;
 	private static final Color COLOR_BORDER = Color.LIGHT_GRAY;
 	private final Color COLOR_FILL;
 	private final Color COLOR_FILL_HOVER;
-	private Color color; //current color fill
-	public static enum Type {EARTH, WATER, LAVA, TREE};
+	private final Color COLOR_FILL_SELECTED = new Color(247, 255 , 194);
+	private Color currentFill; //current color fill
+	private Color currentBorder = COLOR_BORDER;
 	private static final double ANGLE = (2*Math.PI)/6;
 	public static final int DIST_TO_CORNER = 17;
 	public static final int DIST_TO_EDGE = (int)(DIST_TO_CORNER * Math.cos(ANGLE/2));
@@ -37,14 +39,14 @@ public class Cell {
 		x = xPos;
 		y = yPos;
 		switch (cellType) {
-			case EARTH: color = new Color(139, 69, 19, 175); break;
-			case WATER: color = new Color(0, 0, 255, 175); break;
-			case LAVA: color = new Color(255, 0, 0, 175); break;
-			case TREE: color = new Color(0, 255, 0, 175); break;
+			case EARTH: currentFill = new Color(139, 69, 19, 175); break;
+			case WATER: currentFill = new Color(0, 0, 255, 175); break;
+			case LAVA: currentFill = new Color(255, 0, 0, 175); break;
+			case TREE: currentFill = new Color(0, 255, 0, 175); break;
 			default:
 				System.err.println("Unknown cell type!");
 		}
-		COLOR_FILL = color;
+		COLOR_FILL = currentFill;
 		COLOR_FILL_HOVER = BasicWars.bleach(COLOR_FILL, 0.25f);
 		
 		for (int i = 0; i < 6; i++) {
@@ -54,19 +56,11 @@ public class Cell {
 		}		
 	}
 	
-	/**
-	 * Place a unit to this cell. Only one unit per cell.
-	 * @param u Unit that resides in this cell
-	 */
-	public void setUnit(Unit u) {
-		unit = u;
-	}
-
 	public void paintCell(Graphics g) {
-		g.setColor(color);
+		g.setColor(currentFill);
 		g.fillPolygon(hexagon);
 		//g.drawOval(x, y, 1, 1); //center point
-		g.setColor(COLOR_BORDER);
+		g.setColor(currentBorder);
 		g.drawPolygon(hexagon);
 		if (unit != null) { // Ideal image is 33x28 so resize doesn't look terrible
 			Image image = unit.getImage();
@@ -80,9 +74,17 @@ public class Cell {
 		}
 	}
 	
-	public boolean contains(Point p) {
-		return hexagon.contains(p);
-	}
+	/**
+	 * Place a unit to this cell. Only one unit per cell.
+	 * @param u Unit that resides in this cell
+	 */
+	public void setUnit(Unit u) { unit = u; }
+	public Unit getUnit() { return unit; }
+	
+	public int getX() { return x; }
+	public int getY() { return y; }
+	
+	public boolean contains(Point p) { return hexagon.contains(p); }
 	
 	public static Type parseType(char ch) {
 		Cell.Type type;
@@ -96,12 +98,20 @@ public class Cell {
 		return type;
 	}
 	
+	public Cell setSelected(boolean b) {
+		if (b)
+			currentFill = COLOR_FILL_SELECTED;
+		else
+			currentFill = COLOR_FILL;
+		return this;
+	}
+	
 	public void mouseEntered() {
-		color = COLOR_FILL_HOVER;
+		currentFill = COLOR_FILL_HOVER;
 	}
 	
 	public void mouseExited() {
-		color = COLOR_FILL;
+		currentFill = COLOR_FILL;
 	}
 	
 	public Cell generateSouth(Type type) {
@@ -188,5 +198,4 @@ public class Cell {
 		return false;
 	}
 
-	
 }

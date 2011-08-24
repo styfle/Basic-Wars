@@ -114,5 +114,6 @@ public abstract class Menu extends JPanel {
 		else
 			i = image.getScaledInstance(IMAGE_WIDTH, IMAGE_HEIGHT, Image.SCALE_SMOOTH);
 		g.drawImage(i, 35, Y_TOP, null);
+		g.dispose();
 	}
 }

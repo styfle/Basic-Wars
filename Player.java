@@ -1,15 +1,20 @@
+import java.util.ArrayList;
+
 
 /**
  * This class represents either a human or computer player
  */
 public class Player {
 	public static enum Side {LEFT, RIGHT, TOP, BOTTOM};
+	public static final int PRICE_SOLDIER = 10;
+	public static final int PRICE_TANK = 15;
+	public static final int PRICE_PLANE = 20;
 	private final int num;
 	private final Side side;
 	private int money = 100;
-	private final int PRICE_SOLDIER = 10;
-	private final int PRICE_TANK = 15;
-	private final int PRICE_PLANE = 20;
+	private ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
+	private ArrayList<Tank> tanks = new ArrayList<Tank>();
+	private ArrayList<Plane> planes = new ArrayList<Plane>();
 	
 	/**
 	 * Represents a human (or possibly computer) player
@@ -25,19 +30,29 @@ public class Player {
 	public Side getSide() { return side; }
 	public int moneyRemaining() { return money; }
 	
-	public Soldier buySoldier() {
+	public boolean buySoldier() {
 		if (PRICE_SOLDIER > money)
-			return null;
+			return false;
 		money = money - PRICE_SOLDIER;
-		return (new Soldier(this));
+		return soldiers.add(new Soldier(this));
 	}
 	
-	/*
-	public Tank buyTank() {
+	public boolean buyTank() {
 		if (PRICE_TANK > money)
-			return null;
+			return false;
 		money = money - PRICE_TANK;
-		return (new Tank(this));
-	} */
+		return tanks.add(new Tank(this));
+	}
+	
+	public boolean buyPlane() {
+		if (PRICE_PLANE > money)
+			return false;
+		money = money - PRICE_PLANE;
+		return planes.add(new Plane(this));
+	}
+	
+	public int sizeOfSoldiers() { return soldiers.size(); }
+	public int sizeOfTanks() { return tanks.size(); }
+	public int sizeOfPlanes() { return planes.size(); }
 
 }

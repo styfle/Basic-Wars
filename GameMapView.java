@@ -8,7 +8,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 
@@ -22,11 +25,14 @@ public class GameMapView extends JPanel {
     public static final int HEIGHT = Cell.DIST_TO_EDGE*2 * (GameMap.CELL_ROWS+2);
     private GameMap map;
     private int index = 0; // used for animation
+    private Cell selected = null;
+    private JPopupMenu popup = new JPopupMenu("Options");
+    private JMenuItem moveItem = new JMenuItem("Move");
+	private JMenuItem attackItem = new JMenuItem("Attack");
     
     public GameMapView(GameMap m) {
     	super(true); // double buffered
     	map = m;
-		
 		System.out.println("Loaded " + map.getName() + " (" + map.getCells().size() + " cells)");
 		
 		Timer t = new Timer(25, new ActionListener() {
@@ -38,13 +44,41 @@ public class GameMapView extends JPanel {
 		t.setInitialDelay(0);
 		t.start();
 		
+		this.add(popup);
+		
     	this.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				ArrayList<Cell> cells = map.getCells();
-				for (Cell c : cells) {
-					if (c.contains(e.getPoint()))
-						System.out.println("Cell " + cells.indexOf(c) + " clicked!");
+				if (SwingUtilities.isLeftMouseButton(e)) {
+					Cell clicked = null;
+					for (Cell c : cells) {
+						if (c.contains(e.getPoint())) {
+							System.out.println("Cell " + cells.indexOf(c) + " selected!");
+							clicked = c;
+							break;
+						}
+					}
+					if (clicked != null) {
+						for (Cell c : cells)
+							if (c.equals(clicked))
+								selected = c.setSelected(true);
+							else
+								c.setSelected(false);
+					}
+				} else if (SwingUtilities.isRightMouseButton(e)) {
+					if (selected != null) {
+						for (Cell c : cells)
+							if (!c.equals(selected) && c.contains(e.getPoint())) {
+								System.out.println("Cell " + cells.indexOf(c) + " right-clicked!");
+								popup.removeAll();
+								if (c.getUnit() == null)
+									popup.add(moveItem);
+								else
+									popup.add(attackItem);
+								popup.show(e.getComponent(), c.getX(), c.getY());
+							}
+					}
 				}
 			}
 
@@ -58,6 +92,7 @@ public class GameMapView extends JPanel {
 			public void mouseReleased(MouseEvent e) { }
 			
 		});
+    	/*
     	this.addMouseMotionListener(new MouseMotionListener() {
 			@Override
 			public void mouseDragged(MouseEvent e) { }
@@ -70,10 +105,9 @@ public class GameMapView extends JPanel {
 					else
 						c.mouseExited();
 				}
-				//repaint();
 			}
     		
-    	});
+    	}); */
 		
     }
     

@@ -22,9 +22,9 @@ public class ControlPanel extends JPanel {
 	public static final int WIDTH = GameMapView.WIDTH;
 	public static final int HEIGHT = 22;
 	private static final int SEPARATION = 5;
-	private JButton mainMenuButton = new JButton();
-	private JButton playerSelectButton = new JButton();
-	private JButton mapSelectButton = new JButton();
+	private JButton mainMenuButton;
+	private JButton playerSelectButton;
+	private JButton mapSelectButton;
 	private JLabel statusLabel = new JLabel();
 	private ActionListener al;
 	

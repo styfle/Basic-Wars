@@ -83,7 +83,8 @@ public class GameMap extends Clickable {
 	
 	@Override
 	public void onClick(BasicWars o) {
-		o.loadMap(this);
+		o.map = this;
+		o.loadUnitMenu();
 	}
 	
 }
