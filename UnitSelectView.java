@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 public class UnitSelectView extends Menu {
 	private static final long serialVersionUID = 1115867647136193750L;
 	private Player player;
-	private Clickable money;
+	private Drawable money;
 	
 	public UnitSelectView(Player p) {
 		super("Unit Select P" + p.getNumber(), 0);
@@ -14,14 +14,8 @@ public class UnitSelectView extends Menu {
 		Tank tank = new Tank(player);
 		Plane plane = new Plane(player);
 		
-		money = new Clickable("money", true, new BufferedImage(200,200,2), Color.WHITE) {
-			@Override
-			public void onClick(BasicWars o) {
-				o.showError(0, "Each player begins with the same ammount of money.");
-			}
-		};
-		
-		clickables.add(money);
+		money = new Drawable("$0", 275, 125);
+		drawables.add(money);
 		
 		clickables.add(new Clickable(buildString('s'), true, soldier.getImage(), null) {
 			@Override
@@ -75,7 +69,7 @@ public class UnitSelectView extends Menu {
 	}
 	
 	private String buildString(char c) {
-		money.name = "Player "+player.getNumber()+" has $" + player.moneyRemaining();
+		money.setText("Player "+player.getNumber()+" has $" + player.moneyRemaining());
 		switch (c) {
 		case 's': return "Buy Soldier for $"+Player.PRICE_SOLDIER+" (" + player.sizeOfSoldiers() + ")";
 		case 't': return "Buy Tank for $"+Player.PRICE_TANK+" (" + player.sizeOfTanks() + ")";

@@ -70,7 +70,7 @@ public class MapSelectView extends Menu {
 			g.setColor(c.getColor());
 			//if (firstPaint) {
 				TextLayout tl = new TextLayout("[" + c.getName() + "]", BasicWars.BODY_FONT, g.getFontRenderContext());
-				c.initClickable(tl, x, y, g);
+				c.init(tl, x, y, g);
 			//}
 			c.draw();
 			//Rectangle2D rect = tl.getBounds(); 

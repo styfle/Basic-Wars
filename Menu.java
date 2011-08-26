@@ -27,6 +27,7 @@ public abstract class Menu extends JPanel {
 	private final int xPosChild = 350;
 	private int yPosChild = Y_TOP;
 	protected ArrayList<Clickable> clickables = new ArrayList<Clickable>();
+	protected ArrayList<Drawable> drawables = new ArrayList<Drawable>();
 	protected Image image;
 	
 	private boolean firstPaint = true;
@@ -95,13 +96,16 @@ public abstract class Menu extends JPanel {
 	public void paintChildren(Graphics graphics) {
 		Graphics2D g = (Graphics2D)graphics;
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		for (Drawable d : drawables) {
+			d.draw(g);
+		}
 		yPosChild = Y_TOP;
 		for (Clickable c : clickables) {
 			yPosChild += BasicWars.BODY_FONT.getSize()*2;
 			g.setColor(c.getColor());
 			if (firstPaint) {
 				TextLayout tl = new TextLayout("[" + c.getName() + "]", BasicWars.BODY_FONT, g.getFontRenderContext());
-				c.initClickable(tl, xPosChild, yPosChild, g);
+				c.init(tl, xPosChild, yPosChild, g);
 			}
 			c.draw();
 			//Rectangle2D rect = tl.getBounds(); 

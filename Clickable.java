@@ -109,7 +109,7 @@ public abstract class Clickable {
 	 * @param y - The y coordinate
 	 * @param g - The graphics to paint with
 	 */
-	public void initClickable(TextLayout tl, int x, int y, Graphics2D g) {
+	public void init(TextLayout tl, int x, int y, Graphics2D g) {
 		this.layout = tl;
 		this.x = x;
 		this.y = y;
@@ -117,7 +117,7 @@ public abstract class Clickable {
 	}
 	
 	/**
-	 * Draws the clickable object using parameters from initClickable()
+	 * Draws the clickable object using parameters from init()
 	 */
 	public void draw() {
 		layout.draw(g, x, y);

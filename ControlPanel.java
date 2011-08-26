@@ -65,8 +65,8 @@ public class ControlPanel extends JPanel {
 		statusLabel.setText(status);
 		
 		toolBar.add(mainMenuButton);
-		toolBar.add(playerSelectButton);
-		toolBar.add(mapSelectButton);
+		//toolBar.add(playerSelectButton);
+		//toolBar.add(mapSelectButton);
 		toolBar.addSeparator(new Dimension(SEPARATION, HEIGHT));
 		toolBar.add(statusLabel);		
 		this.add(toolBar, BorderLayout.NORTH);
