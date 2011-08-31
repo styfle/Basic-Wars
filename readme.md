@@ -17,6 +17,7 @@ Todo List
 * Optimize the way cells light up on hover over
 * Maybe make the map bigger than the screen and provide "panning" the view
 * Lastly, add a cool intro menu and awesome music
+* Lastly*2, redirect System.err to a log file for release code
 
 Completed
 ----------

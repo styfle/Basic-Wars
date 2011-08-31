@@ -38,7 +38,7 @@ public abstract class Clickable {
 			Color grayedOut = new Color(45,60,45);
 			g.setColor(grayedOut);
 			g.setFont(new Font("Courier", Font.BOLD, 30));
-			g.drawString("Disabled", 60, 120);
+			g.drawString("Disabled", 65, 120);
 			COLOR_NORMAL = grayedOut;
 			COLOR_HOVER = grayedOut;
 			color = COLOR_NORMAL;
@@ -74,9 +74,7 @@ public abstract class Clickable {
 	 * Set the printable name of this clickable
 	 * @param n Text name
 	 */
-	protected void setName(String n) {
-		name = n;
-	}
+	protected void setName(String n) { name = n; }
 	
 	/**
 	 * @return Printable string for this clickable object
@@ -91,11 +89,9 @@ public abstract class Clickable {
 	
 	/**
 	 * Set the image for this clickable
-	 * @param i Image for clickable
+	 * @param i BufferedImage for clickable
 	 */
-	protected void setImage(BufferedImage i) {
-		image = i;
-	}
+	protected void setImage(BufferedImage i) { image = i; }
 	
 	/**
 	 * @return Image of this clickable object or null if no image is available
@@ -126,16 +122,12 @@ public abstract class Clickable {
 	/**
 	 * Call when hovering over element
 	 */
-	public void startHover() {
-		color = COLOR_HOVER;
-	}
+	public void startHover() { color = COLOR_HOVER; }
 	
 	/**
 	 * Call when hovering stops
 	 */
-	public void stopHover() {
-		color = COLOR_NORMAL;
-	}
+	public void stopHover() { color = COLOR_NORMAL; }
 	
 	/**
 	 * @param point of click

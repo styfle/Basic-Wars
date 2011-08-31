@@ -2,6 +2,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
 
 import javax.swing.*;
 
@@ -22,7 +24,6 @@ public class BasicWars extends JPanel {
 	public static final Color TEXT_COLOR = new Color(150,180,150);
 	public int currentPlayer = 0;
 	public ArrayList<Player> players = new ArrayList<Player>();
-	public GameMap map;
 	private static JFrame frame;
 	private ControlPanel controlPanel = new ControlPanel("Basic Wars. Basically awesome.");
 	private MainMenuView mainMenu;
@@ -31,6 +32,7 @@ public class BasicWars extends JPanel {
 	private MapSelectView mapMenu;
 	private UnitSelectView unitMenu;
 	private Timer timer;
+	private GameMap map;
 	private final static String map0 = "EEEEEEEEEEEEEEEEEEEEEEEEE\n" +
 										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
 										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
@@ -102,7 +104,10 @@ public class BasicWars extends JPanel {
 	
 	public BasicWars() {
 		super(new BorderLayout());
+		System.setProperty("awt.useSystemAAFontSettings","on");
+		System.setProperty("swing.aatext", "true");
 		
+		//System.setErr(new java.io.PrintStream("error.log"));
 		mainMenu = new MainMenuView();
 		aboutView = new AboutView();
 		playerMenu = new PlayerSelectView();
@@ -110,15 +115,17 @@ public class BasicWars extends JPanel {
 		
 		add(controlPanel, BorderLayout.NORTH);
 		add(mainMenu, BorderLayout.CENTER);
+		
+		
 	}
 	
 	/**
 	 * Loads a map to the display
 	 * @param m Map to load
 	 */
-	public void loadMap(GameMap m) {
+	public void loadMap() {
 		remove(1);
-		final GameMapView board = new GameMapView(m);
+		final GameMapView board = new GameMapView(map);
 		
 		timer = new Timer(100, new ActionListener() {
 			@Override
@@ -126,6 +133,20 @@ public class BasicWars extends JPanel {
 				if (board.isMapLoaded()) {
 					controlPanel.setStatus("Map loaded.");					
 					timer.stop();
+					// randomly add units to the board
+					Random r = new Random();
+					int i;
+					Cell c;
+					for (Player p : players) {
+						Unit u;
+						while ((u = p.getNextUnit()) != null) {
+							do {
+								i = r.nextInt(map.getCells().size());
+								c = map.getCells().get(i);
+							} while (c.getUnit() != null || !c.getType().equals(Cell.Type.EARTH));
+							c.setUnit(u);
+						}
+					}
 				}
 			}			
 		});
@@ -147,33 +168,64 @@ public class BasicWars extends JPanel {
 	 * Loads the main menu. Any games in progress will be discarded.
 	 */
 	public void loadMainMenu() {
+		controlPanel.setMainMenuButton();
 		loadMenu(mainMenu, "Basic Wars. Basically awesome.");
 	}
 	
 	public void loadAbout() {
+		controlPanel.setMainMenuButton();
 		loadMenu(aboutView, "Who cares? Just play the game already...");
 	}
 	
 	public void loadPlayerMenu() {
+		controlPanel.setMainMenuButton();
 		loadMenu(playerMenu, "Select how many players.");
 	}
 	
 	public void loadMapMenu() {
+		currentPlayer = 0;
+		controlPanel.setPlayerSelectButton();
 		loadMenu(mapMenu, "Select a predefined map or load your own!");
 	}
 	
 	public void loadUnitMenu() {
+		controlPanel.setMapSelectButton();
 		if (currentPlayer < players.size()) {
 			unitMenu = new UnitSelectView(players.get(currentPlayer));
 			loadMenu(unitMenu, "Select your units");
 			currentPlayer++;
 		} else {
-			loadMap(map);
+			controlPanel.setMainMenuButton();
+			loadMap();
 		}
 	}
 	
 	public void setStatus(String s) {
 		controlPanel.setStatus(s);
+	}
+	
+	public void setMap(GameMap map) {
+		this.map = map;
+	}
+	
+	public void setPlayers(int count) {
+		players = new ArrayList<Player>(count);
+		for (int i=0; i<count; i++)
+			players.add(new Player(i+1));
+	}
+	
+	public boolean isGameOver() {
+		System.out.println("Is game over?");
+		for (Player p : players) {
+			if (p.getUnitCount() == 0) {
+				System.out.println("YES! GAMEOVER.");
+				controlPanel.setStatus("All of Player " + p.getNumber() + "'s units have been destroyed! Game over.");
+				return true;
+			} else {
+				System.out.println("No. Player"+p.getNumber()+" unit size: " + p.getUnitCount());
+			}
+		}
+		return false;
 	}
 	
 	/**
@@ -193,6 +245,12 @@ public class BasicWars extends JPanel {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		
+		//Enable anti-aliasing
+		Graphics2D g = (Graphics2D)frame.getGraphics();
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); //shapes
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); //text
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY); //quality
 	}
 	
 	/**
@@ -210,12 +268,20 @@ public class BasicWars extends JPanel {
 	}
 	
 	/**
-	 * Show an error dialog box when something bad occurs
+	 * Display an error dialog box when something bad occurs
 	 * @param errorNum An arbitrary number to reference the error
 	 * @param message The message to show the user
 	 */
 	public void showError(int errorNum, String message) {
 		JOptionPane.showMessageDialog(this, message, "Error " + errorNum, JOptionPane.ERROR_MESSAGE);
+	}
+	
+	/**
+	 * Display a message dialog box
+	 * @param message The message to show the user
+	 */
+	public void showMessage(String message) {
+		JOptionPane.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public static void main(String[] args) {

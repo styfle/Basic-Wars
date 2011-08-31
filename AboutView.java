@@ -19,13 +19,14 @@ public class AboutView extends Menu {
 				+ " developed for the ICS Summer of Code competition at UC,"
 				+ " Irvine. I could have developed anything, but I chose this"
 				+ " simple game because it involves a lot of Computer Science"
-				+ " know-how such as Graph Theory, Inheritance, and Graphics, etc."
+				+ " know-how such as Graph Theory, Inheritance, 2D Graphics, etc."
 				+ " This game also has the potential to add online multiplayer"
 				+ " and online games introduce a lot of fun/new features/problems."
 				+ " I have never made a full-featured game before so I thought a"
 				+ " modern war game (modern if it was made in 1990) would be a "
-				+ " good place to start. I hope you enjoy it! -Steven Salat"
+				+ " good place to start. I hope you enjoy it!"
 				, LINE_LENGTH);
+		text.add("-Steven Salat");
 	}
 	
 	/**
@@ -60,8 +61,6 @@ public class AboutView extends Menu {
 			g.drawString(s, 58, y);
 			y += 30;
 		}
-		
-		
 	}
 
 }

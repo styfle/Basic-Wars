@@ -61,6 +61,10 @@ public abstract class Unit {
 		return image;
 	}
 	
+	public boolean isDead() {
+		return healthRemaining <= 0;
+	}
+	
 	public void attackedBy(Unit u) {
 		if (u instanceof Soldier) {
 			attackedBySoldier();
@@ -70,6 +74,11 @@ public abstract class Unit {
 			attackedByPlane();
 		} else {
 			throw new IllegalArgumentException("Attacking unit is not recognized: " + u);
+		}
+		
+		if (isDead()) {
+			System.out.println("Unit was killed");
+			player.removeUnit(this);
 		}
 	}
 	
@@ -84,4 +93,6 @@ public abstract class Unit {
 	private void attackedByPlane() {
 		healthRemaining = healthRemaining - 75;
 	}
+	
+	
 }

@@ -1,3 +1,4 @@
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -12,11 +13,11 @@ public class MainMenuView extends Menu {
 	public MainMenuView() {
 		super(BasicWars.GAME_NAME, 60);
 		
-		final BufferedImage i = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
+		BufferedImage i = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
 		Graphics g = i.getGraphics();
-		Cell c = new Cell(70, 40, Cell.Type.EARTH);
+		Cell c = new Cell(40, 70, Cell.Type.EARTH);
 		c.paintCell(g);
-		for (int j=0; j<3; j++) {
+		for (int j=0; j<4; j++) {
 			c = c.generateNorthEast(Cell.Type.WATER);
 			c.paintCell(g);
 			c = c.generateSouthEast(Cell.Type.LAVA);
@@ -27,12 +28,10 @@ public class MainMenuView extends Menu {
 		c = c.generateNorthEast(Cell.Type.EARTH);
 		c.paintCell(g);
 		//image = i.getScaledInstance(i.getWidth(null)*3, i.getHeight(null)*3, Image.SCALE_SMOOTH);
-		image = i;
-		//TODO add separate image for each option
+
 		clickables.add(new Clickable("Start Game", true, i, null) {
 			@Override
 			public void onClick(BasicWars o) {
-				System.out.println("Start clicked.");
 				o.loadPlayerMenu();
 			}
 		});
@@ -40,18 +39,35 @@ public class MainMenuView extends Menu {
 		clickables.add(new Clickable("Instructions", false, null, null) {
 			@Override
 			public void onClick(BasicWars o) {
-				System.out.println("Instructions clicked.");
-				o.showError(101, "Unimplemented: Instructions");
+				o.showMessage("Sorry, no instructions yet. Coming soon!");
 			}
 		});
+		
+		i = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
+		g = i.getGraphics();
+		g.setColor(BasicWars.TEXT_COLOR);
+		g.setFont(new Font("Courier", Font.BOLD, 30));
+		g.drawString("Hello", 85, 120);
 		
 		clickables.add(new Clickable("About", true, i, null) {
 			@Override
 			public void onClick(BasicWars o) {
-				System.out.println("About clicked.");
 				o.loadAbout();
 			}
 		 });
+		
+		i = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
+		g = i.getGraphics();
+		g.setColor(BasicWars.HEAD_COLOR);
+		g.setFont(new Font("Courier", Font.BOLD, 30));
+		g.drawString("Goodbye", 65, 120);
+		
+		clickables.add(new Clickable("Exit", true, i , BasicWars.HEAD_COLOR) {
+			@Override
+			public void onClick(BasicWars o) {
+				System.exit(0);
+			}
+		});
 		 
 		 
 	}

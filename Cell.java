@@ -15,13 +15,14 @@ public class Cell {
 	public Cell northEast;
 	public Cell southEast;
 	public Cell northWest;
-	public Cell southWest;	
+	public Cell southWest;
 	public static enum Type {EARTH, WATER, LAVA, TREE};
+	private Type type;
 	private Unit unit;
 	private static final Color COLOR_BORDER = Color.LIGHT_GRAY;
 	private final Color COLOR_FILL;
 	private final Color COLOR_FILL_HOVER;
-	private final Color COLOR_FILL_SELECTED = new Color(247, 255 , 194);
+	private static final Color COLOR_FILL_SELECTED = new Color(250, 255 , 200);
 	private Color currentFill; //current color fill
 	private Color currentBorder = COLOR_BORDER;
 	private static final double ANGLE = (2*Math.PI)/6;
@@ -38,8 +39,9 @@ public class Cell {
 	public Cell(int xPos, int yPos, Type cellType) {
 		x = xPos;
 		y = yPos;
-		switch (cellType) {
-			case EARTH: currentFill = new Color(139, 69, 19, 175); break;
+		type = cellType;
+		switch (type) {
+			case EARTH:currentFill = new Color(139, 69, 19, 175); break;
 			case WATER: currentFill = new Color(0, 0, 255, 175); break;
 			case LAVA: currentFill = new Color(255, 0, 0, 175); break;
 			case TREE: currentFill = new Color(0, 255, 0, 175); break;
@@ -83,6 +85,8 @@ public class Cell {
 	
 	public int getX() { return x; }
 	public int getY() { return y; }
+	
+	public Type getType() { return type; }
 	
 	public boolean contains(Point p) { return hexagon.contains(p); }
 	

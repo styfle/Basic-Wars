@@ -22,6 +22,8 @@ public abstract class Menu extends JPanel {
 	protected static final int IMAGE_WIDTH = 300;
 	protected static final int IMAGE_HEIGHT = 300;
 	private static final int Y_TOP = 130;
+	private static final Cursor CURSOR_DEFAULT = new Cursor(Cursor.DEFAULT_CURSOR);
+	private static final Cursor CURSOR_HAND = new Cursor(Cursor.HAND_CURSOR);
 	private final String title;
 	private final int xPosHead;
 	private final int xPosChild = 350;
@@ -62,16 +64,20 @@ public abstract class Menu extends JPanel {
 
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				Cursor cursor = new Cursor(Cursor.DEFAULT_CURSOR);
+				Cursor cursor = CURSOR_DEFAULT;
+				boolean isHovering = false;
 				for (Clickable c : clickables) {
 					if (c.contains(e.getPoint())) {
-						cursor = new Cursor(Cursor.HAND_CURSOR);
+						cursor = CURSOR_HAND;
 						image = c.getImage();
 						c.startHover();
+						isHovering = true;
 					} else {
 						c.stopHover();
 					}
 				}
+				if (!isHovering)
+					image = null; // only show image when hovering
 				setCursor(cursor);
 				repaint();
 			}
@@ -84,7 +90,9 @@ public abstract class Menu extends JPanel {
 	@Override
 	public void paintComponent(Graphics graphics) {
 		Graphics2D g = (Graphics2D)graphics;
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); //shapes
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); //text
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY); //quality
 		g.setColor(BasicWars.BG_COLOR);
 		g.fillRect(0, 0, GameMapView.WIDTH, GameMapView.HEIGHT);
 		g.setColor(BasicWars.HEAD_COLOR);
@@ -95,7 +103,9 @@ public abstract class Menu extends JPanel {
 	@Override
 	public void paintChildren(Graphics graphics) {
 		Graphics2D g = (Graphics2D)graphics;
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON); //shapes
+		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); //text
+		g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY); //quality
 		for (Drawable d : drawables) {
 			d.draw(g);
 		}

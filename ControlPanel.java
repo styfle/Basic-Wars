@@ -6,11 +6,16 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 
 
 /**
@@ -22,11 +27,16 @@ public class ControlPanel extends JPanel {
 	public static final int WIDTH = GameMapView.WIDTH;
 	public static final int HEIGHT = 22;
 	private static final int SEPARATION = 5;
+	private JToolBar toolBar;
 	private JButton mainMenuButton;
 	private JButton playerSelectButton;
 	private JButton mapSelectButton;
 	private JLabel statusLabel = new JLabel();
 	private ActionListener al;
+	//private MouseListener ml;
+	private static final Color BUTTON_COLOR = new Color(50,50,50);
+	//private static final Border BORDER = BorderFactory.createRaisedBevelBorder();
+	//private static final Border BORDER_HOVER = BorderFactory.createBevelBorder(BevelBorder.RAISED, BasicWars.TEXT_COLOR.brighter(), BasicWars.TEXT_COLOR.darker());
 	
 	/**
 	 * Panel that contains buttons for user navigation and status output
@@ -49,14 +59,53 @@ public class ControlPanel extends JPanel {
 					main.loadMapMenu();
 				}
 				System.out.println(((JButton)e.getSource()).getText() + " clicked.");
-			}			
+			}
 		};
+		/*
+		ml = new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) { }
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				System.out.println("mouse entered");
+				JButton button = (JButton)e.getSource();
+				button.setBorder(BORDER_HOVER);
+				button.setBackground(BUTTON_COLOR);
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+				System.out.println("mouse exited");
+				JButton button = (JButton)e.getSource();
+				button.setBorder(BORDER);
+				button.setBackground(BUTTON_COLOR);
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+				BasicWars main = (BasicWars)getParent();
+				if (e.getSource().equals(mainMenuButton)) {
+					main.loadMainMenu();
+				} else if (e.getSource().equals(playerSelectButton)) {
+					main.loadPlayerMenu();
+				} else if (e.getSource().equals(mapSelectButton)) {
+					main.loadMapMenu();
+				}
+				System.out.println(((JButton)e.getSource()).getText() + " clicked.");
+
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent arg0) { }
+			
+		};*/
 		
 		mainMenuButton = createButton("Main Menu");
 		playerSelectButton = createButton("Player Select");
 		mapSelectButton = createButton("Map Select");
 		
-		JToolBar toolBar = new JToolBar("Toolbar");
+		toolBar = new JToolBar("Toolbar");
 		toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, SEPARATION, 0));
 		toolBar.setBackground(BasicWars.BG_COLOR);
 		
@@ -69,14 +118,15 @@ public class ControlPanel extends JPanel {
 		//toolBar.add(mapSelectButton);
 		toolBar.addSeparator(new Dimension(SEPARATION, HEIGHT));
 		toolBar.add(statusLabel);		
-		this.add(toolBar, BorderLayout.NORTH);
+		this.add(toolBar, BorderLayout.CENTER);
 	}
 	
 	private JButton createButton(String label) {
 		JButton b = new JButton(label);
 		b.setBorderPainted(false);
+		//b.setBorder(BORDER);
 		b.setBounds(0, 0, 100, HEIGHT);
-		b.setBackground(new Color(50,50,50));
+		b.setBackground(BUTTON_COLOR);
 		b.setForeground(BasicWars.TEXT_COLOR);
 		b.setFont(new Font("Arial", Font.BOLD, 12));
 		b.setPreferredSize(new Dimension(b.getWidth(), HEIGHT));
@@ -92,5 +142,23 @@ public class ControlPanel extends JPanel {
 	 */
 	public void setStatus(String status) {
 		statusLabel.setText(status);
+	}
+	
+	private void setButton(JButton button) {
+		toolBar.removeAll();
+		toolBar.add(button);
+		toolBar.add(statusLabel);
+	}
+	
+	public void setMainMenuButton() {
+		setButton(mainMenuButton);
+	}
+	
+	public void setPlayerSelectButton() {
+		setButton(playerSelectButton);
+	}
+	
+	public void setMapSelectButton() {
+		setButton(mapSelectButton);
 	}
 }

@@ -12,7 +12,7 @@ public class PlayerSelectView extends Menu {
 		Clickable onePlayer = new Clickable("Single Player", false, null, null) {
 			@Override
 			public void onClick(BasicWars o) {
-				o.showError(1, "I regret to inform you that Single Player is not implemented...yet.");
+				o.showMessage("I regret to inform you that Single Player is not implemented.");
 			}
 		};
 		//onePlayer.COLOR_HOVER = onePlayer.COLOR_NORMAL;
@@ -20,9 +20,7 @@ public class PlayerSelectView extends Menu {
 		Clickable twoPlayer = new Clickable("Two Player") {
 			@Override
 			public void onClick(BasicWars o) {
-				System.out.println("Two players");
-				o.players.add(new Player(1, Player.Side.LEFT));
-				o.players.add(new Player(2, Player.Side.RIGHT));
+				o.setPlayers(2);
 				o.loadMapMenu();
 			}
 		};

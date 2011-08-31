@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 
 import javax.swing.JMenuItem;
@@ -26,9 +25,11 @@ public class GameMapView extends JPanel {
     private GameMap map;
     private int index = 0; // used for animation
     private Cell selected = null;
+    private Cell rightClicked = null;
     private JPopupMenu popup = new JPopupMenu("Options");
     private JMenuItem moveItem = new JMenuItem("Move");
 	private JMenuItem attackItem = new JMenuItem("Attack");
+	private ActionListener al;
     
     public GameMapView(GameMap m) {
     	super(true); // double buffered
@@ -37,7 +38,7 @@ public class GameMapView extends JPanel {
 		
 		Timer t = new Timer(25, new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				repaint();
 			}			
 		});
@@ -45,6 +46,33 @@ public class GameMapView extends JPanel {
 		t.start();
 		
 		this.add(popup);
+		
+		al = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (e.getSource().equals(moveItem)) {
+					Unit u = selected.getUnit();
+					selected.setUnit(null);
+					//TODO animate movement
+					rightClicked.setUnit(u);
+				} else if (e.getSource().equals(attackItem)) {
+					Unit attacker = selected.getUnit();
+					//TODO animate attack
+					Unit victim = rightClicked.getUnit();
+					victim.attackedBy(attacker);
+					if (victim.isDead())
+						rightClicked.setUnit(null);
+					
+					//check if game over
+					((BasicWars)getParent()).isGameOver();
+				}
+				selected.setSelected(false);
+				selected = null;
+			}
+		};
+		
+		moveItem.addActionListener(al);
+		attackItem.addActionListener(al);
 		
     	this.addMouseListener(new MouseListener() {
 			@Override
@@ -59,18 +87,20 @@ public class GameMapView extends JPanel {
 							break;
 						}
 					}
-					if (clicked != null) {
-						for (Cell c : cells)
-							if (c.equals(clicked))
-								selected = c.setSelected(true);
-							else
-								c.setSelected(false);
-					}
+					
+					for (Cell c : cells)
+						if (c.equals(clicked))
+							selected = c.setSelected(true);
+						else
+							c.setSelected(false);
+					
 				} else if (SwingUtilities.isRightMouseButton(e)) {
 					if (selected != null) {
 						for (Cell c : cells)
 							if (!c.equals(selected) && c.contains(e.getPoint())) {
+								rightClicked = c;
 								System.out.println("Cell " + cells.indexOf(c) + " right-clicked!");
+								
 								popup.removeAll();
 								if (c.getUnit() == null)
 									popup.add(moveItem);
@@ -92,22 +122,6 @@ public class GameMapView extends JPanel {
 			public void mouseReleased(MouseEvent e) { }
 			
 		});
-    	/*
-    	this.addMouseMotionListener(new MouseMotionListener() {
-			@Override
-			public void mouseDragged(MouseEvent e) { }
-
-			@Override
-			public void mouseMoved(MouseEvent e) {
-				for (Cell c : map.getCells()) {
-					if (c.contains(e.getPoint()))
-						c.mouseEntered();
-					else
-						c.mouseExited();
-				}
-			}
-    		
-    	}); */
 		
     }
     
