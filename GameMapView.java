@@ -66,7 +66,7 @@ public class GameMapView extends JPanel {
 					//check if game over
 					((BasicWars)getParent()).isGameOver();
 				}
-				selected.setSelected(false);
+				selected.setSelected(null);
 				selected = null;
 			}
 		};
@@ -78,6 +78,7 @@ public class GameMapView extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				ArrayList<Cell> cells = map.getCells();
+				BasicWars o = ((BasicWars)getParent());
 				if (SwingUtilities.isLeftMouseButton(e)) {
 					Cell clicked = null;
 					for (Cell c : cells) {
@@ -90,9 +91,9 @@ public class GameMapView extends JPanel {
 					
 					for (Cell c : cells)
 						if (c.equals(clicked))
-							selected = c.setSelected(true);
+							selected = c.setSelected(o);
 						else
-							c.setSelected(false);
+							c.setSelected(null);
 					
 				} else if (SwingUtilities.isRightMouseButton(e)) {
 					if (selected != null) {

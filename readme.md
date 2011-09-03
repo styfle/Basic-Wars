@@ -10,8 +10,7 @@ I don't have much more to say right now because I really don't know what the fin
 Todo List
 ---------
 * Definitely need some royalty-free sprites soon (soldier, tank, planes)
-* Add a buy view so players can buy their units
-* Implement unit placement and movement
+* Implement game logic such as rotating turns, for move and attack
 * Add a view with the instructions on how to play
 * Resize cells/sprites on the fly when the window/frame changes sizes
 * Optimize the way cells light up on hover over
@@ -24,6 +23,8 @@ Completed
 * Differentiate cells by the type of land/water it represents
 * Provide a way to load arbitrary maps
 * Add multiple menus to select players/map/etc.
+* Add a buy view so players can buy their units
+* Implement simple movement and attack
 
 
 Beta Testing

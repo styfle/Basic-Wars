@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 
 
 /**
@@ -14,6 +15,7 @@ public abstract class Unit {
 	private int healthRemaining;
 	private Player player;
 	private BufferedImage image;
+	private ImageIcon icon;
 	
 	public Unit(Player owner, int maxHealth, String unit) {
 		if (owner == null) {
@@ -28,42 +30,29 @@ public abstract class Unit {
 		
 		try {
 			image = ImageIO.read(new File(imagePath));
+			icon = new ImageIcon(image.getScaledInstance(15, 15, BufferedImage.SCALE_SMOOTH));
 		} catch (IOException e) {
 			throw new IllegalArgumentException("Could not find image: " + imagePath);
 		}
 	}
 	
-	public void setHealth(int num) {
-		healthRemaining = num;
-	}
+	public void setHealth(int h) { healthRemaining = h; }
 	
-	public int getHealth() {
-		return healthRemaining;
-	}
+	public int getHealth() { return healthRemaining; }
 	
-	public int getMaxHealth() {
-		return MAX_HEALTH;
-	}
+	public int getMaxHealth() { return MAX_HEALTH; }
 	
 	public double getHealthPercent() {
 		return healthRemaining / (double)MAX_HEALTH * 100;
 	}
 	
-	public Player getPlayer() {
-		return player;
-	}
+	public Player getPlayer() { return player; }
 	
-	public void setPlayer(Player owner) {
-		player = owner;
-	}
+	public BufferedImage getImage() { return image; }
 	
-	public BufferedImage getImage() {
-		return image;
-	}
+	public ImageIcon getIcon() { return icon; }
 	
-	public boolean isDead() {
-		return healthRemaining <= 0;
-	}
+	public boolean isDead() { return healthRemaining <= 0; }
 	
 	public void attackedBy(Unit u) {
 		if (u instanceof Soldier) {

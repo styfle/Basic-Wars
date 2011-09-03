@@ -102,11 +102,13 @@ public class Cell {
 		return type;
 	}
 	
-	public Cell setSelected(boolean b) {
-		if (b)
+	public Cell setSelected(BasicWars o) {
+		if (o != null) {
 			currentFill = COLOR_FILL_SELECTED;
-		else
+			o.setSelected(unit);
+		} else {
 			currentFill = COLOR_FILL;
+		}
 		return this;
 	}
 	
