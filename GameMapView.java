@@ -77,9 +77,9 @@ public class GameMapView extends JPanel {
 						selected.setSelected(null);
 						selected = rightClicked.setSelected(o);
 						rightClicked = null;
-						System.out.println("MoveItem Selected  : " + selected);
+						o.showTurn(playerTurn, movesRemaining);
+						//TODO show valid attack cells
 					} else if (e.getSource().equals(attackItem)) {
-						System.out.println("AttackItem Selected: " + selected);
 						Unit attacker = selected.getUnit();
 						Unit victim = rightClicked.getUnit();
 						//TODO animate attack
@@ -87,13 +87,19 @@ public class GameMapView extends JPanel {
 						if (victim.isDead())
 							rightClicked.setUnit(null);
 						
+						//remove highlights for valid moves
+						for (Cell c : map.getCells())
+							c.setValidMove(false);
+						
 						// deselect after attack
 						selected.setSelected(null);
 						selected = null;
 						
 						//check if game over
-						if (!o.isGameOver())
+						if (!o.isGameOver()) {
 							nextPlayerTurn();
+							o.showTurn(playerTurn, movesRemaining);
+						}
 					}
 					
 				}
@@ -208,7 +214,8 @@ public class GameMapView extends JPanel {
     		playerTurn = players.get(i);
     	else
     		playerTurn = players.get(0);
-    	System.out.println("Player turn: " + playerTurn);
+    	
+    	this.movesRemaining = 1;
     }
     
     /**

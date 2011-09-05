@@ -49,8 +49,9 @@ public class Unit {
 		
 		//String imagePath = "images/"+unit+owner.getNumber()+"_"+owner.getSide().toString()+".png";
 		String imagePath = "images/"+name+owner.getNumber()+".png";
-		player = owner;
-		healthRemaining = MAX_HEALTH;
+		this.type = type;
+		this.player = owner;
+		this.healthRemaining = MAX_HEALTH;
 		
 		try {
 			image = ImageIO.read(new File(imagePath));
@@ -83,16 +84,7 @@ public class Unit {
 	public boolean isDead() { return healthRemaining <= 0; }
 	
 	public void attackedBy(Unit u) {
-		/*
-		if (u instanceof Soldier) {
-			attackedBySoldier();
-		} else if (u instanceof Tank) {
-			attackedByTank();
-		} else if (u instanceof Plane) {
-			attackedByPlane();
-		} else {
-			throw new IllegalArgumentException("Attacking unit is not recognized: " + u);
-		}*/
+		System.out.println(u.getType() ==null);
 		switch(u.getType()) {
 			case SOLDIER: attackedBySoldier(); break;
 			case TANK: attackedByTank(); break;

@@ -23,7 +23,7 @@ public class Cell {
 	private final Color COLOR_FILL;
 	private final Color COLOR_FILL_HOVER;
 	private static final Color COLOR_FILL_SELECTED = new Color(250, 255 , 200);
-	private static final Color COLOR_VALID_MOVE = Color.WHITE;
+	private final Color COLOR_VALID_MOVE;
 	private Color currentFill; //current color fill
 	private Color currentBorder = COLOR_BORDER;
 	private static final double ANGLE = (2*Math.PI)/6;
@@ -51,6 +51,7 @@ public class Cell {
 		}
 		COLOR_FILL = currentFill;
 		COLOR_FILL_HOVER = BasicWars.bleach(COLOR_FILL, 0.25f);
+		COLOR_VALID_MOVE = BasicWars.bleach(COLOR_FILL, 0.50f);
 		
 		for (int i = 0; i < 6; i++) {
 			int x2 = (int)(x + DIST_TO_CORNER * Math.cos(i * ANGLE));
@@ -106,7 +107,7 @@ public class Cell {
 	public Cell setSelected(BasicWars o) {
 		if (o != null) {
 			currentFill = COLOR_FILL_SELECTED;
-			o.setSelected(unit);
+			o.showSelected(unit);
 		} else {
 			currentFill = COLOR_FILL;
 		}

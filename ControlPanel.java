@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,10 +29,10 @@ public class ControlPanel extends JPanel {
 	private JButton playerSelectButton;
 	private JButton mapSelectButton;
 	private JPanel hud;
-	private JLabel selected;
+	private JLabel currentTurn;
 	private JLabel statusLabel = new JLabel();
 	private ActionListener al;
-	private static final Color BUTTON_COLOR = new Color(50,50,50);
+	//private static final Color BUTTON_COLOR = new Color(50,50,50);
 	
 	/**
 	 * Panel that contains buttons for user navigation and status output
@@ -68,8 +67,11 @@ public class ControlPanel extends JPanel {
 		toolBar.setBackground(BasicWars.BG_COLOR);
 		
 		hud = new JPanel();
-		selected = new JLabel();
-		hud.add(selected);
+		hud.setBackground(new Color(0, 0, 0, 50));
+		currentTurn = new JLabel("Player 1:  move ");
+		currentTurn.setFont(STATUS_FONT);
+		currentTurn.setForeground(BasicWars.TEXT_COLOR);
+		hud.add(currentTurn);
 		
 		statusLabel.setFont(STATUS_FONT);
 		statusLabel.setForeground(BasicWars.TEXT_COLOR);
@@ -103,33 +105,31 @@ public class ControlPanel extends JPanel {
 	public void setStatus(String status) { statusLabel.setText(status); }
 	
 	/**
-	 * When a unit is selected, show their health/etc on the hud
+	 * When a unit is selected, show their health/etc
 	 * @param u Selected Unit
 	 */
-	public void setSelected(Unit u) {
+	public void showSelected(Unit u) {
 		if (u == null) {
-			selected = new JLabel("Nothing selected.");
-			selected.setForeground(Color.GRAY);
-			statusLabel.setText("Select a unit");
+			statusLabel = new JLabel("Select a unit.");
+			statusLabel.setFont(STATUS_FONT);
+			statusLabel.setForeground(BasicWars.TEXT_COLOR);
 		} else {
-			selected = new JLabel(u.getHealth() + "/" + u.getMaxHealth() + " HP", u.getIcon(), SwingConstants.LEFT);
+			statusLabel = new JLabel(u.getHealth() + "/" + u.getMaxHealth() + " HP", u.getIcon(), SwingConstants.LEFT);
+			statusLabel.setFont(STATUS_FONT);
 			if (u.getHealthPercent() < 25)
-				selected.setForeground(Color.RED);
+				statusLabel.setForeground(Color.RED);
 			else if (u.getHealthPercent() < 50)
-				selected.setForeground(Color.ORANGE);
+				statusLabel.setForeground(Color.ORANGE);
 			else if (u.getHealthPercent() < 75)
-				selected.setForeground(Color.YELLOW);
+				statusLabel.setForeground(Color.YELLOW);
 			else
-				hud.setForeground(Color.GREEN);
-			statusLabel.setText("Player " + u.getPlayer().getNumber() + " selected " + u.toString());
+				statusLabel.setForeground(Color.GREEN);
 		}
-		selected.setFont(STATUS_FONT);
-		hud.removeAll();
-		hud.add(selected);
 		toolBar.removeAll();
 		toolBar.add(mainMenuButton);
 		toolBar.add(hud);
 		toolBar.add(statusLabel);
+		toolBar.repaint();
 	}
 	
 	private void setButton(JButton button) {
@@ -139,11 +139,15 @@ public class ControlPanel extends JPanel {
 	}
 	
 	/**
-	 * Tells the control panel who's turn it is, to update display
+	 * Updates display with current player's turn and moves remaining
 	 * @param p Player who is currently in control
 	 */
-	public void setTurn(Player p) {
-		//TODO show turn and moves remaining
+	public void showTurn(Player p, int moves) {
+		if (moves > 0)
+			currentTurn.setText("Player " + p.getNumber() + ":  move ");
+		else
+			currentTurn.setText("Player " + p.getNumber() + ": attack");
+		toolBar.repaint();
 	}
 	
 	public void setMainMenuButton() { setButton(mainMenuButton); }
