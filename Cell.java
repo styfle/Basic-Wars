@@ -23,6 +23,7 @@ public class Cell {
 	private final Color COLOR_FILL;
 	private final Color COLOR_FILL_HOVER;
 	private static final Color COLOR_FILL_SELECTED = new Color(250, 255 , 200);
+	private static final Color COLOR_VALID_MOVE = Color.WHITE;
 	private Color currentFill; //current color fill
 	private Color currentBorder = COLOR_BORDER;
 	private static final double ANGLE = (2*Math.PI)/6;
@@ -112,12 +113,27 @@ public class Cell {
 		return this;
 	}
 	
+	public void setValidMove(boolean isValid) {
+		currentFill = (isValid) ? COLOR_VALID_MOVE : COLOR_FILL;
+	}
+	
 	public void mouseEntered() {
 		currentFill = COLOR_FILL_HOVER;
 	}
 	
 	public void mouseExited() {
 		currentFill = COLOR_FILL;
+	}
+	
+	public Cell[] getAdjacentCells() {
+		Cell[] adj = new Cell[6];
+		adj[0] = north;
+		adj[1] = northEast;
+		adj[2] = southEast;
+		adj[3] = south;
+		adj[4] = southWest;
+		adj[5] = northWest;
+		return adj;
 	}
 	
 	public Cell generateSouth(Type type) {
@@ -155,43 +171,26 @@ public class Cell {
 		northEast = c;
 		c.southWest = this;
 		if (north != null) {
-			north.southEast = northEast;
-			northEast.northWest = north;
+			north.southEast = c;
+			c.northWest = north;
+			
+			Cell relNorth = north.northEast;
+			if (relNorth != null) {
+				relNorth.south = c;
+				c.north = relNorth;
+				
+				Cell relNorthEast = relNorth.southEast;
+				if (relNorthEast != null) {
+					relNorthEast.southWest = c;
+					northEast.northEast = relNorthEast;
+				}
+			}
+			
+			
 		}
 		if (southEast != null) {
 			southEast.north = northEast;
 			northEast.south = southEast;
-		}
-		return c;
-	}
-	
-	public Cell generateAdjacentCell() {
-		Cell c = null;
-		if (south == null) {
-			System.out.println("South");
-			c = new Cell(x, y + 2*DIST_TO_EDGE, Type.EARTH);
-			south = c;
-			c.north = this;			
-		} else if (southEast == null) {
-			c = new Cell(x + (int)(1.5*DIST_TO_CORNER), y + DIST_TO_EDGE, Type.EARTH);
-			southEast = c;
-			c.northWest = this;
-		} else if (northEast == null) {
-			c = new Cell(x + (int)(1.5*DIST_TO_CORNER), y - DIST_TO_EDGE, Type.EARTH);
-			northEast = c;
-			c.southWest = this;
-		} else if (southWest == null) {
-			c = new Cell(x - (int)(1.5*DIST_TO_CORNER), y + DIST_TO_EDGE, Type.EARTH);
-			southWest = c;
-			c.northEast = this;
-		} else if (northWest == null) {
-			c = new Cell(x - (int)(1.5*DIST_TO_CORNER), y - DIST_TO_EDGE, Type.EARTH);
-			northWest = c;
-			c.southEast = this;
-		} else if (north == null) {
-			c = new Cell(x, y - 2*DIST_TO_EDGE, Type.EARTH);
-			north = c;
-			c.south = this;
 		}
 		return c;
 	}

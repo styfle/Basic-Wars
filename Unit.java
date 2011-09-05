@@ -10,23 +10,47 @@ import javax.swing.ImageIcon;
  * This class is a unit (or game piece) that the
  * player moves around on the {@link GameMap} (or board).
  */
-public abstract class Unit {
+public class Unit {
+	private String name;
 	private final int MAX_HEALTH;
 	private int healthRemaining;
+	private final int MAX_MOVES;
 	private Player player;
 	private BufferedImage image;
 	private ImageIcon icon;
+	public static enum Type {SOLDIER, TANK, PLANE};
+	private Type type;
 	
-	public Unit(Player owner, int maxHealth, String unit) {
+	
+	public Unit(Type type, Player owner) {
 		if (owner == null) {
 			throw new IllegalArgumentException("Units must have an owner!");
 		}
 		
+		switch (type) {
+			case SOLDIER:
+				name = "soldier";
+				MAX_HEALTH = 100;
+				MAX_MOVES = 2;
+				break;
+			case TANK:
+				name = "tank";
+				MAX_HEALTH = 200;
+				MAX_MOVES = 1;
+				break;
+			case PLANE:
+				name = "plane";
+				MAX_HEALTH = 150;
+				MAX_MOVES = 5;
+				break;
+			default:
+				throw new IllegalArgumentException("Cannot create a unit of type: " + type);
+		}
+		
 		//String imagePath = "images/"+unit+owner.getNumber()+"_"+owner.getSide().toString()+".png";
-		String imagePath = "images/"+unit+owner.getNumber()+".png";
+		String imagePath = "images/"+name+owner.getNumber()+".png";
 		player = owner;
-		MAX_HEALTH = maxHealth;
-		healthRemaining = maxHealth;
+		healthRemaining = MAX_HEALTH;
 		
 		try {
 			image = ImageIO.read(new File(imagePath));
@@ -42,6 +66,8 @@ public abstract class Unit {
 	
 	public int getMaxHealth() { return MAX_HEALTH; }
 	
+	public Type getType() { return type; }
+	
 	public double getHealthPercent() {
 		return healthRemaining / (double)MAX_HEALTH * 100;
 	}
@@ -52,9 +78,12 @@ public abstract class Unit {
 	
 	public ImageIcon getIcon() { return icon; }
 	
+	public int getMaxMoves() { return MAX_MOVES; }
+	
 	public boolean isDead() { return healthRemaining <= 0; }
 	
 	public void attackedBy(Unit u) {
+		/*
 		if (u instanceof Soldier) {
 			attackedBySoldier();
 		} else if (u instanceof Tank) {
@@ -63,6 +92,13 @@ public abstract class Unit {
 			attackedByPlane();
 		} else {
 			throw new IllegalArgumentException("Attacking unit is not recognized: " + u);
+		}*/
+		switch(u.getType()) {
+			case SOLDIER: attackedBySoldier(); break;
+			case TANK: attackedByTank(); break;
+			case PLANE: attackedByPlane(); break;
+			default:
+				throw new IllegalArgumentException("Attacking unit is not recognized: " + u);
 		}
 		
 		if (isDead()) {

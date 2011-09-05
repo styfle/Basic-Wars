@@ -125,7 +125,7 @@ public class BasicWars extends JPanel {
 	 */
 	public void loadMap() {
 		remove(1);
-		final GameMapView board = new GameMapView(map);
+		final GameMapView board = new GameMapView(map, players);
 		
 		timer = new Timer(100, new ActionListener() {
 			@Override

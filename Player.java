@@ -34,7 +34,7 @@ public class Player {
 			return false;
 		money = money - PRICE_SOLDIER;
 		soldierCount++;
-		return units.add(new Soldier(this));
+		return units.add(new Unit(Unit.Type.SOLDIER, this));
 	}
 	
 	public boolean buyTank() {
@@ -42,7 +42,7 @@ public class Player {
 			return false;
 		money = money - PRICE_TANK;
 		tankCount++;
-		return units.add(new Tank(this));
+		return units.add(new Unit(Unit.Type.TANK, this));
 	}
 	
 	public boolean buyPlane() {
@@ -50,7 +50,7 @@ public class Player {
 			return false;
 		money = money - PRICE_PLANE;
 		planeCount++;
-		return units.add(new Plane(this));
+		return units.add(new Unit(Unit.Type.PLANE, this));
 	}
 	
 	public int sizeOfSoldiers() { return soldierCount; }

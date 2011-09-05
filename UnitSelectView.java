@@ -10,9 +10,9 @@ public class UnitSelectView extends Menu {
 	public UnitSelectView(Player p) {
 		super("Unit Select P" + p.getNumber(), 0);
 		this.player = p;
-		Soldier soldier = new Soldier(player);
-		Tank tank = new Tank(player);
-		Plane plane = new Plane(player);
+		Unit soldier = new Unit(Unit.Type.SOLDIER, player);
+		Unit tank = new Unit(Unit.Type.TANK , player);
+		Unit plane = new Unit(Unit.Type.PLANE, player);
 		
 		money = new Drawable("$0", 275, 125);
 		drawables.add(money);

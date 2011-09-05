@@ -29,7 +29,8 @@ public class ControlPanel extends JPanel {
 	private JButton mainMenuButton;
 	private JButton playerSelectButton;
 	private JButton mapSelectButton;
-	private JLabel hud;
+	private JPanel hud;
+	private JLabel selected;
 	private JLabel statusLabel = new JLabel();
 	private ActionListener al;
 	private static final Color BUTTON_COLOR = new Color(50,50,50);
@@ -66,7 +67,9 @@ public class ControlPanel extends JPanel {
 		toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, SEPARATION, 0));
 		toolBar.setBackground(BasicWars.BG_COLOR);
 		
-		hud = new JLabel("");
+		hud = new JPanel();
+		selected = new JLabel();
+		hud.add(selected);
 		
 		statusLabel.setFont(STATUS_FONT);
 		statusLabel.setForeground(BasicWars.TEXT_COLOR);
@@ -81,9 +84,9 @@ public class ControlPanel extends JPanel {
 	
 	private JButton createButton(String label) {
 		JButton b = new JButton(label);
-		b.setBorderPainted(false);
+		//b.setBorderPainted(false);
 		b.setBounds(0, 0, 100, HEIGHT);
-		b.setBackground(BUTTON_COLOR);
+		/*b.setBackground(BUTTON_COLOR);*/
 		b.setForeground(BasicWars.TEXT_COLOR);
 		b.setFont(new Font("Arial", Font.BOLD, 12));
 		b.setPreferredSize(new Dimension(b.getWidth(), HEIGHT));
@@ -105,14 +108,24 @@ public class ControlPanel extends JPanel {
 	 */
 	public void setSelected(Unit u) {
 		if (u == null) {
-			hud = new JLabel("Nothing selected.");
+			selected = new JLabel("Nothing selected.");
+			selected.setForeground(Color.GRAY);
 			statusLabel.setText("Select a unit");
 		} else {
-			hud = new JLabel(u.getHealth() + "/" + u.getMaxHealth() + " HP", u.getIcon(), SwingConstants.LEFT);
+			selected = new JLabel(u.getHealth() + "/" + u.getMaxHealth() + " HP", u.getIcon(), SwingConstants.LEFT);
+			if (u.getHealthPercent() < 25)
+				selected.setForeground(Color.RED);
+			else if (u.getHealthPercent() < 50)
+				selected.setForeground(Color.ORANGE);
+			else if (u.getHealthPercent() < 75)
+				selected.setForeground(Color.YELLOW);
+			else
+				hud.setForeground(Color.GREEN);
 			statusLabel.setText("Player " + u.getPlayer().getNumber() + " selected " + u.toString());
 		}
-		hud.setForeground(Color.RED);
-		hud.setFont(STATUS_FONT);
+		selected.setFont(STATUS_FONT);
+		hud.removeAll();
+		hud.add(selected);
 		toolBar.removeAll();
 		toolBar.add(mainMenuButton);
 		toolBar.add(hud);
@@ -123,6 +136,14 @@ public class ControlPanel extends JPanel {
 		toolBar.removeAll();
 		toolBar.add(button);
 		toolBar.add(statusLabel);
+	}
+	
+	/**
+	 * Tells the control panel who's turn it is, to update display
+	 * @param p Player who is currently in control
+	 */
+	public void setTurn(Player p) {
+		//TODO show turn and moves remaining
 	}
 	
 	public void setMainMenuButton() { setButton(mainMenuButton); }
