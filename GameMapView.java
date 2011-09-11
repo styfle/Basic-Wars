@@ -30,6 +30,7 @@ public class GameMapView extends JPanel {
     private JPopupMenu popup = new JPopupMenu("Options");
     private JMenuItem moveItem = new JMenuItem("Move");
 	private JMenuItem attackItem = new JMenuItem("Attack");
+	private JMenuItem skipItem = new JMenuItem("Skip Turn");
 	private ActionListener al;
 	private ArrayList<Player> players;
 	private Player playerTurn; //current player in control
@@ -60,7 +61,16 @@ public class GameMapView extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				//selected should never be null at this point
 				BasicWars o = ((BasicWars)getParent());
-				if (selected.getUnit().getPlayer() != playerTurn) {
+				if (e.getSource().equals(skipItem)) {
+					//remove highlights for valid moves
+					for (Cell c : map.getCells())
+						c.setValidMove(false);
+					
+					// deselect after attack
+					selected.setSelected(null);
+					selected = null;
+					nextPlayerTurn(o);
+				} else if (selected.getUnit().getPlayer() != playerTurn) {
 					o.showMessage("Player "+playerTurn.getNumber()+", are you trying to cheat?\nYou can't control a unit that you don't own!");
 				} else {
 					if (e.getSource().equals(moveItem)) {
@@ -78,7 +88,10 @@ public class GameMapView extends JPanel {
 						selected = rightClicked.setSelected(o);
 						rightClicked = null;
 						o.showTurn(playerTurn, movesRemaining);
-						//TODO show valid attack cells
+						
+						for (Cell c : getValidAttacks(selected))
+								c.setValidAttack(true);
+						
 					} else if (e.getSource().equals(attackItem)) {
 						Unit attacker = selected.getUnit();
 						Unit victim = rightClicked.getUnit();
@@ -97,8 +110,8 @@ public class GameMapView extends JPanel {
 						
 						//check if game over
 						if (!o.isGameOver()) {
-							nextPlayerTurn();
-							o.showTurn(playerTurn, movesRemaining);
+							nextPlayerTurn(o);
+							//o.showTurn(playerTurn, movesRemaining);
 						}
 					}
 					
@@ -108,8 +121,11 @@ public class GameMapView extends JPanel {
 		
 		moveItem.addActionListener(al);
 		attackItem.addActionListener(al);
+		skipItem.addActionListener(al);
 		popup.add(moveItem);
 		popup.add(attackItem);
+		popup.addSeparator();
+		popup.add(skipItem);
 		
     	this.addMouseListener(new MouseListener() {
 			@Override
@@ -126,7 +142,7 @@ public class GameMapView extends JPanel {
 						}
 					}
 					
-					HashSet<Cell> validMoves = getValidCells(clicked);
+					HashSet<Cell> validMoves = getValidMoves(clicked);
 					System.out.println("Valid cells: " + validMoves.size()); //debug
 					
 					for (Cell c : cells)
@@ -143,15 +159,17 @@ public class GameMapView extends JPanel {
 				} else if (SwingUtilities.isRightMouseButton(e)) {
 					if (selected != null) {
 						for (Cell c : cells)
-							if (!c.equals(selected) && c.contains(e.getPoint())) {
+							if (c.contains(e.getPoint()) && !c.equals(selected)) {
 								rightClicked = c;
 								System.out.println("Cell " + cells.indexOf(c) + " right-clicked!");
 								boolean isEmptyCell = (c.getUnit() == null);
 								boolean canMove = movesRemaining > 0;
-								boolean validMove = getValidCells(selected).contains(rightClicked);
+								boolean validMove = getValidMoves(selected).contains(rightClicked);
+								boolean validAttack = getValidAttacks(selected).contains(rightClicked);
 								moveItem.setEnabled(isEmptyCell && canMove && validMove);
-								attackItem.setEnabled(!isEmptyCell);
+								attackItem.setEnabled(!isEmptyCell && validAttack);
 								popup.show(e.getComponent(), c.getX(), c.getY());
+								break;
 							}
 					}
 				}
@@ -207,7 +225,7 @@ public class GameMapView extends JPanel {
     	return index+1 > map.getCells().size();
     }
     
-    private void nextPlayerTurn() {
+    private void nextPlayerTurn(BasicWars o) {
     	int i = players.indexOf(playerTurn);
     	i++;
     	if (i < players.size())
@@ -216,6 +234,7 @@ public class GameMapView extends JPanel {
     		playerTurn = players.get(0);
     	
     	this.movesRemaining = 1;
+    	o.showTurn(playerTurn, movesRemaining);
     }
     
     /**
@@ -223,10 +242,18 @@ public class GameMapView extends JPanel {
      * @param radius Max radius from Cell c that is legal
      * @return set of cells that are <= radius from c
      */
-    private HashSet<Cell> getValidCells(Cell c) {
+    private HashSet<Cell> getValidMoves(Cell c) {
     	HashSet<Cell> set = new HashSet<Cell>(10);
     	if (c != null && c.getUnit() != null) {
     		addAdj(c, set, 1, c.getUnit().getMaxMoves());
+    	} //else return empty set
+    	return set;
+    }
+    
+    private HashSet<Cell> getValidAttacks(Cell c) {
+    	HashSet<Cell> set = new HashSet<Cell>(10);
+    	if (c != null && c.getUnit() != null) {
+    		addAdj(c, set, 1, c.getUnit().getMaxAttackDist());
     	} //else return empty set
     	return set;
     }

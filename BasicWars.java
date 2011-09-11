@@ -16,7 +16,7 @@ import javax.swing.*;
 public class BasicWars extends JPanel {
 	private static final long serialVersionUID = -5944312753990108995L;
 	public static final String GAME_NAME = "Basic Wars";
-	public static final String GAME_VERSION = "0.40";
+	public static final String GAME_VERSION = "0.45";
 	public static final Font HEAD_FONT = new Font("DialogInput", Font.PLAIN, 75);
 	public static final Font BODY_FONT = new Font("Dialog", Font.PLAIN, 25);
 	public static final Color BG_COLOR = Color.BLACK;

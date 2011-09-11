@@ -15,6 +15,7 @@ public class Unit {
 	private final int MAX_HEALTH;
 	private int healthRemaining;
 	private final int MAX_MOVES;
+	private final int MAX_ATTACK;
 	private Player player;
 	private BufferedImage image;
 	private ImageIcon icon;
@@ -41,7 +42,7 @@ public class Unit {
 			case PLANE:
 				name = "plane";
 				MAX_HEALTH = 150;
-				MAX_MOVES = 5;
+				MAX_MOVES = 3;
 				break;
 			default:
 				throw new IllegalArgumentException("Cannot create a unit of type: " + type);
@@ -52,6 +53,7 @@ public class Unit {
 		this.type = type;
 		this.player = owner;
 		this.healthRemaining = MAX_HEALTH;
+		this.MAX_ATTACK = 2;
 		
 		try {
 			image = ImageIO.read(new File(imagePath));
@@ -80,6 +82,8 @@ public class Unit {
 	public ImageIcon getIcon() { return icon; }
 	
 	public int getMaxMoves() { return MAX_MOVES; }
+	
+	public int getMaxAttackDist() { return MAX_ATTACK; }
 	
 	public boolean isDead() { return healthRemaining <= 0; }
 	
