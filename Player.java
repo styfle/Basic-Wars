@@ -61,13 +61,6 @@ public class Player {
 		Unit u = null;
 		if (currentIndex < units.size())
 			u = units.get(currentIndex);
-		/*if (currentIndex < soldiers.size()) {
-			u = soldiers.get(currentIndex);
-		} else if (currentIndex - soldiers.size() < tanks.size()) {
-			u = tanks.get(currentIndex - soldiers.size());
-		} else if (currentIndex - soldiers.size() - tanks.size() < planes.size()) {
-			u = planes.get(currentIndex - soldiers.size() - tanks.size());
-		}*/
 		currentIndex++;
 		return u;
 	}

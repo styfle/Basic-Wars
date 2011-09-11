@@ -102,7 +102,7 @@ public class ControlPanel extends JPanel {
 	 * Updates the status at the top of the screen
 	 * @param status new status
 	 */
-	public void setStatus(String status) { statusLabel.setText(status); }
+	public void showStatus(String status) { statusLabel.setText(status); statusLabel.repaint(); }
 	
 	/**
 	 * When a unit is selected, show their health/etc
@@ -140,13 +140,16 @@ public class ControlPanel extends JPanel {
 	
 	/**
 	 * Updates display with current player's turn and moves remaining
-	 * @param p Player who is currently in control
+	 * @param p Player who is currently in control or Game Over when p == null
 	 */
 	public void showTurn(Player p, int moves) {
-		if (moves > 0)
+		if (p == null)
+			currentTurn.setText("Game Over!");
+		else if (moves > 0)
 			currentTurn.setText("Player " + p.getNumber() + ":  move ");
 		else
 			currentTurn.setText("Player " + p.getNumber() + ": attack");
+		
 		toolBar.repaint();
 	}
 	

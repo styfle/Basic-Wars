@@ -16,7 +16,7 @@ import javax.swing.*;
 public class BasicWars extends JPanel {
 	private static final long serialVersionUID = -5944312753990108995L;
 	public static final String GAME_NAME = "Basic Wars";
-	public static final String GAME_VERSION = "0.45";
+	public static final String GAME_VERSION = "0.50";
 	public static final Font HEAD_FONT = new Font("DialogInput", Font.PLAIN, 75);
 	public static final Font BODY_FONT = new Font("Dialog", Font.PLAIN, 25);
 	public static final Color BG_COLOR = Color.BLACK;
@@ -131,7 +131,7 @@ public class BasicWars extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {				
 				if (board.isMapLoaded()) {
-					controlPanel.setStatus("Map loaded.");					
+					controlPanel.showStatus("Map loaded.");					
 					timer.stop();
 					// randomly add units to the board
 					Random r = new Random();
@@ -151,14 +151,14 @@ public class BasicWars extends JPanel {
 			}			
 		});
 		timer.start();
-		controlPanel.setStatus("Loading map...(fancy ain't it?)");
+		controlPanel.showStatus("Loading map...(fancy ain't it?)");
 		add(board, BorderLayout.CENTER);
 		//validate();
 	}
 	
 	private void loadMenu(Menu menu, String status) {
 		remove(1);
-		controlPanel.setStatus(status);
+		controlPanel.showStatus(status);
 		add(menu, BorderLayout.CENTER);
 		validate();
 		repaint();
@@ -200,7 +200,7 @@ public class BasicWars extends JPanel {
 		}
 	}
 	
-	public void setStatus(String s) { controlPanel.setStatus(s); }
+	public void setStatus(String s) { controlPanel.showStatus(s); }
 	
 	public void showSelected(Unit u) { controlPanel.showSelected(u); }
 	
@@ -215,14 +215,13 @@ public class BasicWars extends JPanel {
 	}
 	
 	public boolean isGameOver() {
-		System.out.println("Is game over?");
 		for (Player p : players) {
 			if (p.getUnitCount() == 0) {
-				System.out.println("YES! GAMEOVER.");
-				controlPanel.setStatus("All of Player " + p.getNumber() + "'s units have been destroyed! Game over.");
+				System.out.println("GAME OVER!");
+				controlPanel.showStatus("All of Player " + p.getNumber() + "'s units have been destroyed!");
+				controlPanel.showTurn(null, 0);
+				this.showMessage("Game Over! All of Player " + p.getNumber() + "'s units have been destroyed!");
 				return true;
-			} else {
-				System.out.println("No. Player"+p.getNumber()+" unit size: " + p.getUnitCount());
 			}
 		}
 		return false;

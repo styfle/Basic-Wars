@@ -10,7 +10,11 @@ I don't have much more to say right now because I really don't know what the fin
 Todo List
 ---------
 * Definitely need some royalty-free sprites soon (soldier, tank, planes)
+* Limit movement on cells (tanks cant go in water, etc)
+* Attack damage should be randomized (like a dice roll for board game)
 * Add a view with the instructions on how to play
+* Remove the Lava type cell. I see no reason to keep it
+* Embed images in jar archive to make distribution easier (one file)
 * Resize cells/sprites on the fly when the window/frame changes sizes
 * Maybe make the map bigger than the screen and provide "panning" the view
 * Lastly, add a cool intro menu and awesome music

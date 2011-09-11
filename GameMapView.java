@@ -47,7 +47,7 @@ public class GameMapView extends JPanel {
     	
 		System.out.println("Loaded " + map.getName() + " (" + map.getCells().size() + " cells)");
 		
-		Timer t = new Timer(25, new ActionListener() {
+		Timer t = new Timer(10, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				repaint();
@@ -111,7 +111,6 @@ public class GameMapView extends JPanel {
 						//check if game over
 						if (!o.isGameOver()) {
 							nextPlayerTurn(o);
-							//o.showTurn(playerTurn, movesRemaining);
 						}
 					}
 					
@@ -130,6 +129,7 @@ public class GameMapView extends JPanel {
     	this.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				
 				ArrayList<Cell> cells = map.getCells();
 				BasicWars o = ((BasicWars)getParent());
 				if (SwingUtilities.isLeftMouseButton(e)) {
@@ -142,15 +142,19 @@ public class GameMapView extends JPanel {
 						}
 					}
 					
-					HashSet<Cell> validMoves = getValidMoves(clicked);
-					System.out.println("Valid cells: " + validMoves.size()); //debug
+					HashSet<Cell> validCells;
+					if (movesRemaining > 0)
+						validCells = getValidMoves(clicked);
+					else
+						validCells = getValidAttacks(clicked);
+					//System.out.println("Valid cells: " + validMoves.size()); //debug
 					
 					for (Cell c : cells)
 						if (c.equals(clicked)) {
 							selected = c.setSelected(o);
 						} else {
 							c.setSelected(null);
-							if (validMoves.contains(c) && clicked.getUnit().getPlayer() == playerTurn)
+							if (validCells.contains(c) && clicked.getUnit().getPlayer() == playerTurn)
 								c.setValidMove(true);
 							else
 								c.setValidMove(false);
