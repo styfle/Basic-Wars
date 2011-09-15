@@ -13,21 +13,20 @@ public class MainMenuView extends Menu {
 	public MainMenuView() {
 		super(BasicWars.GAME_NAME, 60);
 		
-		BufferedImage i = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
+		BufferedImage i = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = i.getGraphics();
 		Cell c = new Cell(40, 70, Cell.Type.EARTH);
 		c.paintCell(g);
 		for (int j=0; j<4; j++) {
 			c = c.generateNorthEast(Cell.Type.WATER);
 			c.paintCell(g);
-			c = c.generateSouthEast(Cell.Type.LAVA);
+			c = c.generateSouthEast(Cell.Type.EARTH);
 			c.paintCell(g);
-			c = c.generateSouth(Cell.Type.TREE);
+			c = c.generateSouth(Cell.Type.SWAMP);
 			c.paintCell(g);
 		}
 		c = c.generateNorthEast(Cell.Type.EARTH);
 		c.paintCell(g);
-		//image = i.getScaledInstance(i.getWidth(null)*3, i.getHeight(null)*3, Image.SCALE_SMOOTH);
 
 		clickables.add(new Clickable("Start Game", true, i, null) {
 			@Override

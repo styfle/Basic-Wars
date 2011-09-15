@@ -22,8 +22,6 @@ public class BasicWars extends JPanel {
 	public static final Color BG_COLOR = Color.BLACK;
 	public static final Color HEAD_COLOR = Color.RED;
 	public static final Color TEXT_COLOR = new Color(150,180,150);
-	public int currentPlayer = 0;
-	public ArrayList<Player> players = new ArrayList<Player>();
 	private static JFrame frame;
 	private ControlPanel controlPanel = new ControlPanel("Basic Wars. Basically awesome.");
 	private MainMenuView mainMenu;
@@ -32,6 +30,8 @@ public class BasicWars extends JPanel {
 	private MapSelectView mapMenu;
 	private UnitSelectView unitMenu;
 	private Timer timer;
+	public int currentPlayer;
+	public ArrayList<Player> players;
 	private GameMap map;
 	private final static String map0 = "EEEEEEEEEEEEEEEEEEEEEEEEE\n" +
 										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
@@ -113,6 +113,8 @@ public class BasicWars extends JPanel {
 		playerMenu = new PlayerSelectView();
 		mapMenu = new MapSelectView(maps);
 		
+		players = new ArrayList<Player>();
+		
 		add(controlPanel, BorderLayout.NORTH);
 		add(mainMenu, BorderLayout.CENTER);
 		
@@ -169,6 +171,7 @@ public class BasicWars extends JPanel {
 	 */
 	public void loadMainMenu() {
 		controlPanel.setMainMenuButton();
+		players = new ArrayList<Player>();
 		loadMenu(mainMenu, "Basic Wars. Basically awesome.");
 	}
 	
@@ -220,7 +223,8 @@ public class BasicWars extends JPanel {
 				System.out.println("GAME OVER!");
 				controlPanel.showStatus("All of Player " + p.getNumber() + "'s units have been destroyed!");
 				controlPanel.showTurn(null, 0);
-				this.showMessage("Game Over! All of Player " + p.getNumber() + "'s units have been destroyed!");
+				showMessage("Game Over! All of Player " + p.getNumber() + "'s units have been destroyed!");
+				
 				return true;
 			}
 		}

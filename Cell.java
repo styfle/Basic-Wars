@@ -16,7 +16,7 @@ public class Cell {
 	public Cell southEast;
 	public Cell northWest;
 	public Cell southWest;
-	public static enum Type {EARTH, WATER, LAVA, TREE};
+	public static enum Type {EARTH, WATER, SWAMP};
 	private Type type;
 	private Unit unit;
 	private static final Color COLOR_BORDER = Color.LIGHT_GRAY;
@@ -44,10 +44,9 @@ public class Cell {
 		switch (type) {
 			case EARTH:currentFill = new Color(139, 69, 19, 175); break;
 			case WATER: currentFill = new Color(0, 0, 255, 175); break;
-			case LAVA: currentFill = new Color(255, 0, 0, 175); break;
-			case TREE: currentFill = new Color(0, 255, 0, 175); break;
-			default:
-				System.err.println("Unknown cell type!");
+			//case LAVA: currentFill = new Color(255, 0, 0, 175); break;
+			case SWAMP: currentFill = new Color(0, 255, 0, 175); break;
+			default: throw new IllegalArgumentException("Unknown cell type!");
 		}
 		COLOR_FILL = currentFill;
 		COLOR_FILL_HOVER = BasicWars.bleach(COLOR_FILL, 0.25f);
@@ -97,9 +96,9 @@ public class Cell {
 		switch (ch) {
 			case 'E': type = Cell.Type.EARTH; break;
 			case 'W': type = Cell.Type.WATER; break;
-			case 'L': type = Cell.Type.LAVA; break;
-			case 'T': type = Cell.Type.TREE; break;
-			default: type = Cell.Type.LAVA;
+			//case 'L': type = Cell.Type.LAVA; break;
+			case 'T': type = Cell.Type.SWAMP; break;
+			default: throw new IllegalArgumentException("Unknown cell type: " + ch);
 		}
 		return type;
 	}

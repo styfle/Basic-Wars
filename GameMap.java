@@ -38,7 +38,7 @@ public class GameMap extends Clickable {
 		//setName(name);
 		if (mapData == null)
 			return;
-		Cell c = new Cell(Cell.DIST_TO_CORNER, 0, Cell.Type.TREE);
+		Cell c = new Cell(Cell.DIST_TO_CORNER, 0, Cell.Type.SWAMP);
 		String[] lines = mapData.split("\n");
 		if (lines.length != CELL_ROWS)
 			throw new IllegalArgumentException("Maps must have " + CELL_ROWS + " rows!\n Your map has " + lines.length + " rows.");
