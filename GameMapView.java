@@ -85,12 +85,15 @@ public class GameMapView extends JPanel {
 						//TODO animate movement
 						rightClicked.setUnit(u);
 						selected.setSelected(null);
-						selected = rightClicked.setSelected(o);
+						selected = rightClicked;
+						
 						rightClicked = null;
 						o.showTurn(playerTurn, movesRemaining);
 						
 						for (Cell c : getValidAttacks(selected))
 								c.setValidAttack(true);
+								
+						selected.setSelected(o); //ensure color is correct
 						
 					} else if (e.getSource().equals(attackItem)) {
 						Unit attacker = selected.getUnit();
@@ -107,6 +110,7 @@ public class GameMapView extends JPanel {
 						// deselect after attack
 						selected.setSelected(null);
 						selected = null;
+						o.showSelected(null);
 						
 						//check if game over
 						if (!o.isGameOver()) {
@@ -266,7 +270,6 @@ public class GameMapView extends JPanel {
     	if (c == null || i > max)
     		return;
     	for (Cell adj : c.getAdjacentCells()) {
-    		//System.out.println("Adding " + adj + " as valid move.");
     		set.add(adj);
     		addAdj(adj, set, i+1, max);
     	}

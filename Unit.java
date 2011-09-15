@@ -88,7 +88,6 @@ public class Unit {
 	public boolean isDead() { return healthRemaining <= 0; }
 	
 	public void attackedBy(Unit u) {
-		System.out.println(u.getType() ==null);
 		switch(u.getType()) {
 			case SOLDIER: attackedBySoldier(); break;
 			case TANK: attackedByTank(); break;

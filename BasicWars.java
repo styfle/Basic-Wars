@@ -2,7 +2,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Random;
 
 import javax.swing.*;
@@ -16,7 +15,7 @@ import javax.swing.*;
 public class BasicWars extends JPanel {
 	private static final long serialVersionUID = -5944312753990108995L;
 	public static final String GAME_NAME = "Basic Wars";
-	public static final String GAME_VERSION = "0.50";
+	public static final String GAME_VERSION = "0.55";
 	public static final Font HEAD_FONT = new Font("DialogInput", Font.PLAIN, 75);
 	public static final Font BODY_FONT = new Font("Dialog", Font.PLAIN, 25);
 	public static final Color BG_COLOR = Color.BLACK;
@@ -58,11 +57,11 @@ public class BasicWars extends JPanel {
 									"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
 									"EEEEEEEEEEETEEEEEEEEEEEEE\n" + 
 									"EEEEEEEEETTWWWEEEEEEEEEEE\n" + 
-									"EEEEEEEEEWWWWWWEEEEEEEEEE\n" + 
-									"EEEEEEEEEWWWWWWEEEEEEEEEE\n" + 
-									"EEEEEEEEEWWWWWWEEEEEEEEEE\n" + 
-									"EEEEEEEEEEWWWWWEEEEEEEEEE\n" + 
-									"EEEEEEEEEEEEWTTEEEEEEEEEE\n" + 
+									"EEEEEEEEEWWWWWWTEEEEEEEEE\n" + 
+									"EEEEEEEETWWWWWWTEEEEEEEEE\n" + 
+									"EEEEEEEETWWWWWWTEEEEEEEEE\n" + 
+									"EEEEEEEEETWWWWWTEEEEEEEEE\n" + 
+									"EEEEEEEEEETTWTTEEEEEEEEEE\n" + 
 									"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
 									"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
 									"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
@@ -133,34 +132,41 @@ public class BasicWars extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {				
 				if (board.isMapLoaded()) {
-					controlPanel.showStatus("Map loaded.");					
+					showSelected(null);
+					showStatus("Map loaded. Let's play!");
 					timer.stop();
 					// randomly add units to the board
 					Random r = new Random();
 					int i;
 					Cell c;
+					boolean valid;
+					ArrayList<Cell> cells = map.getCells();
 					for (Player p : players) {
 						Unit u;
 						while ((u = p.getNextUnit()) != null) {
 							do {
-								i = r.nextInt(map.getCells().size());
-								c = map.getCells().get(i);
-							} while (c.getUnit() != null || !c.getType().equals(Cell.Type.EARTH));
+								i = r.nextInt(cells.size());
+								c = cells.get(i);
+								valid = c.getUnit() == null && // must have no unit in cell
+										c.getType().equals(Cell.Type.EARTH) && // must be earth type
+										((p.getNumber() == 1) ? (i % 25 < 11) : (i % 25 > 12)); // place on correct side
+							} while (!valid);//(c.getUnit() != null || !c.getType().equals(Cell.Type.EARTH));
 							c.setUnit(u);
+							System.out.println("Unit on cell #" + cells.indexOf(c));
 						}
 					}
 				}
 			}			
 		});
 		timer.start();
-		controlPanel.showStatus("Loading map...(fancy ain't it?)");
+		showStatus("Loading map...(fancy ain't it?)");
 		add(board, BorderLayout.CENTER);
 		//validate();
 	}
 	
 	private void loadMenu(Menu menu, String status) {
 		remove(1);
-		controlPanel.showStatus(status);
+		showStatus(status);
 		add(menu, BorderLayout.CENTER);
 		validate();
 		repaint();
@@ -203,7 +209,7 @@ public class BasicWars extends JPanel {
 		}
 	}
 	
-	public void setStatus(String s) { controlPanel.showStatus(s); }
+	public void showStatus(String s) { controlPanel.showStatus(s); }
 	
 	public void showSelected(Unit u) { controlPanel.showSelected(u); }
 	
@@ -221,8 +227,8 @@ public class BasicWars extends JPanel {
 		for (Player p : players) {
 			if (p.getUnitCount() == 0) {
 				System.out.println("GAME OVER!");
-				controlPanel.showStatus("All of Player " + p.getNumber() + "'s units have been destroyed!");
-				controlPanel.showTurn(null, 0);
+				showStatus("All of Player " + p.getNumber() + "'s units have been destroyed!");
+				showTurn(null, 0);
 				showMessage("Game Over! All of Player " + p.getNumber() + "'s units have been destroyed!");
 				
 				return true;

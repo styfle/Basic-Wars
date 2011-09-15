@@ -67,8 +67,8 @@ public class ControlPanel extends JPanel {
 		toolBar.setBackground(BasicWars.BG_COLOR);
 		
 		hud = new JPanel();
-		hud.setBackground(new Color(0, 0, 0, 50));
-		currentTurn = new JLabel("Player 1:  move ");
+		hud.setBackground(BasicWars.BG_COLOR);
+		currentTurn = new JLabel("Player 1:   move");
 		currentTurn.setFont(STATUS_FONT);
 		currentTurn.setForeground(BasicWars.TEXT_COLOR);
 		hud.add(currentTurn);
@@ -78,7 +78,7 @@ public class ControlPanel extends JPanel {
 		statusLabel.setText(status);
 		
 		toolBar.add(mainMenuButton);
-		toolBar.add(hud);
+		//toolBar.add(hud);
 		toolBar.addSeparator(new Dimension(SEPARATION, HEIGHT));
 		toolBar.add(statusLabel);		
 		this.add(toolBar, BorderLayout.CENTER);
@@ -110,7 +110,7 @@ public class ControlPanel extends JPanel {
 	 */
 	public void showSelected(Unit u) {
 		if (u == null) {
-			statusLabel = new JLabel("Select a unit.");
+			statusLabel = new JLabel("Nothing selected. Click a unit to select it.");
 			statusLabel.setFont(STATUS_FONT);
 			statusLabel.setForeground(BasicWars.TEXT_COLOR);
 		} else {
@@ -127,7 +127,9 @@ public class ControlPanel extends JPanel {
 		}
 		toolBar.removeAll();
 		toolBar.add(mainMenuButton);
+		toolBar.addSeparator(new Dimension(SEPARATION, HEIGHT));
 		toolBar.add(hud);
+		toolBar.addSeparator(new Dimension(SEPARATION, HEIGHT));
 		toolBar.add(statusLabel);
 		toolBar.repaint();
 	}
@@ -135,6 +137,7 @@ public class ControlPanel extends JPanel {
 	private void setButton(JButton button) {
 		toolBar.removeAll();
 		toolBar.add(button);
+		toolBar.addSeparator(new Dimension(SEPARATION, HEIGHT));
 		toolBar.add(statusLabel);
 	}
 	
@@ -146,7 +149,7 @@ public class ControlPanel extends JPanel {
 		if (p == null)
 			currentTurn.setText("Game Over!");
 		else if (moves > 0)
-			currentTurn.setText("Player " + p.getNumber() + ":  move ");
+			currentTurn.setText("Player " + p.getNumber() + ":   move");
 		else
 			currentTurn.setText("Player " + p.getNumber() + ": attack");
 		

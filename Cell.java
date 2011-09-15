@@ -103,6 +103,11 @@ public class Cell {
 		return type;
 	}
 	
+	/**
+	 * Changes color of cell and shows unit as selected in controlPanel
+	 * @param o BasicWars object
+	 * @return this Cell
+	 */
 	public Cell setSelected(BasicWars o) {
 		if (o != null) {
 			currentFill = COLOR_FILL_SELECTED;

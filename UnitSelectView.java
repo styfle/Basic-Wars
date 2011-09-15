@@ -22,9 +22,9 @@ public class UnitSelectView extends Menu {
 			public void onClick(BasicWars o) {
 				boolean success = player.buySoldier();
 				if (!success) {
-					o.setStatus("You don't have enough money to buy a soldier!");
+					o.showStatus("You don't have enough money to buy a soldier!");
 				} else {
-					o.setStatus("Player " + player.getNumber() + " bought a soldier!");
+					o.showStatus("Player " + player.getNumber() + " bought a soldier!");
 					this.name = buildString('s');
 				}
 				repaint();
@@ -36,9 +36,9 @@ public class UnitSelectView extends Menu {
 			public void onClick(BasicWars o) {
 				boolean success = player.buyTank();
 				if (!success) {
-					o.setStatus("You don't have enough money to buy a tank!");
+					o.showStatus("You don't have enough money to buy a tank!");
 				} else {
-					o.setStatus("Player " + player.getNumber() + " bought a tank!");
+					o.showStatus("Player " + player.getNumber() + " bought a tank!");
 					this.name = buildString('t');
 				}
 				repaint();
@@ -50,9 +50,9 @@ public class UnitSelectView extends Menu {
 			public void onClick(BasicWars o) {
 				boolean success = player.buyPlane();
 				if (!success) {
-					o.setStatus("You don't have enough money to buy a plane!");
+					o.showStatus("You don't have enough money to buy a plane!");
 				} else {
-					o.setStatus("Player " + player.getNumber() + " bought a plane!");
+					o.showStatus("Player " + player.getNumber() + " bought a plane!");
 					this.name = buildString('p');
 				}
 				repaint();
