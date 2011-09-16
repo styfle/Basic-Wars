@@ -2,21 +2,24 @@ Basic Wars
 ==========
 
 About
------
+-------
 This game is being developed for the http://www.icsscsummerofcode.com/ competition and is loosely based on Advance Wars.
 
 I don't have much more to say right now because I really don't know what the final product will look/feel like.
 
-Movement
---------
-This table should help you understand which unit types can move on which cells:
+Movement/Attacking
+----------------
+This table should help you understand which unit types can move on which cells.
 
 <table border=1>
-<tr><th>&nbsp;</th><th>Earth</th><th>Water</th><th>Swamp</th></tr>
-<tr><th>Soldier</th><td>Yes</td><td>Yes, soldiers swim</td><td>No, too dangerous</td></tr>
-<tr><th>Tank</th><td>Yes</td><td>No, they sink</td><td>Yes, built for bad terrain</td></tr>
-<tr><th>Plane</th><td>Yes</td><td>Can't land, no skis</td><td>Can't land, to dangerous</td></tr>
+<tr><th>&nbsp;</th><th>Earth</th><th>Water</th><th>Swamp</th><th>Health</th><th>Attack</th><th>Move Radius</th></tr>
+<tr><th>Soldier</th><td>Yes</td><td>Yes, soldiers swim</td><td>No, too dangerous</td><td>100</td><td>50</td><td>2 Cells</td></tr>
+<tr><th>Tank</th><td>Yes</td><td>No, they sink</td><td>Yes, built for bad terrain</td><td>200</td><td>100</td><td>1 Cell</td></tr>
+<tr><th>Plane</th><td>Yes</td><td>Can't land, no skis</td><td>Can't land, too dangerous</td><td>150</td><td>75</td><td>4 Cells</td></tr>
 </table>
+
+This table should help you understand attacks.
+
 
 
 Todo List
@@ -44,7 +47,7 @@ Completed
 
 Beta Testing
 ------------
-If you would like to try out Basic Wars you can download the latest release on the pdownload page](https://github.com/styfle/Basic-Wars/downloads) and look for the biggest revision number (or newest date).
+If you would like to try out Basic Wars you can download the latest release on the [download page](https://github.com/styfle/Basic-Wars/downloads) and look for the biggest revision number (or newest date).
 
 For the bleeding edge code, you must first install the JDK so you can comiple the source code. To compile, first navigate to the source folder and run this command: 
 
