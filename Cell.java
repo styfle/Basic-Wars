@@ -27,7 +27,7 @@ public class Cell {
 	private Color currentFill; //current color fill
 	private Color currentBorder = COLOR_BORDER;
 	private static final double ANGLE = (2*Math.PI)/6;
-	public static final int DIST_TO_CORNER = 17; // DETERMINES SIZE OF EVERYTHING
+	public static final int DIST_TO_CORNER = 18; // DETERMINES SIZE OF EVERYTHING
 	public static final int DIST_TO_EDGE = (int)(DIST_TO_CORNER * Math.cos(ANGLE/2));
 	private boolean firstPaint = true;
 	

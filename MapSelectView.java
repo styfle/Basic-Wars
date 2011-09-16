@@ -60,7 +60,7 @@ public class MapSelectView extends Menu {
 			clickables.add(c);
 		}
 	}
-	
+	/*
     public void paintBackup(Graphics graphics) {
 		Graphics2D g = (Graphics2D)graphics;
 		final int x = 300;
@@ -82,6 +82,6 @@ public class MapSelectView extends Menu {
 			i = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_BYTE_GRAY);
 		}
 		g.drawImage(i, 50, 100, null);
-    }
+    }*/
 
 }

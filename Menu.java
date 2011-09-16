@@ -26,7 +26,7 @@ public abstract class Menu extends JPanel {
 	private static final Cursor CURSOR_HAND = new Cursor(Cursor.HAND_CURSOR);
 	private final String title;
 	private final int xPosHead;
-	private final int xPosChild = 350;
+	private final int xPosChild = 385;//350;
 	private int yPosChild = Y_TOP;
 	protected ArrayList<Clickable> clickables = new ArrayList<Clickable>();
 	protected ArrayList<Drawable> drawables = new ArrayList<Drawable>();
