@@ -30,7 +30,8 @@ public class ControlPanel extends JPanel {
 	private JButton mapSelectButton;
 	private JPanel hud;
 	private JLabel currentTurn;
-	private JLabel statusLabel = new JLabel();
+	private JLabel selectedUnit;
+	private JLabel statusLabel;
 	private ActionListener al;
 	//private static final Color BUTTON_COLOR = new Color(50,50,50);
 	
@@ -66,16 +67,20 @@ public class ControlPanel extends JPanel {
 		toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, SEPARATION, 0));
 		toolBar.setBackground(BasicWars.BG_COLOR);
 		
-		hud = new JPanel();
-		hud.setBackground(BasicWars.BG_COLOR);
-		currentTurn = new JLabel("Player 1:   move");
+		//hud = new JPanel();
+		//hud.setBackground(BasicWars.BG_COLOR);
+		currentTurn = new JLabel("Player 1:   MOVE");
 		currentTurn.setFont(STATUS_FONT);
 		currentTurn.setForeground(BasicWars.TEXT_COLOR);
-		hud.add(currentTurn);
+		selectedUnit = new JLabel("Nothing selected");
+		selectedUnit.setFont(STATUS_FONT);
+		selectedUnit.setForeground(BasicWars.TEXT_COLOR);
+		//hud.add(currentTurn);
+		//hud.add(selectedUnit);
 		
+		statusLabel = new JLabel(status);
 		statusLabel.setFont(STATUS_FONT);
 		statusLabel.setForeground(BasicWars.TEXT_COLOR);
-		statusLabel.setText(status);
 		
 		toolBar.add(mainMenuButton);
 		//toolBar.add(hud);
@@ -110,25 +115,33 @@ public class ControlPanel extends JPanel {
 	 */
 	public void showSelected(Unit u) {
 		if (u == null) {
-			statusLabel = new JLabel("Nothing selected. Click a unit to select it.");
-			statusLabel.setFont(STATUS_FONT);
-			statusLabel.setForeground(BasicWars.TEXT_COLOR);
+			selectedUnit = new JLabel("Nothing selected");
+			selectedUnit.setFont(STATUS_FONT);
+			selectedUnit.setForeground(BasicWars.TEXT_COLOR);
+			statusLabel.setText("Click on a unit to select it.");
 		} else {
-			statusLabel = new JLabel(u.getHealth() + "/" + u.getMaxHealth() + " HP", u.getIcon(), SwingConstants.LEFT);
-			statusLabel.setFont(STATUS_FONT);
+			selectedUnit = new JLabel(
+					u.getHealth() + "/" + u.getMaxHealth() + " HP",
+					u.getIcon(),
+					SwingConstants.LEFT
+			);
+			statusLabel.setText("Right-click for actions.");
+			selectedUnit.setFont(STATUS_FONT);
 			if (u.getHealthPercent() < 25)
-				statusLabel.setForeground(Color.RED);
+				selectedUnit.setForeground(Color.RED);
 			else if (u.getHealthPercent() < 50)
-				statusLabel.setForeground(Color.ORANGE);
+				selectedUnit.setForeground(Color.ORANGE);
 			else if (u.getHealthPercent() < 75)
-				statusLabel.setForeground(Color.YELLOW);
+				selectedUnit.setForeground(Color.YELLOW);
 			else
-				statusLabel.setForeground(Color.GREEN);
+				selectedUnit.setForeground(Color.GREEN);
 		}
 		toolBar.removeAll();
 		toolBar.add(mainMenuButton);
 		toolBar.addSeparator(new Dimension(SEPARATION, HEIGHT));
-		toolBar.add(hud);
+		toolBar.add(currentTurn);
+		toolBar.addSeparator(new Dimension(SEPARATION, HEIGHT));
+		toolBar.add(selectedUnit);
 		toolBar.addSeparator(new Dimension(SEPARATION, HEIGHT));
 		toolBar.add(statusLabel);
 		toolBar.repaint();
@@ -149,9 +162,9 @@ public class ControlPanel extends JPanel {
 		if (p == null)
 			currentTurn.setText("Game Over!");
 		else if (moves > 0)
-			currentTurn.setText("Player " + p.getNumber() + ":   move");
+			currentTurn.setText("Player " + p.getNumber() + ":   MOVE");
 		else
-			currentTurn.setText("Player " + p.getNumber() + ": attack");
+			currentTurn.setText("Player " + p.getNumber() + ": ATTACK");
 		
 		toolBar.repaint();
 	}

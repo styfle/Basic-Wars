@@ -96,8 +96,7 @@ public class Cell {
 		switch (ch) {
 			case 'E': type = Cell.Type.EARTH; break;
 			case 'W': type = Cell.Type.WATER; break;
-			//case 'L': type = Cell.Type.LAVA; break;
-			case 'T': type = Cell.Type.SWAMP; break;
+			case 'S': type = Cell.Type.SWAMP; break;
 			default: throw new IllegalArgumentException("Unknown cell type: " + ch);
 		}
 		return type;

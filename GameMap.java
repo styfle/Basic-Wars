@@ -18,7 +18,7 @@ public class GameMap extends Clickable {
 	
 	public GameMap(String name, String mapData) {
 		super(name);
-		buildMap(name, mapData);
+		buildMap(mapData);
 	}
 	
 	public GameMap(File file) throws IOException {
@@ -31,11 +31,10 @@ public class GameMap extends Clickable {
 		}
 		String name = file.getName();
 		name = name.substring(0, name.lastIndexOf('.'));
-		buildMap(name, mapData.toString());
+		buildMap(mapData.toString());
 	}
 	
-	private void buildMap(String name, String mapData) {
-		//setName(name);
+	private void buildMap(String mapData) {
 		if (mapData == null)
 			return;
 		Cell c = new Cell(Cell.DIST_TO_CORNER, 0, Cell.Type.SWAMP);

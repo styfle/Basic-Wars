@@ -68,14 +68,9 @@ public class MapSelectView extends Menu {
 		for (Clickable c : clickables) {
 			y += BasicWars.BODY_FONT.getSize()*2;
 			g.setColor(c.getColor());
-			//if (firstPaint) {
-				TextLayout tl = new TextLayout("[" + c.getName() + "]", BasicWars.BODY_FONT, g.getFontRenderContext());
-				c.init(tl, x, y, g);
-			//}
+			TextLayout tl = new TextLayout("[" + c.getName() + "]", BasicWars.BODY_FONT, g.getFontRenderContext());
+			c.init(tl, x, y, g);
 			c.draw();
-			//Rectangle2D rect = tl.getBounds(); 
-			//rect.setRect(rect.getX() + x, rect.getY() + y,  rect.getWidth(), rect.getHeight());
-			//g.draw(rect);
 		}
 		
 		Image i;
@@ -86,18 +81,6 @@ public class MapSelectView extends Menu {
 		} else {
 			i = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_BYTE_GRAY);
 		}
-		/* No image available
-		else { 
-			image = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
-			Graphics imgGraphics = image.getGraphics();
-			imgGraphics.setColor(new Color(62,64,66));
-			int startPos = 30;
-			Cell c = new Cell(0,0,Cell.Type.EARTH);
-			for (int i=0; i<7; i++) {
-				c = new Cell(startPos + i*(20),newHeight/2,Cell.Type.EARTH);
-				c.paintCell(imgGraphics);
-			}
-		} */
 		g.drawImage(i, 50, 100, null);
     }
 

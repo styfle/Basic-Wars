@@ -74,6 +74,13 @@ public class GameMapView extends JPanel {
 					o.showMessage("Player "+playerTurn.getNumber()+", are you trying to cheat?\nYou can't control a unit that you don't own!");
 				} else {
 					if (e.getSource().equals(moveItem)) {
+						
+						// check if valid move
+						if (!canMoveToCell(selected, rightClicked)) {
+							o.showMessage("You can't move there, you're just a " + selected.getUnit().getType()+"! Surely you know the rules of battle?");
+							return;
+						}
+						
 						// one less move available
 						movesRemaining--;
 						
@@ -89,6 +96,9 @@ public class GameMapView extends JPanel {
 						
 						rightClicked = null;
 						o.showTurn(playerTurn, movesRemaining);
+						
+						if (selected == null) // DEBUG
+							System.out.println("OMG: selected == null");
 						
 						for (Cell c : getValidAttacks(selected))
 								c.setValidAttack(true);
@@ -247,13 +257,12 @@ public class GameMapView extends JPanel {
     
     /**
      * @param c The center cell
-     * @param radius Max radius from Cell c that is legal
      * @return set of cells that are <= radius from c
      */
     private HashSet<Cell> getValidMoves(Cell c) {
     	HashSet<Cell> set = new HashSet<Cell>(10);
     	if (c != null && c.getUnit() != null) {
-    		addAdj(c, set, 1, c.getUnit().getMaxMoves());
+    		addAdj(c, c, set, 1, c.getUnit().getMaxMoves(), false);
     	} //else return empty set
     	return set;
     }
@@ -261,18 +270,39 @@ public class GameMapView extends JPanel {
     private HashSet<Cell> getValidAttacks(Cell c) {
     	HashSet<Cell> set = new HashSet<Cell>(10);
     	if (c != null && c.getUnit() != null) {
-    		addAdj(c, set, 1, c.getUnit().getMaxAttackDist());
+    		addAdj(c, c, set, 1, c.getUnit().getMaxAttackDist(), true);
     	} //else return empty set
     	return set;
     }
     
-    private void addAdj(Cell c, HashSet<Cell> set, int i, int max) {
-    	if (c == null || i > max)
+    private void addAdj(Cell start, Cell cur, HashSet<Cell> set, int i, int max, boolean attack) {
+    	if (cur == null || i > max)
     		return;
-    	for (Cell adj : c.getAdjacentCells()) {
-    		set.add(adj);
-    		addAdj(adj, set, i+1, max);
+    	
+    	for (Cell adj : cur.getAdjacentCells()) {
+    		if (adj != null && (attack || canMoveToCell(start, adj)))
+    			set.add(adj); // attacks are not limited by cell type
+    		
+    		addAdj(start, adj, set, i+1, max, attack);
     	}
+    }
+    
+    private boolean canMoveToCell(Cell from, Cell to) {
+    	boolean validMove = false;
+    	if (from == null || to == null)
+    		return false;
+    	switch (from.getUnit().getType()) {
+    		case SOLDIER: //water yes, swamp no
+	    		validMove = (to.getType() != Cell.Type.SWAMP);
+	    		break;
+    		case TANK: // water no, swamp yes
+	    		validMove = (to.getType() != Cell.Type.WATER);
+	    		break;
+    		case PLANE: // only fly over water/swamp, must land on earth
+	    		validMove = (to.getType() == Cell.Type.EARTH);
+	    		break;
+    	}
+    	return validMove;
     }
     
 }

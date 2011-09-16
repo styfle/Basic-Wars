@@ -19,6 +19,10 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
 
+/**
+ * This is for debugging purposes and not to be included in release code.
+ * Sprites are useful because multiple images can be read with one I/O
+ */
 public class SpriteTest extends JPanel {
 	private static final long serialVersionUID = -7736204537894930600L;
 	private static BufferedImage img;
@@ -88,9 +92,9 @@ public class SpriteTest extends JPanel {
 		final int markerRGB = color.getRGB() | 0xFF000000;
 		ImageProducer ip = new FilteredImageSource(image.getSource(), new RGBImageFilter() {
 	    	public final int filterRGB(int x, int y, int rgb) {
-	    		//if ( ( rgb | 0xFF000000 ) == markerRGB ) {
-	    			//return 0x00FFFFFF & rgb;
-	    		//}
+	    		if ( ( rgb | 0xFF000000 ) == markerRGB ) {
+	    			return 0x00FFFFFF & rgb;
+	    		}
 	    		return rgb;
 	    	}
 		});
