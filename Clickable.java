@@ -11,8 +11,8 @@ import java.awt.image.BufferedImage;
  * Clickable string to draw on the screen
  */
 public abstract class Clickable {
-	protected String name;
-	protected BufferedImage image;
+	private String name;
+	private BufferedImage image;
 	private int x;
 	private int y;
 	private Graphics2D g;
@@ -68,6 +68,14 @@ public abstract class Clickable {
 		COLOR_NORMAL = new Color(0,150,0);
 		COLOR_HOVER = BasicWars.bleach(COLOR_NORMAL, 0.60f);
 		color = COLOR_NORMAL;
+	}
+	
+	public void setEnabled(boolean enable) {
+		if (enable) {
+			color = new Color(0,150,0);
+		} else {
+			color = new Color(45,60,45);
+		}
 	}
 	
 	/**

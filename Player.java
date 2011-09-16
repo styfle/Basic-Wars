@@ -56,6 +56,7 @@ public class Player {
 	public int sizeOfSoldiers() { return soldierCount; }
 	public int sizeOfTanks() { return tankCount; }
 	public int sizeOfPlanes() { return planeCount; }
+	public int sizeOfUnits() { return units.size(); }
 	
 	public Unit getNextUnit() {
 		Unit u = null;

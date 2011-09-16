@@ -28,7 +28,6 @@ public class ControlPanel extends JPanel {
 	private JButton mainMenuButton;
 	private JButton playerSelectButton;
 	private JButton mapSelectButton;
-	private JPanel hud;
 	private JLabel currentTurn;
 	private JLabel selectedUnit;
 	private JLabel statusLabel;
@@ -107,13 +106,13 @@ public class ControlPanel extends JPanel {
 	 * Updates the status at the top of the screen
 	 * @param status new status
 	 */
-	public void showStatus(String status) { statusLabel.setText(status); statusLabel.repaint(); }
+	public void setStatus(String status) { statusLabel.setText(status); statusLabel.repaint(); }
 	
 	/**
 	 * When a unit is selected, show their health/etc
 	 * @param u Selected Unit
 	 */
-	public void showSelected(Unit u) {
+	public void setSelected(Unit u) {
 		if (u == null) {
 			selectedUnit = new JLabel("Nothing selected");
 			selectedUnit.setFont(STATUS_FONT);
@@ -158,7 +157,7 @@ public class ControlPanel extends JPanel {
 	 * Updates display with current player's turn and moves remaining
 	 * @param p Player who is currently in control or Game Over when p == null
 	 */
-	public void showTurn(Player p, int moves) {
+	public void setTurn(Player p, int moves) {
 		if (p == null)
 			currentTurn.setText("Game Over!");
 		else if (moves > 0)

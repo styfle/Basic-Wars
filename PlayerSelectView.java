@@ -20,14 +20,15 @@ public class PlayerSelectView extends Menu {
 			}
 		};
 		
-		BufferedImage i = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		BufferedImage i = new BufferedImage(IMAGE_WIDTH+20, IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = i.getGraphics();
+		
 		g.setColor(Color.BLUE);
-		g.fillOval(0, IMAGE_HEIGHT/3, IMAGE_WIDTH/2, IMAGE_HEIGHT/2);
-		g.fillOval(IMAGE_WIDTH/2, IMAGE_HEIGHT/3, IMAGE_WIDTH/2, IMAGE_HEIGHT/2);
+		g.fillOval(0, IMAGE_HEIGHT/5, IMAGE_WIDTH/2-10, IMAGE_HEIGHT/2);
+		g.fillOval(10+IMAGE_WIDTH/2, IMAGE_HEIGHT/3, IMAGE_WIDTH/2, IMAGE_HEIGHT/2);
 		g.setColor(Color.WHITE);
-		g.drawOval(0, IMAGE_HEIGHT/3, IMAGE_WIDTH/2, IMAGE_HEIGHT/2);
-		g.drawOval(IMAGE_WIDTH/2, IMAGE_HEIGHT/3, IMAGE_WIDTH/2, IMAGE_HEIGHT/2);
+		g.drawOval(0, IMAGE_HEIGHT/5, IMAGE_WIDTH/2-10, IMAGE_HEIGHT/2);
+		g.drawOval(10+IMAGE_WIDTH/2, IMAGE_HEIGHT/3, IMAGE_WIDTH/2, IMAGE_HEIGHT/2);
 		
 		Clickable twoPlayer = new Clickable("Two Player", true, i, null) {
 			@Override

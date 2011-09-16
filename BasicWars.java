@@ -18,20 +18,24 @@ public class BasicWars extends JPanel {
 	public static final String GAME_VERSION = "0.65";
 	public static final Font HEAD_FONT = new Font("DialogInput", Font.PLAIN, 75);
 	public static final Font BODY_FONT = new Font("Dialog", Font.PLAIN, 25);
+	public static final Font BOLD_FONT = new Font("Courier", Font.BOLD, 30);
 	public static final Color BG_COLOR = Color.BLACK;
 	public static final Color HEAD_COLOR = Color.RED;
 	public static final Color TEXT_COLOR = new Color(150,180,150);
 	private static JFrame frame;
-	private ControlPanel controlPanel = new ControlPanel("Basic Wars. Basically awesome.");
+	private ControlPanel controlPanel;
 	private MainMenuView mainMenu;
 	private AboutView aboutView;
 	private PlayerSelectView playerMenu;
 	private MapSelectView mapMenu;
 	private UnitSelectView unitMenu;
 	private Timer timer;
-	public int currentPlayer;
-	public ArrayList<Player> players;
+	private int currentPlayer; // each player needs unit selection menus
+	private ArrayList<Player> players;
 	private GameMap map;
+	private GameMapView board;
+	private boolean isGameInProgress;
+	
 	private final static String map0 = "EEEEEEEEEEEEEEEEEEEEEEEEE\n" +
 										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
 										"EEEEEEEEEEEEEEEEEEEEEEEEE\n" + 
@@ -106,62 +110,75 @@ public class BasicWars extends JPanel {
 		System.setProperty("awt.useSystemAAFontSettings","on");
 		System.setProperty("swing.aatext", "true");
 		
+		isGameInProgress = false;
+		
 		//System.setErr(new java.io.PrintStream("error.log"));
+		
+		// instantiate all JPanels at launch for smooth tranitions
+		controlPanel = new ControlPanel("Basic Wars. Basically awesome.");
 		mainMenu = new MainMenuView();
 		aboutView = new AboutView();
 		playerMenu = new PlayerSelectView();
 		mapMenu = new MapSelectView(maps);
 		
-		players = new ArrayList<Player>();
+		players = new ArrayList<Player>(2);
 		
 		add(controlPanel, BorderLayout.NORTH);
 		add(mainMenu, BorderLayout.CENTER);
-		
-		
 	}
 	
 	/**
 	 * Loads a map to the display
 	 * @param m Map to load
 	 */
-	public void loadMap() {
+	public void loadMap(boolean newGame) {
 		remove(1);
-		final GameMapView board = new GameMapView(map, players);
 		
-		timer = new Timer(100, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {				
-				if (board.isMapLoaded()) {
-					showSelected(null);
-					showStatus("Map loaded. Let's play!");
-					timer.stop();
-					// randomly add units to the board
-					Random r = new Random();
-					int i;
-					Cell c;
-					boolean valid;
-					ArrayList<Cell> cells = map.getCells();
-					for (Player p : players) {
-						Unit u;
-						while ((u = p.getNextUnit()) != null) {
-							do {
-								i = r.nextInt(cells.size());
-								c = cells.get(i);
-								valid = c.getUnit() == null && // must have no unit in cell
-										c.getType().equals(Cell.Type.EARTH) && // must be earth type
-										((p.getNumber() == 1) ? (i % 25 < 11) : (i % 25 > 12)); // place on correct side
-							} while (!valid);//(c.getUnit() != null || !c.getType().equals(Cell.Type.EARTH));
-							c.setUnit(u);
-							System.out.println("Unit on cell #" + cells.indexOf(c));
+		if (!newGame) {
+			showTurn(board.getPlayerTurn(), board.getMovesRemaining());
+			showSelected(board.getSelected().getUnit());
+			showStatus("Game resumed successfully!");
+		} else {
+			board = new GameMapView(map, players);
+			timer = new Timer(50, new ActionListener() { //speed of loading map
+				@Override
+				public void actionPerformed(ActionEvent e) {				
+					if (board.isMapLoaded()) {
+						timer.stop();
+						
+						showTurn(board.getPlayerTurn(), board.getMovesRemaining());
+						showSelected(null); // enables extra menu items
+						showStatus("Map loaded. Let's play!");
+						
+						// randomly add units to the board
+						Random r = new Random();
+						int i;
+						Cell c;
+						boolean valid;
+						ArrayList<Cell> cells = map.getCells();
+						for (Player p : players) {
+							Unit u;
+							while ((u = p.getNextUnit()) != null) {
+								do {
+									i = r.nextInt(cells.size());
+									c = cells.get(i);
+									valid = c.getUnit() == null && // must have no unit in cell
+											c.getType().equals(Cell.Type.EARTH) && // must be earth type
+											((p.getNumber() == 1) ? (i % 25 < 11) : (i % 25 > 12)); // place on correct side
+								} while (!valid);
+								c.setUnit(u);
+								//System.out.println("Unit on cell #" + cells.indexOf(c));
+							}
 						}
 					}
-				}
-			}			
-		});
-		timer.start();
-		showStatus("Loading map...(fancy ain't it?)");
+				}			
+			});
+			timer.start();
+			showStatus("Loading map...(fancy ain't it?)");
+		}
+		
 		add(board, BorderLayout.CENTER);
-		//validate();
+		isGameInProgress = true;
 	}
 	
 	private void loadMenu(Menu menu, String status) {
@@ -177,6 +194,7 @@ public class BasicWars extends JPanel {
 	 */
 	public void loadMainMenu() {
 		controlPanel.setMainMenuButton();
+		mainMenu.setResumable(isGameInProgress);
 		loadMenu(mainMenu, "Basic Wars. Basically awesome.");
 	}
 	
@@ -204,22 +222,39 @@ public class BasicWars extends JPanel {
 			currentPlayer++;
 		} else {
 			controlPanel.setMainMenuButton();
-			loadMap();
+			loadMap(true); //new game
 		}
 	}
 	
-	public void showStatus(String s) { controlPanel.showStatus(s); }
+	public void showStatus(String s) { controlPanel.setStatus(s); }
 	
-	public void showSelected(Unit u) { controlPanel.showSelected(u); }
+	public void showSelected(Unit u) { controlPanel.setSelected(u); }
 	
-	public void showTurn(Player p, int moves) { controlPanel.showTurn(p, moves); }
+	public void showTurn(Player p, int moves) { controlPanel.setTurn(p, moves); }
 	
 	public void setMap(GameMap map) { this.map = map; }
 	
 	public void setPlayers(int count) {
-		players = new ArrayList<Player>(count);
+		players.clear();
 		for (int i=0; i<count; i++)
 			players.add(new Player(i+1));
+	}
+	
+	public void startNewGame() {
+		players.clear();
+		map = null;
+		isGameInProgress = false;
+		loadPlayerMenu();
+	}
+	
+	public void resumeGame() {
+		
+		if (isGameInProgress)
+			loadMap(false); // not new game, resume
+		else
+			showMessage("There is no game in session.");
+		
+		//showMessage("Resume is not implemented yet.");
 	}
 	
 	public boolean isGameOver() {

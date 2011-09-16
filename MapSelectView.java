@@ -1,8 +1,5 @@
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.font.TextLayout;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JFileChooser;
@@ -60,28 +57,5 @@ public class MapSelectView extends Menu {
 			clickables.add(c);
 		}
 	}
-	/*
-    public void paintBackup(Graphics graphics) {
-		Graphics2D g = (Graphics2D)graphics;
-		final int x = 300;
-		int y = 100;
-		for (Clickable c : clickables) {
-			y += BasicWars.BODY_FONT.getSize()*2;
-			g.setColor(c.getColor());
-			TextLayout tl = new TextLayout("[" + c.getName() + "]", BasicWars.BODY_FONT, g.getFontRenderContext());
-			c.init(tl, x, y, g);
-			c.draw();
-		}
-		
-		Image i;
-		int newWidth = GameMapView.WIDTH/3;
-		int newHeight = GameMapView.HEIGHT/3;
-		if (image != null) {
-			i = image.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH);
-		} else {
-			i = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_BYTE_GRAY);
-		}
-		g.drawImage(i, 50, 100, null);
-    }*/
 
 }

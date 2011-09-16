@@ -1,4 +1,3 @@
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -9,6 +8,12 @@ import java.awt.image.BufferedImage;
  */
 public class MainMenuView extends Menu {
 	private static final long serialVersionUID = -9178274830210260069L;
+	private Clickable newGame;
+	private Clickable resumeEnable;
+	private Clickable resumeDisable;
+	private Clickable instructions;
+	private Clickable about;
+	private Clickable exit;
 	
 	public MainMenuView() {
 		super(BasicWars.GAME_NAME);
@@ -27,47 +32,71 @@ public class MainMenuView extends Menu {
 		}
 		c = c.generateNorthEast(Cell.Type.EARTH);
 		c.paintCell(g);
-
-		clickables.add(new Clickable("Start Game", true, i, null) {
+		
+		newGame = new Clickable("New Game", true, i, null) {
 			@Override
 			public void onClick(BasicWars o) {
-				o.loadPlayerMenu();
+				o.startNewGame();
 			}
-		});
+		};
 		
-		clickables.add(new Clickable("Instructions", false, null, null) {
+		resumeEnable = new Clickable("Resume Game") {
+			@Override
+			public void onClick(BasicWars o) {
+				o.resumeGame();
+			}
+		};
+		
+		resumeDisable = new Clickable("Resume Game", false, null, null) {
+			@Override
+			public void onClick(BasicWars o) {
+				o.resumeGame();
+			}
+		};
+		
+		instructions = new Clickable("Instructions", false, null, null) {
 			@Override
 			public void onClick(BasicWars o) {
 				o.showMessage("Sorry, no instructions yet. Coming soon!");
 			}
-		});
+		};
 		
 		i = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
 		g = i.getGraphics();
 		g.setColor(BasicWars.TEXT_COLOR);
-		g.setFont(new Font("Courier", Font.BOLD, 30));
+		g.setFont(BasicWars.BOLD_FONT);
 		g.drawString("Hello", 85, 120);
 		
-		clickables.add(new Clickable("About", true, i, null) {
+		about = new Clickable("About", true, i, null) {
 			@Override
 			public void onClick(BasicWars o) {
 				o.loadAbout();
 			}
-		 });
+		 };
 		
 		i = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_3BYTE_BGR);
 		g = i.getGraphics();
 		g.setColor(BasicWars.HEAD_COLOR);
-		g.setFont(new Font("Courier", Font.BOLD, 30));
+		g.setFont(BasicWars.BOLD_FONT);
 		g.drawString("Goodbye", 65, 120);
 		
-		clickables.add(new Clickable("Exit", true, i , BasicWars.HEAD_COLOR) {
+		exit = new Clickable("Exit", true, i , BasicWars.HEAD_COLOR) {
 			@Override
 			public void onClick(BasicWars o) {
 				System.exit(0);
 			}
-		});
+		};
 		 
-		 
+		setResumable(false); // build main menu with resume disabled
+	}
+	
+	public void setResumable(boolean isResumable) {
+		clickables.clear();
+		Clickable resume = (isResumable) ? resumeEnable : resumeDisable;
+		clickables.add(newGame);
+		clickables.add(resume);
+		clickables.add(instructions);
+		clickables.add(about);
+		clickables.add(exit);
 	}
 }

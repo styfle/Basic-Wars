@@ -243,6 +243,10 @@ public class GameMapView extends JPanel {
     	return index+1 > map.getCells().size();
     }
     
+    public Player getPlayerTurn() { return playerTurn; }
+    public int getMovesRemaining() { return movesRemaining; }
+    public Cell getSelected() { return selected; }
+    
     private void nextPlayerTurn(BasicWars o) {
     	int i = players.indexOf(playerTurn);
     	i++;

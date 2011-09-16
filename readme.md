@@ -43,6 +43,7 @@ Completed
 * Implement game logic such as rotating turns, for move and attack
 * Remove the Lava cell type and changed Tree to Swamp 
 * Limit movement on cells (tanks cant go in water, etc)
+* Added resume feature so players can continue game
 
 
 Beta Testing

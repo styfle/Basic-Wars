@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 
@@ -25,7 +26,7 @@ public class UnitSelectView extends Menu {
 					o.showStatus("You don't have enough money to buy a soldier!");
 				} else {
 					o.showStatus("Player " + player.getNumber() + " bought a soldier!");
-					this.name = buildString('s');
+					setName(buildString('s'));
 				}
 				repaint();
 			}
@@ -39,7 +40,7 @@ public class UnitSelectView extends Menu {
 					o.showStatus("You don't have enough money to buy a tank!");
 				} else {
 					o.showStatus("Player " + player.getNumber() + " bought a tank!");
-					this.name = buildString('t');
+					setName(buildString('t'));
 				}
 				repaint();
 			}
@@ -53,16 +54,29 @@ public class UnitSelectView extends Menu {
 					o.showStatus("You don't have enough money to buy a plane!");
 				} else {
 					o.showStatus("Player " + player.getNumber() + " bought a plane!");
-					this.name = buildString('p');
+					setName(buildString('p'));
 				}
 				repaint();
 			}
 		});
 		
-		clickables.add(new Clickable("Done", true, new BufferedImage(200, 200, 1), new Color(0,255,100)) {
+		BufferedImage image = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		Graphics g = image.getGraphics();
+		g.setColor(BasicWars.TEXT_COLOR);
+		g.setFont(BasicWars.BOLD_FONT);
+		int MAX_PLAYERS = 2; // should probably get this from BasicWars.players
+		String done = (player.getNumber() == MAX_PLAYERS) ?
+					"Start Game!" :
+					"Player " + (player.getNumber()+1);
+		g.drawString(done, 90, 100);
+		
+		clickables.add(new Clickable("Done", true, image, new Color(0,255,100)) {
 			@Override
 			public void onClick(BasicWars o) {
-				o.loadUnitMenu();
+				if (player.sizeOfUnits() == 0)
+					o.showMessage("Hey, you didn't buy any units! How can you even play?");
+				else
+					o.loadUnitMenu();
 			}
 		});
 		
@@ -71,9 +85,12 @@ public class UnitSelectView extends Menu {
 	private String buildString(char c) {
 		money.setText("Player "+player.getNumber()+" has $" + player.moneyRemaining());
 		switch (c) {
-		case 's': return "Buy Soldier for $"+Player.PRICE_SOLDIER+" (" + player.sizeOfSoldiers() + ")";
-		case 't': return "Buy Tank for $"+Player.PRICE_TANK+" (" + player.sizeOfTanks() + ")";
-		case 'p': return "Buy Plane for $"+Player.PRICE_PLANE+" (" + player.sizeOfPlanes() + ")";
+			case 's':
+				return "Buy Soldier for $"+Player.PRICE_SOLDIER+" (" + player.sizeOfSoldiers() + ")";
+			case 't':
+				return "Buy Tank for $"+Player.PRICE_TANK+" (" + player.sizeOfTanks() + ")";
+			case 'p':
+				return "Buy Plane for $"+Player.PRICE_PLANE+" (" + player.sizeOfPlanes() + ")";
 		}
 		return "Error: Unknown Unit!";
 	}
