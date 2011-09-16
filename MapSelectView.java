@@ -20,7 +20,7 @@ public class MapSelectView extends Menu {
 	 * @param mapSelection array of maps to select from
 	 */
 	public MapSelectView(GameMap[] mapSelection) {
-		super("Map Select", 60);
+		super("Map Select");
 		
 		BufferedImage image = new BufferedImage(200, 200, BufferedImage.TYPE_INT_ARGB);
 		Graphics imgGraphics = image.getGraphics();

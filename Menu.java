@@ -34,9 +34,9 @@ public abstract class Menu extends JPanel {
 	
 	private boolean firstPaint = true;
 
-	public Menu(String menuTitle, int titlePosition) {
+	public Menu(String menuTitle) {
 		title = menuTitle;
-		xPosHead = titlePosition;
+		xPosHead = 250 - title.length()*16;
 		
 		this.addMouseListener(new MouseListener() {
 			@Override
@@ -97,7 +97,7 @@ public abstract class Menu extends JPanel {
 		g.fillRect(0, 0, GameMapView.WIDTH, GameMapView.HEIGHT);
 		g.setColor(BasicWars.HEAD_COLOR);
 		g.setFont(BasicWars.HEAD_FONT);
-		g.drawString(title, xPosHead, 70);
+		g.drawString(title, xPosHead, 80);
 	}
 	
 	@Override

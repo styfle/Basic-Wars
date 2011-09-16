@@ -8,7 +8,7 @@ public class UnitSelectView extends Menu {
 	private Drawable money;
 	
 	public UnitSelectView(Player p) {
-		super("Unit Select P" + p.getNumber(), 0);
+		super("Unit Select P" + p.getNumber());
 		this.player = p;
 		Unit soldier = new Unit(Unit.Type.SOLDIER, player);
 		Unit tank = new Unit(Unit.Type.TANK , player);

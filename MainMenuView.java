@@ -11,7 +11,7 @@ public class MainMenuView extends Menu {
 	private static final long serialVersionUID = -9178274830210260069L;
 	
 	public MainMenuView() {
-		super(BasicWars.GAME_NAME, 60);
+		super(BasicWars.GAME_NAME);
 		
 		BufferedImage i = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = i.getGraphics();

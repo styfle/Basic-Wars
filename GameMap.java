@@ -82,6 +82,10 @@ public class GameMap extends Clickable {
 	
 	@Override
 	public void onClick(BasicWars o) {
+		for (Cell c : cells) {
+			c.setUnit(null); // remove any units on map
+			c.setSelected(null); // remove any selected cells
+		}
 		o.setMap(this);
 		o.loadUnitMenu();
 	}

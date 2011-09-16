@@ -11,7 +11,7 @@ public class PlayerSelectView extends Menu {
 	private static final long serialVersionUID = -1367393635036121396L;
 
 	public PlayerSelectView() {
-		super("Player Select", 25);
+		super("Player Select");
 		
 		Clickable onePlayer = new Clickable("Single Player", false, null, null) {
 			@Override

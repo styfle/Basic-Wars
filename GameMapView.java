@@ -47,7 +47,7 @@ public class GameMapView extends JPanel {
     	
 		System.out.println("Loaded " + map.getName() + " (" + map.getCells().size() + " cells)");
 		
-		Timer t = new Timer(10, new ActionListener() {
+		Timer t = new Timer(10, new ActionListener() { // 1000ms / 10ms pf = 100fps
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				repaint();
@@ -208,13 +208,12 @@ public class GameMapView extends JPanel {
     
     @Override
 	public void paintComponent(Graphics graphics) {
-    	if (!isMapLoaded()) {
-    		return;
+    	if (isMapLoaded() || index == 0) {
+			Graphics2D g = (Graphics2D)graphics;
+			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g.setColor(BasicWars.BG_COLOR);
+			g.fillRect(0, 0, WIDTH, HEIGHT);
     	}
-		Graphics2D g = (Graphics2D)graphics;
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setColor(BasicWars.BG_COLOR);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
 	}
     
     @Override
@@ -226,17 +225,18 @@ public class GameMapView extends JPanel {
     		return;
     	}
     	
-		cells.get(index).paintCell(g);
+		cells.get(index+0).paintCell(g);
 		cells.get(index+1).paintCell(g);
 		cells.get(index+2).paintCell(g);
 		cells.get(index+3).paintCell(g);
 		cells.get(index+4).paintCell(g);
-		cells.get(index+5).paintCell(g);
-		cells.get(index+6).paintCell(g);
-		cells.get(index+7).paintCell(g);
-		cells.get(index+8).paintCell(g);
-		cells.get(index+9).paintCell(g);
-    	index += 10; // load 10 at a time
+		index += 5; // load 5 at a time
+		//cells.get(index+5).paintCell(g);
+		//cells.get(index+6).paintCell(g);
+		//cells.get(index+7).paintCell(g);
+		//cells.get(index+8).paintCell(g);
+		//cells.get(index+9).paintCell(g);
+    	//index += 10; // load 10 at a time
     }
     
     public boolean isMapLoaded() {
