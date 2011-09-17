@@ -54,10 +54,10 @@ public class MainMenuView extends Menu {
 			}
 		};
 		
-		instructions = new Clickable("Instructions", false, null, null) {
+		instructions = new Clickable("Instructions", true, null, null) {
 			@Override
 			public void onClick(BasicWars o) {
-				o.showMessage("Sorry, no instructions yet. Coming soon!");
+				o.loadInstructions();
 			}
 		};
 		

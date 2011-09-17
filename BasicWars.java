@@ -26,6 +26,7 @@ public class BasicWars extends JPanel {
 	private ControlPanel controlPanel;
 	private MainMenuView mainMenu;
 	private AboutView aboutView;
+	private InstructionView instructionView;
 	private PlayerSelectView playerMenu;
 	private MapSelectView mapMenu;
 	private UnitSelectView unitMenu;
@@ -117,6 +118,7 @@ public class BasicWars extends JPanel {
 		// instantiate all JPanels at launch for smooth tranitions
 		controlPanel = new ControlPanel("Basic Wars. Basically awesome.");
 		mainMenu = new MainMenuView();
+		instructionView = new InstructionView();
 		aboutView = new AboutView();
 		playerMenu = new PlayerSelectView();
 		mapMenu = new MapSelectView(maps);
@@ -203,6 +205,11 @@ public class BasicWars extends JPanel {
 		loadMenu(aboutView, "Who cares? Just play the game already...");
 	}
 	
+	public void loadInstructions() {
+		controlPanel.setMainMenuButton();
+		loadMenu(instructionView, "Listen carefully because I'm only saying this once.");
+	}
+	
 	public void loadPlayerMenu() {
 		controlPanel.setMainMenuButton();
 		loadMenu(playerMenu, "Select how many players.");
@@ -264,7 +271,8 @@ public class BasicWars extends JPanel {
 				showStatus("All of Player " + p.getNumber() + "'s units have been destroyed!");
 				showTurn(null, 0);
 				showMessage("Game Over! All of Player " + p.getNumber() + "'s units have been destroyed!");
-				
+				isGameInProgress = false;
+				loadMainMenu();
 				return true;
 			}
 		}
@@ -325,6 +333,27 @@ public class BasicWars extends JPanel {
 	 */
 	public void showMessage(String message) {
 		JOptionPane.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
+	}
+	
+	/**
+	 * Turns a String into an ArrayList of Strings
+	 * @param s String to convert
+	 * @param maxLength Max length of the line before wrapping
+	 * @return ArrayList of Strings, where each String represents a line of text
+	 */
+	public static ArrayList<String> toList(String s, int maxLength) {
+		ArrayList<String> output = new ArrayList<String>();
+		String[] words = s.split(" ");
+		StringBuilder line = new StringBuilder(maxLength);
+		for (String word : words) {
+			if (line.length() > maxLength) {
+				output.add(line.toString());
+				line = new StringBuilder(maxLength);
+			}
+			line.append(word).append(' ');
+		}
+		output.add(line.toString());
+		return output;
 	}
 	
 	public static void main(String[] args) {

@@ -5,6 +5,9 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 
 
+/**
+ * A panel with information about the game any myself
+ */
 public class AboutView extends Menu {
 	private static final long serialVersionUID = -4543847690002129914L;
 	private Font font = new Font("Courier New", Font.PLAIN, 17);
@@ -15,7 +18,7 @@ public class AboutView extends Menu {
 
 	public AboutView() {
 		super("About");
-		text = toList("Basic Wars is a strategy game loosely based on Advance Wars,"
+		text = BasicWars.toList("Basic Wars is a strategy game loosely based on Advance Wars,"
 				+ " developed for the ICS Summer of Code competition at UC,"
 				+ " Irvine. I could have developed anything, but I chose this"
 				+ " simple game because it involves a lot of Computer Science"
@@ -24,30 +27,12 @@ public class AboutView extends Menu {
 				+ " and online games introduce a lot of fun/new features/problems."
 				+ " I have never made a full-featured game before so I thought a"
 				+ " modern war game (modern if it was made in 1990) would be a "
-				+ " good place to start. I hope you enjoy it!"
+				+ " good place to start. I really hope you enjoy it and I would"
+				+ " appreciate any feedback you have, as long as it doesn't crush"
+				+ " my will to code."
 				, LINE_LENGTH);
+		text.add("\n");
 		text.add("-Steven Salat");
-	}
-	
-	/**
-	 * Turns a String into an ArrayList of Strings
-	 * @param s String to convert
-	 * @param maxLength Max length of the line before wrapping
-	 * @return ArrayList of Strings, where each String represents a line of text
-	 */
-	private ArrayList<String> toList(String s, int maxLength) {
-		ArrayList<String> output = new ArrayList<String>();
-		String[] words = s.split(" ");
-		StringBuilder line = new StringBuilder(maxLength);
-		for (String word : words) {
-			if (line.length() > maxLength) {
-				output.add(line.toString());
-				line = new StringBuilder(maxLength);
-			}
-			line.append(word).append(' ');
-		}
-		output.add(line.toString());
-		return output;
 	}
 	
 	@Override
@@ -58,7 +43,7 @@ public class AboutView extends Menu {
 		g.setFont(font);
 		y = Y_TOP;
 		for (String s : text) {
-			g.drawString(s, 58, y);
+			g.drawString(s, 75, y);
 			y += 30;
 		}
 	}
