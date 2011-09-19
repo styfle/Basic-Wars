@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class InstructionView extends Menu {
 	private static final long serialVersionUID = 6893902772033313258L;
 	private Font font = new Font("Courier New", Font.PLAIN, 17);
-	private final int Y_TOP = 130;
+	private final int Y_TOP = 150;
 	private int y = Y_TOP;
 	private final int LINE_LENGTH = 47;
 	private ArrayList<String> text;
@@ -58,7 +58,7 @@ public class InstructionView extends Menu {
 		g.setFont(font);
 		y = Y_TOP;
 		for (String s : text) {
-			g.drawString(s, 70, y);
+			g.drawString(s, 80, y); // change x position if needed
 			y += 30;
 		}
 		for (Clickable c : clickables) {

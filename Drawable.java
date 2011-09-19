@@ -7,8 +7,8 @@ public class Drawable {
 	private int x;
 	private int y;
 	private String text;
-	private static final Color color = Color.GRAY;
-	private static final Font font = new Font("Arial", Font.BOLD, 24);
+	private static final Color color = new Color(150, 175, 150);
+	private static final Font font = BasicWars.BODY_FONT.deriveFont(35.0f);
 	
 	public Drawable(String s, int xPos, int yPos) {
 		if (s == null)

@@ -24,9 +24,7 @@ This table should help you understand attacks.
 
 Todo List
 ---------
-* Definitely need some royalty-free sprites soon (soldier, tank, plane)
 * Attack damage should be randomized (like a dice roll for board game)
-* Add a view with the instructions on how to play
 * Embed images/sounds in jar archive to make distribution easier (one file)
 * Resize cells/sprites on the fly when the window/frame changes sizes
 * Maybe make the map bigger than the screen and provide "panning" the view
@@ -44,6 +42,8 @@ Completed
 * Remove the Lava cell type and changed Tree to Swamp 
 * Limit movement on cells (tanks cant go in water, etc)
 * Added resume feature so players can continue game
+* Add a view with the instructions on how to play
+* Added sprite images (soldier, tank, plane)
 
 
 Beta Testing

@@ -19,14 +19,15 @@ import javax.swing.JPanel;
  */
 public abstract class Menu extends JPanel {
 	private static final long serialVersionUID = -7203212514059859323L;
-	protected static final int IMAGE_WIDTH = 300;
-	protected static final int IMAGE_HEIGHT = 300;
-	private static final int Y_TOP = 130;
+	protected static final int IMAGE_WIDTH = 325;
+	protected static final int IMAGE_HEIGHT = IMAGE_WIDTH;
+	private static final int Y_TOP = 175;
 	private static final Cursor CURSOR_DEFAULT = new Cursor(Cursor.DEFAULT_CURSOR);
 	private static final Cursor CURSOR_HAND = new Cursor(Cursor.HAND_CURSOR);
 	private final String title;
+	private static final int yPosHead = 110;
 	private final int xPosHead;
-	private final int xPosChild = 385;//350;
+	private final int xPosChild = 385;
 	private int yPosChild = Y_TOP;
 	protected ArrayList<Clickable> clickables = new ArrayList<Clickable>();
 	protected ArrayList<Drawable> drawables = new ArrayList<Drawable>();
@@ -38,11 +39,11 @@ public abstract class Menu extends JPanel {
 		super(true); //double buffered
 		
 		title = menuTitle;
-		xPosHead = 250 - title.length()*16;
+		xPosHead = 250 - title.length()*15;
 		
 		this.addMouseListener(new MouseListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				for (Clickable c : clickables)
 					if (c.contains(e.getPoint())) {
 						c.onClick((BasicWars)getParent());
@@ -54,7 +55,7 @@ public abstract class Menu extends JPanel {
 			@Override
 			public void mouseExited(MouseEvent e) { }
 			@Override
-			public void mousePressed(MouseEvent e) { }
+			public void mouseClicked(MouseEvent e) { }
 			@Override
 			public void mouseReleased(MouseEvent e) { }
 			
@@ -99,7 +100,7 @@ public abstract class Menu extends JPanel {
 		g.fillRect(0, 0, GameMapView.WIDTH, GameMapView.HEIGHT);
 		g.setColor(BasicWars.HEAD_COLOR);
 		g.setFont(BasicWars.HEAD_FONT);
-		g.drawString(title, xPosHead, 80);
+		g.drawString(title, xPosHead, yPosHead);
 	}
 	
 	@Override

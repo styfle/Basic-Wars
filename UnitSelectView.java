@@ -15,7 +15,7 @@ public class UnitSelectView extends Menu {
 		Unit tank = new Unit(Unit.Type.TANK , player);
 		Unit plane = new Unit(Unit.Type.PLANE, player);
 		
-		money = new Drawable("$0", 275, 125);
+		money = new Drawable("$0", 200, 535);
 		drawables.add(money);
 		
 		clickables.add(new Clickable(buildString('s'), true, soldier.getImage(), null) {
@@ -25,7 +25,7 @@ public class UnitSelectView extends Menu {
 				if (!success) {
 					o.showStatus("You don't have enough money to buy a soldier!");
 				} else {
-					o.showStatus("Player " + player.getNumber() + " bought a soldier!");
+					o.showStatus("Player " + player.getNumber() + " bought a soldier for $"+Player.PRICE_SOLDIER+"!");
 					setName(buildString('s'));
 				}
 				repaint();
@@ -39,7 +39,7 @@ public class UnitSelectView extends Menu {
 				if (!success) {
 					o.showStatus("You don't have enough money to buy a tank!");
 				} else {
-					o.showStatus("Player " + player.getNumber() + " bought a tank!");
+					o.showStatus("Player " + player.getNumber() + " bought a tank for $"+ Player.PRICE_TANK +"!");
 					setName(buildString('t'));
 				}
 				repaint();
@@ -53,7 +53,7 @@ public class UnitSelectView extends Menu {
 				if (!success) {
 					o.showStatus("You don't have enough money to buy a plane!");
 				} else {
-					o.showStatus("Player " + player.getNumber() + " bought a plane!");
+					o.showStatus("Player " + player.getNumber() + " bought a plane for $"+Player.PRICE_PLANE+"!");
 					setName(buildString('p'));
 				}
 				repaint();
