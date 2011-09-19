@@ -15,7 +15,7 @@ import javax.swing.*;
 public class BasicWars extends JPanel {
 	private static final long serialVersionUID = -5944312753990108995L;
 	public static final String GAME_NAME = "Basic Wars";
-	public static final String GAME_VERSION = "0.65";
+	public static final String GAME_VERSION = "0.70";
 	public static final Font HEAD_FONT = new Font("DialogInput", Font.PLAIN, 75);
 	public static final Font BODY_FONT = new Font("Dialog", Font.PLAIN, 25);
 	public static final Font BOLD_FONT = new Font("Courier", Font.BOLD, 30);
@@ -30,7 +30,7 @@ public class BasicWars extends JPanel {
 	private PlayerSelectView playerMenu;
 	private MapSelectView mapMenu;
 	private UnitSelectView unitMenu;
-	private Timer timer;
+	private Timer timer; // timer used for map animation
 	private int currentPlayer; // each player needs unit selection menus
 	private ArrayList<Player> players;
 	private GameMap map;
@@ -291,7 +291,8 @@ public class BasicWars extends JPanel {
 		panel.setOpaque(true); //content panes must be opaque
 		frame.setContentPane(panel);
 		frame.setPreferredSize(new Dimension(GameMapView.WIDTH, GameMapView.HEIGHT + ControlPanel.HEIGHT*2));
-
+		frame.setResizable(false);
+		
 		//Display the window.
 		frame.pack();
 		frame.setLocationRelativeTo(null);

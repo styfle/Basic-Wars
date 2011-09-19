@@ -21,8 +21,8 @@ import javax.swing.Timer;
  */
 public class GameMapView extends JPanel {
 	private static final long serialVersionUID = -8221311233615840987L;
-	public static final int WIDTH = Cell.DIST_TO_CORNER*2 * (GameMap.CELL_COLS-6);	
-    public static final int HEIGHT = Cell.DIST_TO_EDGE*2 * (GameMap.CELL_ROWS+2);
+	public static final int WIDTH = 695;//Cell.DIST_TO_CORNER*2 * (GameMap.CELL_COLS-6);	
+    public static final int HEIGHT = 650;//Cell.DIST_TO_EDGE*2 * (GameMap.CELL_ROWS+2);
     private GameMap map;
     private int index = 0; // used for animation
     private Cell selected = null;
@@ -135,6 +135,7 @@ public class GameMapView extends JPanel {
 		moveItem.addActionListener(al);
 		attackItem.addActionListener(al);
 		skipItem.addActionListener(al);
+		
 		popup.add(moveItem);
 		popup.add(attackItem);
 		popup.addSeparator();
@@ -142,7 +143,7 @@ public class GameMapView extends JPanel {
 		
     	this.addMouseListener(new MouseListener() {
 			@Override
-			public void mouseClicked(MouseEvent e) {
+			public void mousePressed(MouseEvent e) {
 				
 				ArrayList<Cell> cells = map.getCells();
 				BasicWars o = ((BasicWars)getParent());
@@ -198,7 +199,7 @@ public class GameMapView extends JPanel {
 			@Override
 			public void mouseExited(MouseEvent e) {	}			
 			@Override
-			public void mousePressed(MouseEvent e) { }
+			public void mouseClicked(MouseEvent e) { } // mousePressed is more responsive
 			@Override
 			public void mouseReleased(MouseEvent e) { }
 			

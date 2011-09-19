@@ -35,6 +35,8 @@ public abstract class Menu extends JPanel {
 	private boolean firstPaint = true;
 
 	public Menu(String menuTitle) {
+		super(true); //double buffered
+		
 		title = menuTitle;
 		xPosHead = 250 - title.length()*16;
 		
