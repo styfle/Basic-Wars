@@ -50,7 +50,7 @@ Beta Testing
 ------------
 If you would like to try out Basic Wars you can download the latest release on the [download page](https://github.com/styfle/Basic-Wars/downloads) and look for the biggest revision number (or newest date).
 
-For the bleeding edge code, you must first install the JDK so you can comiple the source code. To compile, first navigate to the source folder and run this command: 
+For the bleeding edge code, you must first install the JDK so you can compile the source code. To compile, first navigate to the source folder and run this command: 
 
     javac *.java
 
@@ -60,7 +60,7 @@ Then execute the code with the command:
 
 Custom Maps
 ------------
-If you are innovative and decide to make a custom map, all you have to do is open your favorite text editor and start typing. The format looks like this
+If you are innovative and decide to make a custom map, all you have to do is open your favorite text editor and start typing. The format looks like this (Oasis map):
 
 ```
 EEEEEEEEEEEEEEEEEEEEEEEEE
@@ -85,10 +85,17 @@ EEEEEEEEEEEEEEEEEEEEEEEEE
 EEEEEEEEEEEEEEEEEEEEEEEEE
 ```
 
-That is the actual source code for the 'Oasis' map. The cell types are
+The only valid cell types are
 
     E: Earth
 	W: Water
 	S: Swamp
 
+Rules for custom maps:
+* Must have exactly 20 rows
+* Must have exactly 25 columns
+* Must have at least 10 Earth cells on the left and 10 earth cells on the right
+* That means Earth cells in middle-most column don't count toward this
+
 That should be enough to get you started.
+

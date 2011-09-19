@@ -32,7 +32,7 @@ public class MapSelectView extends Menu {
 		clickables.add (new Clickable("Load Custom Map", true, image, new Color(190, 170, 100)) {
 			@Override
 			public void onClick(BasicWars o) {
-				JFileChooser fc = new JFileChooser();
+				JFileChooser fc = new JFileChooser(new java.io.File(".")); // start in cd
 				fc.setFileFilter(new FileNameExtensionFilter("Basic Wars Maps (*.bw)","bw"));
 				int a = fc.showOpenDialog(o);
 				if (a == JFileChooser.APPROVE_OPTION) {
@@ -47,7 +47,7 @@ public class MapSelectView extends Menu {
 						}
 						clickables.add(map);
 					} catch (Exception e) {
-						o.showError(7, "The file you selected could not be loaded:\n" + e.getMessage());
+						o.showError(714, "The file you selected could not be loaded!", e.getMessage());
 					}
 				}
 			}

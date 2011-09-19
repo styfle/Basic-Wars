@@ -44,7 +44,6 @@ public class Cell {
 		switch (type) {
 			case EARTH:currentFill = new Color(139, 69, 19, 175); break;
 			case WATER: currentFill = new Color(0, 0, 255, 175); break;
-			//case LAVA: currentFill = new Color(255, 0, 0, 175); break;
 			case SWAMP: currentFill = new Color(0, 255, 0, 175); break;
 			default: throw new IllegalArgumentException("Unknown cell type!");
 		}
@@ -97,7 +96,7 @@ public class Cell {
 			case 'E': type = Cell.Type.EARTH; break;
 			case 'W': type = Cell.Type.WATER; break;
 			case 'S': type = Cell.Type.SWAMP; break;
-			default: throw new IllegalArgumentException("Unknown cell type: " + ch);
+			default: throw new IllegalArgumentException("Unknown cell type, '" + ch + "'");
 		}
 		return type;
 	}

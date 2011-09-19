@@ -166,7 +166,7 @@ public class BasicWars extends JPanel {
 									c = cells.get(i);
 									valid = c.getUnit() == null && // must have no unit in cell
 											c.getType().equals(Cell.Type.EARTH) && // must be earth type
-											((p.getNumber() == 1) ? (i % 25 < 11) : (i % 25 > 12)); // place on correct side
+											((p.getNumber() == 1) ? isOnLeftSide(i) : isOnRightSide(i)); // ensure correct side
 								} while (!valid);
 								c.setUnit(u);
 								//System.out.println("Unit on cell #" + cells.indexOf(c));
@@ -255,13 +255,10 @@ public class BasicWars extends JPanel {
 	}
 	
 	public void resumeGame() {
-		
 		if (isGameInProgress)
 			loadMap(false); // not new game, resume
 		else
-			showMessage("There is no game in session.");
-		
-		//showMessage("Resume is not implemented yet.");
+			showMessage("Can't resume! There is no game in session. Start a new game.");
 	}
 	
 	public boolean isGameOver() {
@@ -324,8 +321,8 @@ public class BasicWars extends JPanel {
 	 * @param errorNum An arbitrary number to reference the error
 	 * @param message The message to show the user
 	 */
-	public void showError(int errorNum, String message) {
-		JOptionPane.showMessageDialog(this, message, "Error " + errorNum, JOptionPane.ERROR_MESSAGE);
+	public void showError(int errorNum, String title, String message) {
+		JOptionPane.showMessageDialog(this, message, "Error " + errorNum + ": " + title, JOptionPane.ERROR_MESSAGE);
 	}
 	
 	/**
@@ -335,6 +332,18 @@ public class BasicWars extends JPanel {
 	public void showMessage(String message) {
 		JOptionPane.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
 	}
+	
+	/**
+	 * @param i Cell number (0-499)
+	 * @return true if cell is on the left side
+	 */
+	public static boolean isOnLeftSide(int i) { return (i % 25 < 12); }
+	
+	/**
+	 * @param i Cell number (0-499)
+	 * @return true if cell is on the right side
+	 */
+	public static boolean isOnRightSide(int i) { return (i % 25 > 12); }
 	
 	/**
 	 * Turns a String into an ArrayList of Strings

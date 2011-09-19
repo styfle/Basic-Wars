@@ -42,7 +42,7 @@ public class InstructionView extends Menu {
 					try {
 						desktop.browse(new java.net.URI("https://github.com/styfle/Basic-Wars/blob/master/readme.md"));
 					} catch (Exception e) {
-						o.showError(808, e.getMessage());
+						o.showError(808, "Failed to open URI!", e.getMessage());
 					}
 				}
 				

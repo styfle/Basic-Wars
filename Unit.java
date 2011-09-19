@@ -14,8 +14,8 @@ public class Unit {
 	private String name;
 	private final int MAX_HEALTH;
 	private int healthRemaining;
-	private final int MAX_MOVES;
-	private final int MAX_ATTACK;
+	private final int MAX_MOVES;	// move radius
+	private final int MAX_ATTACK;	// attack radius
 	private Player player;
 	private BufferedImage image;
 	private ImageIcon icon;
@@ -48,7 +48,6 @@ public class Unit {
 				throw new IllegalArgumentException("Cannot create a unit of type: " + type);
 		}
 		
-		//String imagePath = "images/"+unit+owner.getNumber()+"_"+owner.getSide().toString()+".png";
 		String imagePath = "images/"+name+owner.getNumber()+".png";
 		this.type = type;
 		this.player = owner;

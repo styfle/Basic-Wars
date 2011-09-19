@@ -37,18 +37,42 @@ public class GameMap extends Clickable {
 	private void buildMap(String mapData) {
 		if (mapData == null)
 			return;
+
 		Cell c = new Cell(Cell.DIST_TO_CORNER, 0, Cell.Type.SWAMP);
 		String[] lines = mapData.split("\n");
+		
 		if (lines.length != CELL_ROWS)
 			throw new IllegalArgumentException("Maps must have " + CELL_ROWS + " rows!\n Your map has " + lines.length + " rows.");
 		
 		Cell left = c;
-		for (String line : lines) {
-			if (line.length() != CELL_COLS)
-				throw new IllegalArgumentException("Maps must have " + CELL_COLS + " columns!\nYour map has " + line.length() + " columns.");
-			buildRow(line, left);
+		for (int i=0; i< lines.length; i++) {
+			if (lines[i].length() != CELL_COLS)
+				throw new IllegalArgumentException("Maps must have " + CELL_COLS + " columns!\n" +
+						"Your map has " + lines[i].length() + " columns on line " + (i+1) + ".");
+			try {
+				buildRow(lines[i], left);
+			} catch (Exception e) {
+				throw new IllegalArgumentException(e.getMessage() + " on line " + (i+1) + ".");
+			}
 			left = left.south;
+		} //((p.getNumber() == 1) ? (i % 25 < 11) : (i % 25 > 12));
+		
+		// check for 10 cells on each side
+		int leftEarthCount = 0;
+		int rightEarthCount = 0;
+		for (int i=0; i<cells.size(); i++) {
+			Cell cell = cells.get(i);
+			if (cell.getType().equals(Cell.Type.EARTH)) {
+				if (BasicWars.isOnLeftSide(i))
+					leftEarthCount++;
+				if (BasicWars.isOnRightSide(i))
+					rightEarthCount++;
+			}
 		}
+		
+		if (leftEarthCount < 10 || rightEarthCount < 10)
+			throw new IllegalArgumentException("Maps must have at least 10 earth cells on the left and right.\n" +
+					this.getName() + " has " + leftEarthCount +" left earth cells and " + rightEarthCount + " right earth cells.");
 		
 		// generate image of cells
 		BufferedImage image = new BufferedImage(GameMapView.WIDTH, GameMapView.HEIGHT, BufferedImage.TYPE_INT_ARGB);
