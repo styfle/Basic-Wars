@@ -1,6 +1,8 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.util.ArrayList;
 
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.*;
@@ -16,7 +18,7 @@ public class MapSelectView extends Menu {
 	 * This JPanel is a map selector
 	 * @param mapSelection array of maps to select from
 	 */
-	public MapSelectView(GameMap[] mapSelection) {
+	public MapSelectView(GameMap[] defaultMaps, ArrayList<File> userDefinedMaps) throws Exception {
 		super("Map Select");
 		
 		BufferedImage image = new BufferedImage(200, 200, BufferedImage.TYPE_INT_ARGB);
@@ -29,7 +31,7 @@ public class MapSelectView extends Menu {
 			cell.paintCell(imgGraphics);
 		}
 		
-		clickables.add (new Clickable("Load Custom Map", true, image, new Color(190, 170, 100)) {
+		clickables.add(new Clickable("Load Custom Map", true, image, new Color(190, 170, 100)) {
 			@Override
 			public void onClick(BasicWars o) {
 				JFileChooser fc = new JFileChooser(new java.io.File(".")); // start in cd
@@ -37,15 +39,7 @@ public class MapSelectView extends Menu {
 				int a = fc.showOpenDialog(o);
 				if (a == JFileChooser.APPROVE_OPTION) {
 					try {
-						GameMap map = new GameMap(fc.getSelectedFile());
-						for (Clickable c : clickables) {
-							if (c.getName().equals(map.getName())) {
-								System.out.println("Reloading " + map.getName());
-								clickables.remove(c);
-								break;
-							}							
-						}
-						clickables.add(map);
+						addMapFromFile(fc.getSelectedFile());
 					} catch (Exception e) {
 						o.showError(714, "The file you selected could not be loaded!", e.getMessage());
 					}
@@ -53,9 +47,30 @@ public class MapSelectView extends Menu {
 			}
 		});
 		
-		for (Clickable c : mapSelection) {
+		for (Clickable c : defaultMaps) {
 			clickables.add(c);
 		}
+		
+		for (File userDefined : userDefinedMaps) {
+			try {
+				addMapFromFile(userDefined);
+			} catch (Exception e) {
+				// fail silently
+				// user can get error when loading map manually
+			}
+		}
+	}
+	
+	private void addMapFromFile(File f) throws Exception {
+		GameMap map = new GameMap(f);
+		for (Clickable c : clickables) {
+			if (c.getName().equals(map.getName())) {
+				System.out.println("Reloading " + map.getName());
+				clickables.remove(c);
+				break;
+			}							
+		}
+		clickables.add(map);
 	}
 
 }

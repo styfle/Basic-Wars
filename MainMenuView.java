@@ -15,7 +15,7 @@ public class MainMenuView extends Menu {
 	private Clickable about;
 	private Clickable exit;
 	
-	public MainMenuView() {
+	public MainMenuView() throws Exception {
 		super(BasicWars.GAME_NAME);
 		
 		BufferedImage i = new BufferedImage(IMAGE_WIDTH, IMAGE_HEIGHT, BufferedImage.TYPE_INT_ARGB);

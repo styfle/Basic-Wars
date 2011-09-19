@@ -66,23 +66,18 @@ public class ControlPanel extends JPanel {
 		toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, SEPARATION, 0));
 		toolBar.setBackground(BasicWars.BG_COLOR);
 		
-		//hud = new JPanel();
-		//hud.setBackground(BasicWars.BG_COLOR);
 		currentTurn = new JLabel("Player 1:   MOVE");
 		currentTurn.setFont(STATUS_FONT);
 		currentTurn.setForeground(BasicWars.TEXT_COLOR);
 		selectedUnit = new JLabel("Nothing selected");
 		selectedUnit.setFont(STATUS_FONT);
 		selectedUnit.setForeground(BasicWars.TEXT_COLOR);
-		//hud.add(currentTurn);
-		//hud.add(selectedUnit);
 		
 		statusLabel = new JLabel(status);
 		statusLabel.setFont(STATUS_FONT);
 		statusLabel.setForeground(BasicWars.TEXT_COLOR);
 		
 		toolBar.add(mainMenuButton);
-		//toolBar.add(hud);
 		toolBar.addSeparator(new Dimension(SEPARATION, HEIGHT));
 		toolBar.add(statusLabel);		
 		this.add(toolBar, BorderLayout.CENTER);
@@ -92,7 +87,7 @@ public class ControlPanel extends JPanel {
 		JButton b = new JButton(label);
 		//b.setBorderPainted(false);
 		b.setBounds(0, 0, 100, HEIGHT);
-		/*b.setBackground(BUTTON_COLOR);*/
+		//b.setBackground(BUTTON_COLOR);
 		b.setForeground(BasicWars.TEXT_COLOR);
 		b.setFont(new Font("Arial", Font.BOLD, 12));
 		b.setPreferredSize(new Dimension(b.getWidth(), HEIGHT));

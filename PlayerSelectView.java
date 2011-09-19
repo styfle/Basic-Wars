@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 public class PlayerSelectView extends Menu {
 	private static final long serialVersionUID = -1367393635036121396L;
 
-	public PlayerSelectView() {
+	public PlayerSelectView() throws Exception {
 		super("Player Select");
 		
 		Clickable onePlayer = new Clickable("Single Player", false, null, null) {

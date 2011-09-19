@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -112,21 +113,40 @@ public class BasicWars extends JPanel {
 		System.setProperty("swing.aatext", "true");
 		
 		isGameInProgress = false;
+		players = new ArrayList<Player>(2);
 		
 		//System.setErr(new java.io.PrintStream("error.log"));
 		
+		// add user defined maps if they exist
+		ArrayList<File> userDefinedMaps = new ArrayList<File>();
+		File mapDir = new File("maps");
+		
+		if (!mapDir.isDirectory() || !mapDir.canRead()) {
+			mapDir = new File(".");
+		}
+		
+		for (File f : mapDir.listFiles()) {
+			if (f.isFile() && f.canRead() && f.getName().endsWith(".bw"))
+				userDefinedMaps.add(f);
+		}
+		
 		// instantiate all JPanels at launch for smooth tranitions
-		controlPanel = new ControlPanel("Basic Wars. Basically awesome.");
-		mainMenu = new MainMenuView();
-		instructionView = new InstructionView();
-		aboutView = new AboutView();
-		playerMenu = new PlayerSelectView();
-		mapMenu = new MapSelectView(maps);
+		try {
+			controlPanel = new ControlPanel("Basic Wars. Basically awesome.");
+			mainMenu = new MainMenuView();
+			instructionView = new InstructionView();
+			aboutView = new AboutView();
+			playerMenu = new PlayerSelectView();
+			mapMenu = new MapSelectView(maps, userDefinedMaps);
+			
+			add(controlPanel, BorderLayout.NORTH);
+			add(mainMenu, BorderLayout.CENTER);
+		} catch (Exception e) {
+			this.showError(212, "Could not instantiate view", e.getMessage());
+		}
 		
-		players = new ArrayList<Player>(2);
 		
-		add(controlPanel, BorderLayout.NORTH);
-		add(mainMenu, BorderLayout.CENTER);
+		
 	}
 	
 	/**
@@ -224,9 +244,13 @@ public class BasicWars extends JPanel {
 	public void loadUnitMenu() {
 		controlPanel.setMapSelectButton();
 		if (currentPlayer < players.size()) {
-			unitMenu = new UnitSelectView(players.get(currentPlayer));
-			loadMenu(unitMenu, "Select your units");
-			currentPlayer++;
+			try {
+				unitMenu = new UnitSelectView(players.get(currentPlayer));
+				loadMenu(unitMenu, "Select your units");
+				currentPlayer++;
+			} catch (Exception e) {
+				this.showError(949, "Unit Select View failed to load", e.getMessage());
+			}
 		} else {
 			controlPanel.setMainMenuButton();
 			loadMap(true); //new game

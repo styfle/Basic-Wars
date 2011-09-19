@@ -16,7 +16,7 @@ public class AboutView extends Menu {
 	private final int LINE_LENGTH = 46;
 	private ArrayList<String> text;
 
-	public AboutView() {
+	public AboutView() throws Exception {
 		super("About");
 		text = BasicWars.toList("Basic Wars is a strategy game loosely based on Advance Wars,"
 				+ " developed for the ICS Summer of Code competition at UC,"

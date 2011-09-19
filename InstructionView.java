@@ -22,7 +22,7 @@ public class InstructionView extends Menu {
 	private ArrayList<String> text;
 	//private boolean firstPaint = true;
 
-	public InstructionView() {
+	public InstructionView() throws Exception {
 		super("Instructions");
 		text = BasicWars.toList("Basic Wars is very simple to play, but hard to master."
 				+ " A player can move a unit and attack with a unit during their turn. Then their"

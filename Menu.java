@@ -35,7 +35,7 @@ public abstract class Menu extends JPanel {
 	
 	private boolean firstPaint = true;
 
-	public Menu(String menuTitle) {
+	public Menu(String menuTitle) throws Exception {
 		super(true); //double buffered
 		
 		title = menuTitle;
