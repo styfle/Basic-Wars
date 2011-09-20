@@ -14,8 +14,8 @@ import javax.swing.JPanel;
 
 
 /**
- * This class is a menu in the game that allows
- * the user to select game settings.
+ * This abstract class is a menu in the game that
+ * allows the user to select game settings.
  */
 public abstract class Menu extends JPanel {
 	private static final long serialVersionUID = -7203212514059859323L;
@@ -24,6 +24,7 @@ public abstract class Menu extends JPanel {
 	private static final int Y_TOP = 175;
 	private static final Cursor CURSOR_DEFAULT = new Cursor(Cursor.DEFAULT_CURSOR);
 	private static final Cursor CURSOR_HAND = new Cursor(Cursor.HAND_CURSOR);
+	private static final int MAX_NAME_LEN = 17; // max length to print clickable name
 	private final String title;
 	private static final int yPosHead = 110;
 	private final int xPosHead;
@@ -116,8 +117,11 @@ public abstract class Menu extends JPanel {
 		for (Clickable c : clickables) {
 			yPosChild += BasicWars.BODY_FONT.getSize()*2;
 			g.setColor(c.getColor());
+			String name = c.getName();
+			if (name.length() > MAX_NAME_LEN)
+				name = name.substring(0, MAX_NAME_LEN) + "...";
 			if (firstPaint) {
-				TextLayout tl = new TextLayout("[" + c.getName() + "]", BasicWars.BODY_FONT, g.getFontRenderContext());
+				TextLayout tl = new TextLayout("[" + name + "]", BasicWars.BODY_FONT, g.getFontRenderContext());
 				c.init(tl, xPosChild, yPosChild, g);
 			}
 			c.draw();

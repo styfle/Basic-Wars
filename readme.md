@@ -15,7 +15,7 @@ This table should help you understand which unit types can move on which cells.
 <tr><th>&nbsp;</th><th>Earth</th><th>Water</th><th>Swamp</th><th>Health</th><th>Attack</th><th>Move Radius</th><th>Attack Radius</th></tr>
 <tr><th>Soldier</th><td>Yes</td><td>Yes, soldiers swim</td><td>No, too dangerous</td><td>100</td><td>50</td><td>2 Cells</td><td>2 Cells</td></tr>
 <tr><th>Tank</th><td>Yes</td><td>No, they sink</td><td>Yes, built for bad terrain</td><td>200</td><td>100</td><td>1 Cell</td><td>2 Cells</td></tr>
-<tr><th>Plane</th><td>Yes</td><td>Can't land, no skis</td><td>Can't land, too dangerous</td><td>150</td><td>75</td><td>4 Cells</td><td>2 Cells</td></tr>
+<tr><th>Plane</th><td>Yes</td><td>Can't land, no skis</td><td>Can't land, too dangerous</td><td>150</td><td>75</td><td>3 Cells</td><td>2 Cells</td></tr>
 </table>
 
 This table should help you understand attacks.
@@ -24,6 +24,7 @@ This table should help you understand attacks.
 
 Todo List
 ---------
+* Need popup after each successful attack (damage, isCritical, etc)
 * Attack damage should be randomized (like a dice roll for board game)
 * Embed images/sounds in jar archive to make distribution easier (one file)
 * Resize cells/sprites on the fly when the window/frame changes sizes

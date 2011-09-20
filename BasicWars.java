@@ -16,7 +16,7 @@ import javax.swing.*;
 public class BasicWars extends JPanel {
 	private static final long serialVersionUID = -5944312753990108995L;
 	public static final String GAME_NAME = "Basic Wars";
-	public static final String GAME_VERSION = "0.70";
+	public static final String GAME_VERSION = "0.73";
 	public static final Font HEAD_FONT = new Font("DialogInput", Font.PLAIN, 75);
 	public static final Font BODY_FONT = new Font("Dialog", Font.PLAIN, 25);
 	public static final Font BOLD_FONT = new Font("Courier", Font.BOLD, 30);
@@ -318,6 +318,14 @@ public class BasicWars extends JPanel {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		
+		//Set image icon
+		try {
+			Image icon = Toolkit.getDefaultToolkit().createImage("images/icon64.png");
+			frame.setIconImage(icon);
+		} catch (Exception e) {
+			// ignore error
+		}
 		
 		//Enable anti-aliasing
 		Graphics2D g = (Graphics2D)frame.getGraphics();
