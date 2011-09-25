@@ -24,7 +24,7 @@ public abstract class Menu extends JPanel {
 	private static final int Y_TOP = 175;
 	private static final Cursor CURSOR_DEFAULT = new Cursor(Cursor.DEFAULT_CURSOR);
 	private static final Cursor CURSOR_HAND = new Cursor(Cursor.HAND_CURSOR);
-	private static final int MAX_NAME_LEN = 17; // max length to print clickable name
+	private static final int MAX_NAME_LEN = 23; // max length to print clickable name
 	private final String title;
 	private static final int yPosHead = 110;
 	private final int xPosHead;

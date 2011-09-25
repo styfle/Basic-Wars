@@ -12,7 +12,7 @@ Movement/Attacking
 This table should help you understand which unit types can move on which cells.
 
 <table border=1>
-<tr><th>&nbsp;</th><th>Earth</th><th>Water</th><th>Swamp</th><th>Health</th><th>Attack</th><th>Move Radius</th><th>Attack Radius</th></tr>
+<tr><th>&nbsp;</th><th>Earth (Brown)</th><th>Water (Blue)</th><th>Swamp (Green)</th><th>Health</th><th>Attack</th><th>Move Radius</th><th>Attack Radius</th></tr>
 <tr><th>Soldier</th><td>Yes</td><td>Yes, soldiers swim</td><td>No, too dangerous</td><td>100</td><td>50</td><td>2 Cells</td><td>2 Cells</td></tr>
 <tr><th>Tank</th><td>Yes</td><td>No, they sink</td><td>Yes, built for bad terrain</td><td>200</td><td>100</td><td>1 Cell</td><td>2 Cells</td></tr>
 <tr><th>Plane</th><td>Yes</td><td>Can't land, no skis</td><td>Can't land, too dangerous</td><td>150</td><td>75</td><td>3 Cells</td><td>2 Cells</td></tr>
@@ -25,6 +25,7 @@ This table should help you understand attacks.
 Todo List
 ---------
 * Need popup after each successful attack (damage, isCritical, etc)
+* Force Tank and Plane to only attack long range, not short range
 * Attack damage should be randomized (like a dice roll for board game)
 * Embed images/sounds in jar archive to make distribution easier (one file)
 * Resize cells/sprites on the fly when the window/frame changes sizes
@@ -88,9 +89,9 @@ EEEEEEEEEEEEEEEEEEEEEEEEE
 
 The only valid cell types are
 
-    E: Earth
-	W: Water
-	S: Swamp
+    E: Earth (Brown)
+	W: Water (Blue)
+	S: Swamp (Green)
 
 Rules for custom maps:
 * Must have exactly 20 rows
