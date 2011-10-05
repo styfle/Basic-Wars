@@ -8,34 +8,34 @@ import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 import javax.swing.Timer;
+import javax.swing.border.EmptyBorder;
 
 
 public class Overlay {
-	private static final Color color = new Color(255, 25, 0);
-	private static final Font font = new Font("Helvetica", Font.BOLD, 30);
-	private JLabel title;
-	private JLabel body;
+	private final Color fg = new Color(255, 25, 0);
+	private final Color bg = new Color(30, 30, 30, 80);
+	private final Font font = new Font("Helvetica", Font.BOLD, 20);
+	private JTextArea body;
 	private JFrame frame;
 	private Timer timer;
 	
 	public Overlay() {
 		frame = new JFrame();
-		frame.setBackground(new Color(30, 30, 30, 80));
+		frame.setBackground(bg);
 		frame.setUndecorated(true);
 		frame.setAlwaysOnTop(true);
 
 		Container pane = frame.getContentPane();
 		pane.setLayout(new java.awt.BorderLayout());
 		
-		title = new JLabel();
-		body = new JLabel();
-		title.setForeground(color);
-		body.setForeground(color);
-		title.setFont(font);
+		body = new JTextArea(2, 2);
+		body.setBackground(bg);
+		body.setBorder(new EmptyBorder(10, 10, 10, 10));
+		body.setForeground(fg);
 		body.setFont(font);
 		
-		pane.add(title, java.awt.BorderLayout.NORTH);
 		pane.add(body, java.awt.BorderLayout.CENTER);
 		
 		//Graphics g = pane.getGraphics();
@@ -69,11 +69,16 @@ public class Overlay {
 		
 	}
 	
-	public void show(String title, String body, int x, int y) {
+	public void show(String text, int x, int y) {
 		hide();
 		
-		this.title.setText(title.toUpperCase());
-		this.body.setText(body);
+		String[] n = text.split("\n");
+		if (n.length <= 1)
+			body.setRows(1);
+		else
+			body.setRows(n.length-1);
+		
+		body.setText(text);
 		
 		if (x == -1 || y == -1)
 			frame.setLocationRelativeTo(null);
@@ -86,7 +91,7 @@ public class Overlay {
 	}
 	
 	public void show(String text) {
-		show("", text, -1, -1);
+		show(text, -1, -1);
 	}
 	
 	public void hide() {

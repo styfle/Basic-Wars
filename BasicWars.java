@@ -16,7 +16,7 @@ import javax.swing.*;
 public class BasicWars extends JPanel {
 	private static final long serialVersionUID = -5944312753990108995L;
 	public static final String GAME_NAME = "Basic Wars";
-	public static final String GAME_VERSION = "0.75";
+	public static final String GAME_VERSION = "0.80";
 	public static final Font HEAD_FONT = new Font("DialogInput", Font.PLAIN, 75);
 	public static final Font BODY_FONT = new Font("Dialog", Font.PLAIN, 25);
 	public static final Font BOLD_FONT = new Font("Courier", Font.BOLD, 30);
@@ -302,7 +302,9 @@ public class BasicWars extends JPanel {
 		return false;
 	}
 	
-	public void showOverlay(String title, String body, int x, int y) { overlay.show(title, body, x, y); }
+	public void showOverlay(String body, int x, int y) {
+		overlay.show(body, frame.getX()+x-100, frame.getY()+y-25);
+	}
 	
 	/**
 	 * Helper method for launching GUI from main
