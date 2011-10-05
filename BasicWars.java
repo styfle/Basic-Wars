@@ -131,7 +131,7 @@ public class BasicWars extends JPanel {
 				userDefinedMaps.add(f);
 		}
 		
-		// instantiate all JPanels at launch for smooth tranitions
+		// instantiate all JPanels at launch for smooth transitions later
 		try {
 			controlPanel = new ControlPanel("Basic Wars. Basically awesome.");
 			mainMenu = new MainMenuView();
@@ -141,14 +141,18 @@ public class BasicWars extends JPanel {
 			mapMenu = new MapSelectView(maps, userDefinedMaps);
 			overlay = new Overlay();
 			
+			
 			add(controlPanel, BorderLayout.NORTH);
 			add(mainMenu, BorderLayout.CENTER);
 		} catch (Exception e) {
 			this.showError(212, "Could not instantiate view", e.getMessage());
 		}
 		
-		
-		
+		/*
+		FileInputStream in = new FileInputStream("sounds/title-screen.wav");
+		sun.audio.AudioStream as = new sun.audio.AudioStream(in);
+		sun.audio.AudioPlayer.player.start(as);
+		*/
 	}
 	
 	/**
@@ -303,7 +307,7 @@ public class BasicWars extends JPanel {
 	}
 	
 	public void showOverlay(String body, int x, int y) {
-		overlay.show(body, frame.getX()+x-100, frame.getY()+y-25);
+		overlay.show(body, frame.getX()+x-75, frame.getY()+y-25);
 	}
 	
 	/**

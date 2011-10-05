@@ -7,7 +7,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
@@ -38,8 +37,6 @@ public class Overlay {
 		
 		pane.add(body, java.awt.BorderLayout.CENTER);
 		
-		//Graphics g = pane.getGraphics();
-		
 		frame.setResizable(false);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
@@ -52,7 +49,7 @@ public class Overlay {
 			public void mouseEntered(MouseEvent e) { }
 			@Override
 			public void mouseExited(MouseEvent e) { }
-			@Override
+			@Override // clicking on overly hides it immediately
 			public void mousePressed(MouseEvent e) { hide(); }
 			@Override
 			public void mouseReleased(MouseEvent e) { }
@@ -62,7 +59,7 @@ public class Overlay {
 		timer = new Timer(3000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				hide();
+				hide(); // after 3 seconds, hide overlay
 			}
 		});
 		timer.setRepeats(false);

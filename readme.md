@@ -18,6 +18,8 @@ This table should help you understand which unit types can move on which cells.
 <tr><th>Plane</th><td>Yes</td><td>Can't land, no skis</td><td>Can't land, too dangerous</td><td>150</td><td>75</td><td>3 Cells</td><td>2 Cells</td></tr>
 </table>
 
+Attacks have a 20% chance of being critical. A critical attack does 2x damage.
+
 
 Todo List
 ---------
