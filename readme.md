@@ -18,15 +18,10 @@ This table should help you understand which unit types can move on which cells.
 <tr><th>Plane</th><td>Yes</td><td>Can't land, no skis</td><td>Can't land, too dangerous</td><td>150</td><td>75</td><td>3 Cells</td><td>2 Cells</td></tr>
 </table>
 
-This table should help you understand attacks.
-
-
 
 Todo List
 ---------
-* Need popup after each successful attack (damage, isCritical, etc)
 * Force Tank and Plane to only attack long range, not short range
-* Attack damage should be randomized (like a dice roll for board game)
 * Embed images/sounds in jar archive to make distribution easier (one file)
 * Resize cells/sprites on the fly when the window/frame changes sizes
 * Maybe make the map bigger than the screen and provide "panning" the view
@@ -46,6 +41,8 @@ Completed
 * Added resume feature so players can continue game
 * Add a view with the instructions on how to play
 * Added sprite images (soldier, tank, plane)
+* Added popup after each successful attack (damage, isCritical, etc)
+* Attack damage is randomized...20% of attacks are critical (x2 damage)
 
 
 Beta Testing

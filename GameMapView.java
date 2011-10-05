@@ -21,8 +21,8 @@ import javax.swing.Timer;
  */
 public class GameMapView extends JPanel {
 	private static final long serialVersionUID = -8221311233615840987L;
-	public static final int WIDTH = 695;//Cell.DIST_TO_CORNER*2 * (GameMap.CELL_COLS-6);	
-    public static final int HEIGHT = 650;//Cell.DIST_TO_EDGE*2 * (GameMap.CELL_ROWS+2);
+	public static final int WIDTH = /*695;//*/Cell.DIST_TO_CORNER*2 * (GameMap.CELL_COLS-6);	
+    public static final int HEIGHT = /*650;//*/Cell.DIST_TO_EDGE*2 * (GameMap.CELL_ROWS+2);
     private GameMap map;
     private int index = 0; // used for animation
     private Cell selected = null;
@@ -70,6 +70,7 @@ public class GameMapView extends JPanel {
 					selected.setSelected(null);
 					selected = null;
 					nextPlayerTurn(o);
+					o.showSelected(null);
 				} else if (selected.getUnit().getPlayer() != playerTurn) {
 					o.showMessage("Player "+playerTurn.getNumber()+", are you trying to cheat?\nYou can't control a unit that you don't own!");
 				} else {
@@ -109,9 +110,14 @@ public class GameMapView extends JPanel {
 						Unit attacker = selected.getUnit();
 						Unit victim = rightClicked.getUnit();
 						//TODO animate attack
-						victim.attackedBy(attacker);
-						if (victim.isDead())
+						int damage = victim.attackedBy(attacker);
+						String overlayString = damage + " damage!";
+						if (victim.isDead()) {
 							rightClicked.setUnit(null);
+							overlayString += " Victim is dead.";
+						}
+						
+						o.showOverlay("", overlayString, selected.getX(), selected.getY());
 						
 						//remove highlights for valid moves
 						for (Cell c : map.getCells())
@@ -151,7 +157,7 @@ public class GameMapView extends JPanel {
 					Cell clicked = null;
 					for (Cell c : cells) {
 						if (c.contains(e.getPoint())) {
-							System.out.println("Cell " + cells.indexOf(c) + " selected!");
+							//System.out.println("Cell " + cells.indexOf(c) + " selected!");
 							clicked = c;
 							break;
 						}
@@ -178,13 +184,13 @@ public class GameMapView extends JPanel {
 				} else if (SwingUtilities.isRightMouseButton(e)) {
 					if (selected != null) {
 						for (Cell c : cells)
-							if (c.contains(e.getPoint()) && !c.equals(selected)) {
+							if (c.contains(e.getPoint())) {
 								rightClicked = c;
-								System.out.println("Cell " + cells.indexOf(c) + " right-clicked!");
+								//System.out.println("Cell " + cells.indexOf(c) + " right-clicked!");
 								boolean isEmptyCell = (c.getUnit() == null);
 								boolean canMove = movesRemaining > 0;
 								boolean validMove = getValidMoves(selected).contains(rightClicked);
-								boolean validAttack = getValidAttacks(selected).contains(rightClicked);
+								boolean validAttack = getValidAttacks(selected).contains(rightClicked) && !c.equals(selected);
 								moveItem.setEnabled(isEmptyCell && canMove && validMove);
 								attackItem.setEnabled(!isEmptyCell && validAttack);
 								popup.show(e.getComponent(), c.getX(), c.getY());

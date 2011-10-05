@@ -1,6 +1,7 @@
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -19,6 +20,10 @@ public class Unit {
 	private Player player;
 	private BufferedImage image;
 	private ImageIcon icon;
+	private final static int ATTACK_BY_SOLDIER = 50;
+	private final static int ATTACK_BY_TANK = 100;
+	private final static int ATTACK_BY_PLANE = 75;
+	private final static Random r = new Random();
 	public static enum Type {SOLDIER, TANK, PLANE};
 	private Type type;
 	
@@ -86,31 +91,34 @@ public class Unit {
 	
 	public boolean isDead() { return healthRemaining <= 0; }
 	
-	public void attackedBy(Unit u) {
+	public int attackedBy(Unit u) {
+		int damage = -1;
 		switch(u.getType()) {
-			case SOLDIER: attackedBySoldier(); break;
-			case TANK: attackedByTank(); break;
-			case PLANE: attackedByPlane(); break;
+			case SOLDIER:
+				damage = ATTACK_BY_SOLDIER;
+				break;
+			case TANK:
+				damage = ATTACK_BY_TANK;
+				break;
+			case PLANE:
+				damage = ATTACK_BY_PLANE;
+				break;
 			default:
 				throw new IllegalArgumentException("Attacking unit is not recognized: " + u);
 		}
+			
+		boolean isCritical = r.nextInt() % 5 == 0; // 20% chance of critical hit
 		
-		if (isDead()) {
-			System.out.println("Unit was killed");
+		if (isCritical)
+			damage *= 2; // twice as much damage for critical hit
+		
+		System.out.println(isCritical ? "CRITICAL! " + damage + " damage" : damage + " damage");
+		healthRemaining = healthRemaining - damage;
+		
+		if (isDead())
 			player.removeUnit(this);
-		}
-	}
-	
-	private void attackedBySoldier() { //these eventually could be overriden
-		healthRemaining = healthRemaining - 50;
-	}
-	
-	private void attackedByTank() {
-		healthRemaining = healthRemaining - 100;
-	}
-	
-	private void attackedByPlane() {
-		healthRemaining = healthRemaining - 75;
+		
+		return damage;
 	}
 	
 	
