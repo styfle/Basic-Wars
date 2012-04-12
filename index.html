@@ -1,0 +1,169 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Basic-wars by styfle</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Basic-wars</h1>
+<p>A turn-based strategy game.</p>
+        <p class="view"><a href="https://github.com/styfle/Basic-Wars">View the Project on GitHub <small>styfle/Basic-Wars</small></a></p>
+        <ul>
+          <li><a href="https://github.com/styfle/Basic-Wars/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/styfle/Basic-Wars/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/styfle/Basic-Wars">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>Basic Wars</h1>
+
+<h2>About</h2>
+
+<p>This game was developed for the <a href="http://www.icsscsummerofcode.com/">http://www.icsscsummerofcode.com/</a> competition and is loosely based on Advance Wars.</p>
+
+<h2>Movement/Attacking</h2>
+
+<p>This table should help you understand which unit types can move on which cells.</p>
+
+<table border="1">
+<tr>
+<th> </th>
+<th>Earth (Brown)</th>
+<th>Water (Blue)</th>
+<th>Swamp (Green)</th>
+<th>Health</th>
+<th>Attack</th>
+<th>Move Radius</th>
+<th>Attack Radius</th>
+</tr>
+<tr>
+<th>Soldier</th>
+<td>Yes</td>
+<td>Yes, soldiers swim</td>
+<td>No, too dangerous</td>
+<td>100</td>
+<td>50</td>
+<td>2 Cells</td>
+<td>2 Cells</td>
+</tr>
+<tr>
+<th>Tank</th>
+<td>Yes</td>
+<td>No, they sink</td>
+<td>Yes, built for bad terrain</td>
+<td>200</td>
+<td>100</td>
+<td>1 Cell</td>
+<td>2 Cells</td>
+</tr>
+<tr>
+<th>Plane</th>
+<td>Yes</td>
+<td>Can't land, no skis</td>
+<td>Can't land, too dangerous</td>
+<td>150</td>
+<td>75</td>
+<td>3 Cells</td>
+<td>2 Cells</td>
+</tr>
+</table><h2>Todo List</h2>
+
+<ul>
+<li>Force Tank and Plane to only attack long range, not short range</li>
+<li>Embed images/sounds in jar archive to make distribution easier (one file)</li>
+<li>Resize cells/sprites on the fly when the window/frame changes sizes</li>
+<li>Maybe make the map bigger than the screen and provide "panning" the view</li>
+<li>Lastly, add a cool intro menu and awesome music</li>
+<li>Maybe, redirect System.err to a log file for release code</li>
+</ul><h2>Completed</h2>
+
+<ul>
+<li>Differentiate cells by the type of land/water it represents</li>
+<li>Provide a way to load arbitrary maps</li>
+<li>Add multiple menus to select players/map/etc.</li>
+<li>Add a buy view so players can buy their units</li>
+<li>Implement simple movement and attack</li>
+<li>Implement game logic such as rotating turns, for move and attack</li>
+<li>Remove the Lava cell type and changed Tree to Swamp </li>
+<li>Limit movement on cells (tanks cant go in water, etc)</li>
+<li>Added resume feature so players can continue game</li>
+<li>Add a view with the instructions on how to play</li>
+<li>Added sprite images (soldier, tank, plane)</li>
+<li>Added popup after each successful attack (damage, isCritical, etc)</li>
+<li>Attack damage is randomized...20% of attacks are critical (x2 damage)</li>
+</ul><h2>Beta Testing</h2>
+
+<p>If you would like to try out Basic Wars you can download the latest release on the <a href="https://github.com/styfle/Basic-Wars/downloads">download page</a> and look for the biggest revision number (or newest date).</p>
+
+<p>For the bleeding edge code, you must first install the JDK so you can compile the source code. To compile, first navigate to the source folder and run this command: </p>
+
+<pre><code>javac *.java
+</code></pre>
+
+<p>Then execute the code with the command:</p>
+
+<pre><code>java BasicWars 
+</code></pre>
+
+<h2>Custom Maps</h2>
+
+<p>If you are innovative and decide to make a custom map, all you have to do is open your favorite text editor and start typing. The format looks like this (Oasis map):</p>
+
+<pre><code>EEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEETEEEEEEEEEEEEE
+EEEEEEEEESSWWWEEEEEEEEEEE
+EEEEEEEEEWWWWWWSEEEEEEEEE
+EEEEEEEESWWWWWWSEEEEEEEEE
+EEEEEEEESWWWWWWSEEEEEEEEE
+EEEEEEEEESWWWWWSEEEEEEEEE
+EEEEEEEEEESSWSSEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEE
+EEEEEEEEEEEEEEEEEEEEEEEEE
+</code></pre>
+
+<p>The only valid cell types are</p>
+
+<pre><code>E: Earth (Brown)
+W: Water (Blue)
+S: Swamp (Green)
+</code></pre>
+
+<p>Rules for custom maps:
+* Must have exactly 20 rows
+* Must have exactly 25 columns
+* Must have at least 10 Earth cells on the left and 10 earth cells on the right
+* That means Earth cells in middle-most column don't count toward this</p>
+
+<p>That should be enough to get you started.</p>
+      </section>
+    </div>
+    <footer>
+      <p>Project maintained by <a href="https://github.com/styfle">styfle</a></p>
+      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
+    </footer>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+    
+  </body>
+</html>
