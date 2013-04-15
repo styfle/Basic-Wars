@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <script src="javascripts/scale.fix.js"></script>
+	<style>
+		.screenshot {cursor:pointer; height:140px;}
+		.screenshot:hover {background-color:#C6EAFA; border-radius:10px;}
+	</style>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
     <!--[if lt IE 9]>
@@ -21,8 +25,7 @@
 <p>A turn-based strategy game.</p>
         <p class="view"><a href="https://github.com/styfle/Basic-Wars">View the Project on GitHub <small>styfle/Basic-Wars</small></a></p>
         <ul>
-          <li><a href="https://github.com/styfle/Basic-Wars/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/styfle/Basic-Wars/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/styfle/Basic-Wars/downloads">Get Latest<strong>Download</strong></a></li>
           <li><a href="https://github.com/styfle/Basic-Wars">View On <strong>GitHub</strong></a></li>
         </ul>
       </header>
@@ -31,7 +34,24 @@
 
 <h2>About</h2>
 
-<p>This game was developed for the <a href="http://www.icsscsummerofcode.com/">http://www.icsscsummerofcode.com/</a> competition and is loosely based on Advance Wars.</p>
+<p>Grab your friend (or enemy) and start a game of Basic Wars! Soldier stomping, tank driving, plane flying action is at your finger tips for free! Or grab the source and hack away. Take a look below for some help on getting started. There is not a lot of information you need to know to begin playing (hence the word Basic). Some of the more advanced features include building your own <a href="#custom_maps">custom maps</a>!</p>
+
+<h2>Screenshots</h2>
+
+<img src="images/basicwars2.png" alt="" class="screenshot" />
+<img src="images/basicwars3.png" alt="" class="screenshot" />
+<img src="images/basicwars4.png" alt="" class="screenshot" />
+<img src="images/basicwars5.png" alt="" class="screenshot" />
+
+<script type="text/javascript">
+    var ss = document.getElementsByClassName('screenshot');
+	for (var i =0; i < ss.length; i++) {
+		var img = ss[i];
+		img.onclick = function() {
+			window.open(this.src, '_blank')
+		};
+	}                                                                                           
+</script>
 
 <h2>Movement/Attacking</h2>
 
@@ -103,21 +123,10 @@
 <li>Added sprite images (soldier, tank, plane)</li>
 <li>Added popup after each successful attack (damage, isCritical, etc)</li>
 <li>Attack damage is randomized...20% of attacks are critical (x2 damage)</li>
-</ul><h2>Beta Testing</h2>
+</ul>
 
-<p>If you would like to try out Basic Wars you can download the latest release on the <a href="https://github.com/styfle/Basic-Wars/downloads">download page</a> and look for the biggest revision number (or newest date).</p>
 
-<p>For the bleeding edge code, you must first install the JDK so you can compile the source code. To compile, first navigate to the source folder and run this command: </p>
-
-<pre><code>javac *.java
-</code></pre>
-
-<p>Then execute the code with the command:</p>
-
-<pre><code>java BasicWars 
-</code></pre>
-
-<h2>Custom Maps</h2>
+<h2 id="custom_maps">Custom Maps</h2>
 
 <p>If you are innovative and decide to make a custom map, all you have to do is open your favorite text editor and start typing. The format looks like this (Oasis map):</p>
 
@@ -143,18 +152,20 @@ EEEEEEEEEEEEEEEEEEEEEEEEE
 EEEEEEEEEEEEEEEEEEEEEEEEE
 </code></pre>
 
-<p>The only valid cell types are</p>
+<p>The only valid cell types are as following</p>
+<ul style="font-family:monospace;">
+	<li>E - Earth</li>
+	<li>W - Water</li>
+	<li>S - Swamp</li>
+</ul>
 
-<pre><code>E: Earth (Brown)
-W: Water (Blue)
-S: Swamp (Green)
-</code></pre>
-
-<p>Rules for custom maps:
-* Must have exactly 20 rows
-* Must have exactly 25 columns
-* Must have at least 10 Earth cells on the left and 10 earth cells on the right
-* That means Earth cells in middle-most column don't count toward this</p>
+<p>The constraints for custom maps are as follows</p>
+<ul>
+	<li>Must have exactly 20 rows</li>
+	<li>Must have exactly 25 columns</li>
+	<li>Must have at least 10 Earth cells on the left and 10 earth cells on the right</li>
+	<li>That means Earth cells in middle-most column don't count toward this</li>
+</ul>
 
 <p>That should be enough to get you started.</p>
       </section>
